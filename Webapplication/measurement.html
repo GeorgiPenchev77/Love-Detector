@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Loading heartbeat </title>
+    </head>
+
+    <body>
+        <h1>heartbeat being measured.. </h1>
+        <button onclick="showHeartbeat()">press me</button>
+        <h3 id="heartbeatResult"></h3>
+    </body>
+    <script>
+
+    // Function to print heartbeat
+    function heartbeat() {
+        const userHeartbeat = Math.random() * (120 - 60) + 60; // Simulating a random heartbeat between 60 and 120 beats per minute
+        return userHeartbeat.toFixed(2) + " BPM";
+    }
+
+    // Function to display heartbeat result
+    function showHeartbeat() {
+        const resultElement = document.getElementById("heartbeatResult");
+        const heartbeatResult = heartbeat();
+        resultElement.textContent = heartbeatResult;
+    }
+
+    </script>
+</html>
