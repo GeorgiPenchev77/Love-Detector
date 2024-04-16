@@ -6,11 +6,10 @@ TFT_eSPI tft;
 #define NEXT_Q BUTTON_2
 #define HELP BUTTON_1
 
-String start_message ="Hello and Welcome to The Love Detector. Press the leftmost button to begin. While in test, press the middle button to change to the next question. Press the rightmost button for help.";
-String begin_message ="Heart rate test will begin in 5 seconds. Make sure the sensor is connected to your ear securely. If there is an issue you will be notified with a message.";
+String start_message ="Hello and Welcome to The Love Detector. Press the left button to begin. While in test, press the left button to stop the test or the middle button to change to the next question. Press the right button for help.";
 String result_message = "Your heart rate is: ";
-String loading_message = "Measuring heart rate: This process will take 20 seconds. ";
-String error_message= "Heart rate measure error, test will restart!";
+String loading_message = "Heart rate test has begun. You will be notified when it is complete or if there is an issue.";
+String error_message= "Heart rate measure error, test will restart automatically. Make sure the sensor is attached securely!";
 String reset_message= "Test has been stopped. Press button again to reset the test.";
 
 
@@ -20,6 +19,7 @@ bool data_effect = true;
 unsigned int heart_rate;
 const int max_heartpluse_duty = 2000;
 volatile bool pressed_start= false;
+bool previous_state=false;
 
 
 void printMessage(String string)
@@ -55,8 +55,8 @@ void setup() {
   tft.setRotation(STANDARD_HORIZONTAL_VIEW); //Set up commands to display messages on the Wio screen
   Serial.begin(9600);  //Open port to display messages in the Arduino IDE terminal
 
-  delay(1000);
   printMessage(start_message);
+
 
   arrayInit();  //initialize the data array with 0s
   attachInterrupt(digitalPinToInterrupt(START), press, CHANGE);
@@ -71,28 +71,24 @@ void setup() {
 }
 
 void loop() {
+  if(pressed_start!=previous_state)
+{
   if(pressed_start)
   {
-    clear();
-    if(heart_rate==0)
-    {
-    printMessage(loading_message);
-    delay(5000);
-    }
-    else
-    {
-      printMessage(result_message+heart_rate);
-      delay(5000);
-    }  
+      clear();
+     printMessage(loading_message); 
+
   }
   else if(!pressed_start)
-  {
-    clear();
-    printMessage(reset_message);
-    delay(5000);
-  }
+   {
+     clear();
+     printMessage(reset_message);
+    }
+  
+ previous_state=pressed_start;
 }
 
+}
 void interrupt() 
 {
   if(pressed_start)
@@ -152,6 +148,8 @@ void sum() {
   if (data_effect) 
   {
     heart_rate = 1200000 / (temp[20] - temp[0]);
+    clear();
+    printMessage(result_message+ String(heart_rate));
   }
   data_effect = true;
 }
