@@ -12,10 +12,6 @@ const __dirname = dirname(__filename);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
-});
-
 
 // Define your route handlers
 const router = express.Router();

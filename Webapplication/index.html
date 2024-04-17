@@ -2,39 +2,42 @@
 <html>
     <head>  
         <title> Love Detector </title>
+        <link rel="stylesheet" href="public\css\styleindex.css">
         <link rel="icon" href="heart-png.webp" type="image/x-icon">
         <style>
-            body {
-                background-color: palevioletred;
-            }
-            
+           body {
+            width: 100%;
+    height: 100%;
+    background-image: url('pngtree-purple-smoke-in-dark-background-image_320078.jpg');
+    background-size: cover; /* Cover the entire background */
+    background-repeat: no-repeat; /* Prevent background image from repeating */
+    background-color: palevioletred; /* Fallback background color */
+}
             .heading-container{
                 display: flex;
                 justify-content: center;
             }
             h1 {
-                color: pink;
+                color: rgb(206, 149, 244);
+                font-family: "Chiller", fantasy;
                 font-size: 3.5rem;
             }
             .input{
                 display: flex;
                 flex-direction: column;
                 width: 100%;
+                margin-bottom: 40px;
             }
             .user-container{
                 box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-                padding: 3rem;
+                padding-top: 1rem;
+                padding-left: 3rem;
+                padding-right: 3rem;
                 border-radius: 30px;
                 margin: 3em;
-                background-color: pink;
+                background-color:rgb(206, 149, 244);
             }
-            .start-button{
-            background-color: pink;
-            border-radius: 30px;
-            border: none;
-            padding: 10px 20px;
-            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-            }
+
             .arrow-right-picture{
                 width: 50px;
                 height: 50px;
@@ -49,7 +52,13 @@
                 flex-direction: row;
                 justify-content:center;
             }
-
+            .start-button{
+            background-color: rgb(206, 149, 244);
+            border-radius: 30px;
+            border: none;
+            padding: 10px 20px;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            }
         </style>
     </head>
 
@@ -89,19 +98,11 @@
     </body>
     <script> 
         async function redirect() {
-            try {
-                const response = await fetch('/heartbeat');
-    
-                if (response.ok) {
-                    console.log("Response went good")
-                    window.location.href = '/heartbeat';
-                } else {
-                    console.log(response)
-                    throw new Error('Network response was not ok.');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        }
+    try {
+        window.location.href = '/heartbeat';
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
     </script>
 </html>
