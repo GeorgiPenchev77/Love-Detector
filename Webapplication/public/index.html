@@ -8,7 +8,7 @@
            body {
             width: 100%;
     height: 100%;
-    background-image: url('pngtree-purple-smoke-in-dark-background-image_320078.jpg');
+    background-image: url('pngtree-purple-smoke-in-dark-background-image_320078.jpg'); 
     background-size: cover; /* Cover the entire background */
     background-repeat: no-repeat; /* Prevent background image from repeating */
     background-color: palevioletred; /* Fallback background color */
@@ -91,18 +91,13 @@
             </div>
         </div>
         <div class="button-container">
-            <button class="start-button" onclick="redirect()"> 
-                <img class="arrow-right-picture" src="Arrow-right-512.png" alt="Arrow-right"> </img>
-            </button>
+            <a href="./measurement.html">
+                <button class="start-button"> 
+                    <img class="arrow-right-picture" src="Arrow-right-512.png" alt="Arrow-right"> </img>
+                </button>
+            </a>
         </div>
     </body>
     <script> 
-        async function redirect() {
-    try {
-        window.location.href = '/heartbeat';
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
     </script>
 </html>

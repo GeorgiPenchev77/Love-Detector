@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Ready to start the date </title>
+    </head>
+    <link rel="stylesheet" href="public\css\styleindex.css">
+    <link rel="icon" href="heart-png.webp" type="image/x-icon">
+    <style>
+    </style>
+</head>
+
+<body>
+    <div class="heading-container">
+        <h1>Welcome to Love Detector!</h1>
+    </div>
+    <div class="users">
+        <div class="user-container">
+            <h2>User 1</h2>
+            <div class="input">
+                <label>Please enter your name:</label>
+                <input type="text"/>
+            </div>
+            <div class="input">
+                <label>Please enter your pronouns:</label>
+                <input type="text"/>
+            </div>
+        </div>
+        <div class="user-container">
+            <h2>User 2</h2>
+            <div class="input">
+                <label>Please enter your name:</label>
+                <input type="text"/>
+            </div>
+            <div class="input">
+                <label>Please enter your pronouns:</label>
+                <input type="text"/>
+            </div>
+        </div>
+    </div>
+    <div class="button-container">
+        <button class="start-button" onclick="redirect()"> 
+            <img class="arrow-right-picture" src="Arrow-right-512.png" alt="Arrow-right"> </img>
+        </button>
+    </div>
+</body>
+    <script>
+
+    // Function to display heartbeat result
+    function showHeartbeat() {
+        const resultElement = document.getElementById("heartbeatResult");
+        const heartbeatResult = heartbeat();
+        resultElement.textContent = heartbeatResult;
+    }
+    </script>
+</html>
+
