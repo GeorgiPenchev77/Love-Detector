@@ -14,21 +14,12 @@
             font-family: "Chiller", fantasy;
             font-size: 3.5rem;
         }
-        .input{
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        margin-bottom: 40px;
-    }
-    .user-container{
-        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-        padding-top: 1rem;
-        padding-left: 3rem;
-        padding-right: 3rem;
-        border-radius: 30px;
-        margin: 3em;
-        background-color:rgb(206, 149, 244);
-    }
+
+        h2{
+            margin-bottom: 1rem;
+        }
+
+
 
     .arrow-right-picture{
         width: 50px;
@@ -37,12 +28,33 @@
     .button-container{
         display: flex;
         width: 90%;
-        justify-content: end;
+        justify-content: start;
+        margin-top: 8rem;
+    }
+
+    .back-button{
+        padding: 15px 30px;
+        background-color: rgb(206, 149, 244);
+
     }
     .users{
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         justify-content:center;
+        width: 10%;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        padding: 2rem;
+        border-radius: 30px;
+        margin: 3em;
+        background-color:rgb(206, 149, 244);
+    }
+
+    p{
+        margin: 2px;
+    }
+    .middle-container{
+        display: flex;
+        flex-direction: row;
     }
         </style>
     </head>
@@ -51,17 +63,22 @@
     <div class="heading-container">
         <h1>Ready to start the speed date?</h1>
     </div>
-    <div class="users">
-        <div class="user-container">
-            <h2>User 1 Information:</h2>
+    <div class="middle-container">
+        <div class="users">
+            <h2>User 1 </h2>
             <p>Name: <span id="displayUserName1"></span></p>
             <p>Pronouns: <span id="displayUserPronouns1"></span></p>
-        </div>
-        <div class="user-container">
-            <h2>User 2 Information:</h2>
+            <h2>User 2 </h2>
             <p>Name: <span id="displayUserName2"></span></p>
             <p>Pronouns: <span id="displayUserPronouns2"></span></p>
         </div>
+        <div class="instructions-container">
+            <h2>STEP 1:</h2>
+            <p>Put the sensor ear-clip on your ear</p>
+        </div>
+    </div>
+    <div class="button-container">
+        <button type="button" class="back-button" onclick="goBack()"> Back </button>
     </div>
 </body>
 <script>
@@ -76,6 +93,10 @@
     document.getElementById("displayUserPronouns1").textContent = userPronouns1;
     document.getElementById("displayUserName2").textContent = userName2;
     document.getElementById("displayUserPronouns2").textContent = userPronouns2;
+
+    function goBack(){
+        window.history.back();
+    }
 </script>
 </html>
 
