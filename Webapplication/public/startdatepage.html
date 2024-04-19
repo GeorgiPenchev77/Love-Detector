@@ -13,6 +13,9 @@
     <div class="middle-container">
         <div class="users">
             <h2>User 1 </h2>
+    <div class="middle-container">
+        <div class="users">
+            <h2>User 1 </h2>
             <p>Name: <span id="displayUserName1"></span></p>
             <p>Pronouns: <span id="displayUserPronouns1"></span></p>
             <h2>User 2 </h2>
@@ -40,6 +43,10 @@
     document.getElementById("displayUserPronouns1").textContent = userPronouns1;
     document.getElementById("displayUserName2").textContent = userName2;
     document.getElementById("displayUserPronouns2").textContent = userPronouns2;
+
+    function goBack(){
+        window.history.back();
+    }
 
     function goBack(){
         window.history.back();
