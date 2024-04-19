@@ -1,49 +1,77 @@
-body{
+body {
     width: 100%;
     height: 100%;
-    background-color: rgb(255, 255, 255); /* Fallback background color */
+    background-color: rgb(255, 255, 255);
+    /* Fallback background color */
+    font-family: "Nunito Sans", sans-serif;
 }
-.heading-container{
+
+.heading-container {
     display: flex;
-justify-content: center;
+    justify-content: center;
 }
+
 h1 {
-color: rgb(206, 149, 244);
-font-family: "Chiller", fantasy;
-font-size: 3.5rem;
+    color: rgb(206, 149, 244);
+    font-size: 3.5rem;
 }
-h2{
-margin-bottom: 1rem;
+
+.middle-container {
+    display: flex;
+    flex-direction: row;
 }
-.arrow-right-picture{
-width: 50px;
-height: 50px;
+
+h2 {
+    margin-bottom: 1rem;
+    margin-top: 0;
 }
-.button-container{
-display: flex;
-width: 90%;
-justify-content: start;
-margin-top: 8rem;
+
+.arrow-right-picture {
+    width: 50px;
+    height: 50px;
 }
-.back-button{
-padding: 15px 30px;
-background-color: rgb(206, 149, 244);
+
+.button-container {
+    display: flex;
+    width: 90%;
+    justify-content: start;
 }
-.users{
-display: flex;
-flex-direction: column;
-justify-content:center;
-width: 10%;
-box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-padding: 2rem;
-border-radius: 30px;
-margin: 3em;
-background-color:rgb(206, 149, 244);
+
+.back-button {
+    margin-top: 20px;
+    margin-left: 3rem;
+    padding: 15px 30px;
+    background-color: rgb(206, 149, 244);
+    border-radius: 20px;
+    border: none; 
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
-p{
-margin: 2px;
+
+.users {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 20%;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    padding: 2rem;
+    border-radius: 30px;
+    margin: 3rem;
+    margin-top: 0;
+    background-color: rgb(206, 149, 244);
 }
-.middle-container{
-display: flex;
-flex-direction: row;
+
+p {
+    margin: 4px;
+}
+
+.instructions-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+.instruction{
+    align-items: left;
+    width: 80%;
 }
