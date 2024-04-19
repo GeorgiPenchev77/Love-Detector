@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+    <head>  
+        <title> Love Detector </title>
+        <link rel="stylesheet" href="public\css\styleindex.css">
+        <link rel="icon" href="heart-png.webp" type="image/x-icon">
+        <style>
+          body {
+    width: 100%;
+height: 100%;
+background-size: cover; /* Cover the entire background */
+background-repeat: no-repeat; /* Prevent background image from repeating */
+background-color: rgb(255, 255, 255); /* Fallback background color */
+}
+    .heading-container{
+        display: flex;
+        justify-content: center;
+    }
+    h1 {
+        color: rgb(206, 149, 244);
+        font-family: "Chiller", fantasy;
+        font-size: 3.5rem;
+    }
+    .input{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        margin-bottom: 40px;
+    }
+    .user-container{
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        padding-top: 1rem;
+        padding-left: 3rem;
+        padding-right: 3rem;
+        border-radius: 30px;
+        margin: 3em;
+        background-color:rgb(206, 149, 244);
+    }
+
+    .arrow-right-picture{
+        width: 50px;
+        height: 50px;
+    }
+    .button-container{
+        display: flex;
+        width: 90%;
+        justify-content: end;
+    }
+    .users{
+        display: flex;
+        flex-direction: row;
+        justify-content:center;
+    }
+    .start-button{
+    background-color: rgb(206, 149, 244);
+    border-radius: 30px;
+    border: none;
+    padding: 10px 20px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    }
+        </style>
+    </head>
+
+    <body>
+        <div class="heading-container">
+            <h1>Welcome to Love Detector!</h1>
+        </div>
+        <div class="users">
+            <div class="user-container">
+                <h2>User 1</h2>
+                <div class="input">
+                    <label>Please enter your name:</label>
+                    <input type="text" id="userName1"/>
+                </div>
+                <div class="input">
+                    <label>Please enter your pronouns:</label>
+                    <input type="text" id="userPronouns1"/>
+                </div>
+            </div>
+            <div class="user-container">
+                <h2>User 2</h2>
+                <div class="input">
+                    <label>Please enter your name:</label>
+                    <input type="text" id="userName2"/>
+                </div>
+                <div class="input">
+                    <label>Please enter your pronouns:</label>
+                    <input type="text" id="userPronouns2"/>
+                </div>
+            </div>
+        </div>
+        <div class="button-container">
+                <button type="button" class="start-button" onclick="saveUserInfo()"> 
+                    <img class="arrow-right-picture" src="Arrow-right-512.png" alt="Arrow-right"> </img>
+                </button>
+        </div>
+    </body>
+    <script> 
+     function saveUserInfo() {
+            // Get the input values
+            var userName1 = document.getElementById("userName1").value;
+            var userPronouns1 = document.getElementById("userPronouns1").value;
+            var userName2 = document.getElementById("userName2").value;
+            var userPronouns2 = document.getElementById("userPronouns2").value;
+
+            //Ensure that name fields are filled in
+    if (!userName1 || !userName2){
+        alert("please fill in all name fields");
+        return;
+    }else{
+            // Store the user info in session storage
+            sessionStorage.setItem("userName1", userName1);
+            sessionStorage.setItem("userPronouns1", userPronouns1);
+            sessionStorage.setItem("userName2", userName2);
+            sessionStorage.setItem("userPronouns2", userPronouns2);
+
+            // Redirect to the next page
+            window.location.href = "startdatepage.html";
+        }
+     }
+    </script>
+</html>
