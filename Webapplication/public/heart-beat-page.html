@@ -2,6 +2,14 @@
 <html>
 <head>
     <style>
+        body {
+            background-color: #e0e0e0; 
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            color: #333333;
+            margin: 0;
+            padding: 0;
+        }
         .header {
             color: #FFC0CB; 
             text-align: center;
@@ -40,15 +48,22 @@
             margin-bottom: -50px; /* Pushes header to the top */
             margin-top: -50px;
         }
-
-        body {
-            background-color: #e0e0e0; 
-            background-size: cover;
-            font-family: Arial, sans-serif;
-            color: #333333;
-            margin: 0;
-            padding: 0;
+        .arrow-right-picture{
+            width: 50px;
+            height: 50px;
         }
+        .house-picture{
+            width: 50px;
+            height: 50px;
+        }
+        .button-container{
+            display: flex;
+            width: 90%;
+            justify-content: end;
+            border-radius: 30px;
+            margin-bottom: -50px;
+        }
+
         .chart-container {
             margin-top: 20px;
             height: 90%; 
@@ -122,6 +137,15 @@
     <div class="header">
         <h1>BPM</h1>
     </div>
+    <div class="button-container">
+        <button type="button" class="start-button" onclick="saveUserInfo()"> 
+            <img class="arrow-right-picture" src="Arrow-right-512.png" alt="Arrow-right"> </img>
+        </button>
+        <button type="button" class="start-button" onclick="saveUserInfo()"> 
+            <img class="house-picture" src="home_FILL0_wght400_GRAD0_opsz24.png" alt="House"> </img>
+        </button>
+    </div>
+
     <div class="user-container">
         <div class="user-box">
             <div class="headerUser">
