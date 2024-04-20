@@ -1,41 +1,63 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Love Detector</title>
-  <style>
-    .header {
-      color: rgba(202, 31, 31, 0.98);
-      text-align: center;
-      font-size: xx-large;
-      font-family: cursive;
-    }
+    <head>
+        <title>Love Detector</title>
+        <style>
 
-    .box-frame {
-      display: flex; 
-      justify-content: center; 
-      margin-top: 20px; 
-    }
+            .header {
+            color: rgba(21, 199, 30, 0.98);
+            text-align: center;
+            font-size: xx-large;
+            font-family: cursive;
+            padding: 10px 0;
+            height: 70px;
+            }
 
-    .pink-box {
-      width: 200px; 
-      height: 100px; 
-      border: 2px solid pink; 
-      box-sizing: border-box; 
-      margin: 0 10px; 
-    }
+            .box-container{
+                display: flex; 
+                justify-content: center; 
+                margin-top: 50px; 
+                border: 2px solid rgb(216, 29, 29); 
+                padding: 20px; 
+                position: relative;
+            }
 
-    body {
-      background-color: rgb(206, 149, 244);
-    }
-  </style>
-</head>
+            .box-frame {
+                display: flex; 
+                justify-content: center;
+                margin: 50px;
+                width: 700px;
+                height: 400px;
+                border-radius: 30px;
+                background-color:rgb(206, 149, 244);
+                box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            }
+
+            label {
+            font-size: 35px; 
+            color: blue;
+            }
+
+            body {
+            background-color: rgb(213, 208, 47);
+            }
+        </style>
+    </head>
+
 <body>
-  <div class="header">
-    <h1>Heart Rate Visualization</h1>
-  </div>
-  <div class="box-frame">
-    <div class="pink-box"></div>
-    <div class="pink-box"></div>
-  </div>
+    <div class="header">
+        <h1>Heart Rate Visualization</h1>
+    </div>
+    <div class="box-container">
+        <div class="box-frame">
+            <label>User 1:</label>
+            <div class="pink-box"></div>
+        </div>
+        
+        <div class="box-frame">
+            <label>User 2:</label>
+            <div class="pink-box"></div>
+        </div>
+    </div>
 </body>
 </html>
