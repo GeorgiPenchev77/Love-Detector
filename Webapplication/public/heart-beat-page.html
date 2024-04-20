@@ -51,7 +51,68 @@
         }
     
     </style>
-    
+    </style>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            // Data for first chart (User 1)
+            var data1 = google.visualization.arrayToDataTable([
+                ['Minute:', 'BPM'],
+                ['1', 120],
+                ['2', 110],
+                ['3', 120],
+                ['4', 80],
+                ['5', 100],
+                ['6', 130],
+                ['7', 90],
+                ['8', 110],
+                ['9', 140],
+                ['10', 120]
+            ]);
+
+            // Options for first chart (User 1)
+            var options1 = {
+                curveType: 'function',
+                legend: { position: 'bottom' },
+                colors: ['#FF00FF'],
+                backgroundColor: '#FFE4E1', // Using the pink color #FF00FF
+                chartArea: { width: '80%', height: '70%' }, // Adjust chart area
+            };
+
+            // Chart for first box-frame (User 1)
+            var chart1 = new google.visualization.LineChart(document.getElementById('chart_div1'));
+            chart1.draw(data1, options1);
+
+            // Data for second chart (User 2)
+            var data2 = google.visualization.arrayToDataTable([
+                ['Minute:', 'BPM'],
+                ['1', 50],
+                ['2', 70],
+                ['3', 120],
+                ['4', 80],
+                ['5', 100],
+                ['6', 130],
+                ['7', 90],
+                ['8', 110],
+                ['9', 140],
+                ['10', 120]
+            ]);
+
+            var options2 = {
+                curveType: 'function',
+                legend: { position: 'bottom' },
+                colors: ['#FF00FF'],
+                backgroundColor: '#FFE4E1', 
+                chartArea: { width: '80%', height: '70%' }, // Adjust chart area
+            };
+
+            var chart2 = new google.visualization.LineChart(document.getElementById('chart_div2'));
+            chart2.draw(data2, options2);
+        }
+    </script>
 </head>
 <body>
     <div class="header">
@@ -62,11 +123,15 @@
             <div class="headerUser">
                 <h2>User 1</h2>
             </div>
+            <div class="chart-container" id="chart_div1">
+            </div>
         </div>
 
         <div class="user-box">
             <div class="headerUser">
                 <h2>User 2</h2>
+            </div>
+            <div class="chart-container" id="chart_div2">
             </div>
         </div>
     </div>
