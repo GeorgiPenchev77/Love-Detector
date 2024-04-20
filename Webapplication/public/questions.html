@@ -13,16 +13,17 @@
         background-color: rgb(255, 255, 255);
       }
       .new-container {
-        height: 387px;
+        width: 100%;
       }
       .button-container {
+        position: fixed;
         display: flex;
-        width: 90%;
-        justify-content: end;
+        right: 9rem;
+        bottom: 12rem;
+        /* justify-content: end; */
       }
 
       .butt {
-        position: absolute;
         background-color: rgb(206, 149, 244);
         border-radius: 30px;
         border: none;
@@ -32,22 +33,64 @@
       .butt:hover {
         background-color: rgb(206, 100, 244);
       }
+      .user-container {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+      }
+      .user {
+        padding-top: 1rem;
+        padding-left: 3rem;
+        padding-right: 3rem;
+        border-radius: 30px;
+        margin: 3em;
+        background-color: rgb(206, 149, 244);
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+      }
+
+      #question-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 10rem;
+      }
+      #question {
+        font-size: 48px;
+
+        font-family: "Chiller", fantasy;
+        color: rgb(206, 149, 244);
+        text-align: center;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
     </style>
   </head>
   <body>
     <div class="header">
       <h1>Question</h1>
     </div>
-    <div class="new-container">
-      <div id="question-container">
-        <h2 id="question"></h2>
+    <div id="question-container">
+      <div class="user-container">
+        <div class="user">
+          <h1>Name 1</h1>
+          <h2>Pronouns</h2>
+        </div>
+        <div class="user">
+          <h1>Name 2</h1>
+          <h2>Pronouns</h2>
+        </div>
       </div>
+      <h2 id="question"></h2>
     </div>
     <div class="button-container">
       <button class="butt" onclick="redirect()">
         <img src="Arrow-right-512.png" alt="Arrow-right" height="50" />
       </button>
     </div>
+
     <script>
       function redirect() {
         try {
@@ -56,6 +99,23 @@
           console.error("Error:", error);
         }
       }
+      const questions = [
+        "What's ur fav animal",
+        "Do yall like jazz",
+        "Whats romanze for you?",
+      ];
+      function randomize() {
+        const random = Math.floor(Math.random() * questions.length);
+        return questions[random];
+      }
+      function display() {
+        const question = randomize();
+        document.getElementById("question").textContent = question;
+      }
+      function changeQuestion() {
+        display();
+      }
+      display();
     </script>
   </body>
 </html>
