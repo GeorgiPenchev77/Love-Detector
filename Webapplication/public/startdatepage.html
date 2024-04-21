@@ -2,66 +2,43 @@
 <html>
     <head>
         <title> Start date </title>
-        <link rel="stylesheet" href="public\css\styleindex.css">
         <link rel="icon" href="heart-png.webp" type="image/x-icon">
-        <style>
-            .heading-container{
-                display: flex;
-            justify-content: center;
-        }
-            h1 {
-            color: rgb(206, 149, 244);
-            font-family: "Chiller", fantasy;
-            font-size: 3.5rem;
-        }
-        .input{
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        margin-bottom: 40px;
-    }
-    .user-container{
-        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-        padding-top: 1rem;
-        padding-left: 3rem;
-        padding-right: 3rem;
-        border-radius: 30px;
-        margin: 3em;
-        background-color:rgb(206, 149, 244);
-    }
-
-    .arrow-right-picture{
-        width: 50px;
-        height: 50px;
-    }
-    .button-container{
-        display: flex;
-        width: 90%;
-        justify-content: end;
-    }
-    .users{
-        display: flex;
-        flex-direction: row;
-        justify-content:center;
-    }
-        </style>
+        <link rel="stylesheet" href="css/startdatepagestyle.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet">
     </head>
 
 <body>
     <div class="heading-container">
         <h1>Ready to start the speed date?</h1>
     </div>
-    <div class="users">
-        <div class="user-container">
-            <h2>User 1 Information:</h2>
+    <div class="middle-container">
+        <div class="users">
+            <h2>User 1 </h2>
             <p>Name: <span id="displayUserName1"></span></p>
             <p>Pronouns: <span id="displayUserPronouns1"></span></p>
-        </div>
-        <div class="user-container">
-            <h2>User 2 Information:</h2>
+            <h2>User 2 </h2>
             <p>Name: <span id="displayUserName2"></span></p>
             <p>Pronouns: <span id="displayUserPronouns2"></span></p>
         </div>
+        <div class="instructions-container">
+            <div class="instruction">
+                <h2>STEP 1:</h2>
+                <p>Remove any accessories from your ear</p>
+            </div>
+            <div class="instruction">
+                <h2>STEP 2:</h2>
+                <p>Put the sensor ear-clip on your ear</p>
+            </div>
+            <div class="instruction">
+                <h2>STEP 3:</h2>
+                <p>Click the middle blue button on the terminal to begin the date</p>
+            </div>
+        </div>
+    </div>
+    <div class="button-container">
+        <button type="button" class="back-button" onclick="goBack()"> Back </button>
     </div>
 </body>
 <script>
@@ -76,6 +53,11 @@
     document.getElementById("displayUserPronouns1").textContent = userPronouns1;
     document.getElementById("displayUserName2").textContent = userName2;
     document.getElementById("displayUserPronouns2").textContent = userPronouns2;
+
+    function goBack(){
+        window.history.back();
+    }
 </script>
 </html>
+
 
