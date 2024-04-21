@@ -36,9 +36,8 @@
 
         }
         
-
-        .headerUser {
-            color: #ffffff; 
+        .headerUserName {
+            color: #CE95F4; 
             text-align: center;
             font-size: xx-large;
             font-family: cursive;
@@ -57,7 +56,6 @@
             display: flex;
             width: 90%;
             justify-content: end;
-            border-radius: 90px;
             margin-bottom: -95px;
             margin-top: 50px;
         }
