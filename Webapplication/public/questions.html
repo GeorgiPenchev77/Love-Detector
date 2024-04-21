@@ -20,9 +20,9 @@
         display: flex;
         width: 80%;
         justify-content: space-between;
+        align-items: center;
         right: 9rem;
         bottom: 12rem;
-        /* justify-content: end; */
       }
 
       .butt {
@@ -47,7 +47,7 @@
         padding-right: 3rem;
         border-radius: 30px;
         margin: 3em;
-        background-color: rgb(206, 149, 244);
+        background-color: rgb(215, 200, 243);
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
       }
 
@@ -81,6 +81,12 @@
         border: none;
         padding: 10px 20px;
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+      }
+      #timer {
+        color: rgb(206, 149, 244);
+        font-family: "Chiller", fantasy;
+        font-size: xx-large;
+        text-align: center;
       }
     </style>
   </head>
@@ -128,6 +134,7 @@
           </g>
         </svg>
       </button>
+      <div id="timer"></div>
       <button class="butt" onclick="redirect()">
         <img src="Arrow-right-512.png" alt="Arrow-right" height="50" />
       </button>
@@ -137,31 +144,53 @@
     <script>
       function redirect() {
         try {
-          window.location.href = "/heartbeat.html";
+          window.location.href = "/heart-beat-page.html";
         } catch (error) {
           console.error("Error:", error);
         }
       }
-      const questions = [
-        "What's ur fav animal",
-        "Do yall like jazz",
-        "Whats romanze for you?",
-      ];
+
       function randomize() {
         const random = Math.floor(Math.random() * questions.length);
         const random_question = questions[random];
         questions.splice(random, 1);
-        console.log(questions);
         return random_question;
       }
-      function display() {
+
+      function changeQuestion() {
+        if (timerInterval) clearInterval(timerInterval);
+        countdown();
         const question = randomize();
         document.getElementById("question").textContent = question;
       }
-      function changeQuestion() {
-        display();
+
+      function countdown() {
+        let timeLeft = 10;
+        timer.textContent = timeLeft;
+        timerInterval = setInterval(() => {
+          if (timeLeft > 0) {
+            timer.textContent = --timeLeft;
+          } else {
+            clearInterval(timerInterval);
+            changeQuestion();
+          }
+        }, 1000);
       }
-      display();
+
+      const questions = [
+        "What's your idea of a perfect day?",
+        "What do you think is the purpose of life?",
+        "What makes you feel most alive?",
+        "Are you a city person or a countryside person?",
+        "What's your favorite type of cuisine?",
+        "Do you prefer indoor activities or outdoor activities?",
+        "What's your love language?",
+        "Do you believe in soulmates?",
+        "If you could travel back in time, what era would you visit?",
+      ];
+      let timerInterval; // Interval Object for timr
+      const timer = document.getElementById("timer"); //! element of timer
+      changeQuestion(); // Execute
     </script>
   </body>
 </html>
