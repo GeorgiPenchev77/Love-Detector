@@ -1,0 +1,85 @@
+.header {
+  color: rgb(206, 149, 244);
+  font-family: "Nunito Sans", sans-serif;
+  font-size: xx-large;
+  text-align: center;
+}
+body {
+  background-color: rgb(255, 255, 255);
+}
+.new-container {
+  width: 100%;
+}
+.button-container {
+  position: fixed;
+  display: flex;
+  width: 80%;
+  justify-content: space-between;
+  align-items: center;
+  right: 9rem;
+  bottom: 12rem;
+}
+
+.arrow-button {
+  background-color: rgb(206, 149, 244);
+  border-radius: 30px;
+  border: none;
+  padding: 10px 20px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  cursor: pointer;
+}
+.arrow-button:hover {
+  background-color: rgb(206, 100, 244);
+}
+.user-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+.user {
+  padding-top: 1rem;
+  padding-left: 3rem;
+  padding-right: 3rem;
+  border-radius: 30px;
+  margin: 0 3.5rem;
+  background-color: rgb(215, 200, 243);
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+#question-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  /* height: 10rem; */
+  width: 60%;
+  margin: auto;
+}
+#question {
+  font-size: 48px;
+  font-family: "Nunito Sans", sans-serif;
+  color: rgb(0, 0, 0);
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.button-container2 {
+  position: fixed;
+  display: flex;
+  right: 9rem;
+  bottom: 4rem;
+}
+.question-button {
+  background-color: rgb(206, 149, 244);
+  border-radius: 30px;
+  border: none;
+  padding: 10px 20px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+#timer {
+  color: rgb(0, 0, 0);
+  font-family: "Nunito Sans", sans-serif;
+  font-size: xx-large;
+  text-align: center;
+}

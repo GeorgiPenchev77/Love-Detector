@@ -2,111 +2,40 @@
 <html>
   <head>
     <title>Love Detector</title>
-    <style>
-      .header {
-        color: rgb(206, 149, 244);
-        font-family: "Chiller", fantasy;
-        font-size: xx-large;
-        text-align: center;
-      }
-      body {
-        background-color: rgb(255, 255, 255);
-      }
-      .new-container {
-        width: 100%;
-      }
-      .button-container {
-        position: fixed;
-        display: flex;
-        width: 80%;
-        justify-content: space-between;
-        align-items: center;
-        right: 9rem;
-        bottom: 12rem;
-      }
-
-      .butt {
-        background-color: rgb(206, 149, 244);
-        border-radius: 30px;
-        border: none;
-        padding: 10px 20px;
-        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-        cursor: pointer;
-      }
-      .butt:hover {
-        background-color: rgb(206, 100, 244);
-      }
-      .user-container {
-        display: flex;
-        width: 100%;
-        justify-content: space-between;
-      }
-      .user {
-        padding-top: 1rem;
-        padding-left: 3rem;
-        padding-right: 3rem;
-        border-radius: 30px;
-        margin: 3em;
-        background-color: rgb(215, 200, 243);
-        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-      }
-
-      #question-container {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 10rem;
-      }
-      #question {
-        font-size: 48px;
-
-        font-family: "Chiller", fantasy;
-        color: rgb(206, 149, 244);
-        text-align: center;
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      .button-container2 {
-        position: fixed;
-        display: flex;
-        right: 9rem;
-        bottom: 4rem;
-      }
-      .question-button {
-        background-color: rgb(206, 149, 244);
-        border-radius: 30px;
-        border: none;
-        padding: 10px 20px;
-        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-      }
-      #timer {
-        color: rgb(206, 149, 244);
-        font-family: "Chiller", fantasy;
-        font-size: xx-large;
-        text-align: center;
-      }
-    </style>
+    <link rel="stylesheet" href="./css/questionstyle.css" />
   </head>
   <body>
     <div class="header">
       <h1>Question</h1>
     </div>
-    <div id="question-container">
-      <div class="user-container">
-        <div class="user">
-          <h1>Name 1</h1>
-          <h2>Pronouns</h2>
-        </div>
-        <div class="user">
-          <h1>Name 2</h1>
-          <h2>Pronouns</h2>
-        </div>
+    <div class="user-container">
+      <div class="user">
+        <h2>User 1</h2>
+        <p>
+          Name:
+          <span id="name1"></span>
+        </p>
+        <p>
+          Pronouns:
+          <span id="pronoun1"></span>
+        </p>
       </div>
+      <div class="user">
+        <h2>User 2</h2>
+        <p>
+          Name:
+          <span id="name2"></span>
+        </p>
+        <p>
+          Pronouns:
+          <span id="pronoun2"></span>
+        </p>
+      </div>
+    </div>
+    <div id="question-container">
       <h2 id="question"></h2>
     </div>
+
     <div class="button-container">
       <button class="question-button butt" onclick="changeQuestion()">
         <svg
@@ -135,21 +64,13 @@
         </svg>
       </button>
       <div id="timer"></div>
-      <button class="butt" onclick="redirect()">
+      <a class="arrow-button" href="heart-beat-page.html">
         <img src="Arrow-right-512.png" alt="Arrow-right" height="50" />
-      </button>
+      </a>
     </div>
     <div class="button2-container"></div>
 
     <script>
-      function redirect() {
-        try {
-          window.location.href = "/heart-beat-page.html";
-        } catch (error) {
-          console.error("Error:", error);
-        }
-      }
-
       function randomize() {
         const random = Math.floor(Math.random() * questions.length);
         const random_question = questions[random];
@@ -163,9 +84,9 @@
         const question = randomize();
         document.getElementById("question").textContent = question;
       }
-
+      // Function that counts down the timer, with 1 second interval.
       function countdown() {
-        let timeLeft = 10;
+        let timeLeft = 90;
         timer.textContent = timeLeft;
         timerInterval = setInterval(() => {
           if (timeLeft > 0) {
@@ -176,7 +97,7 @@
           }
         }, 1000);
       }
-
+      // Array for questions
       const questions = [
         "What's your idea of a perfect day?",
         "What do you think is the purpose of life?",
@@ -188,7 +109,16 @@
         "Do you believe in soulmates?",
         "If you could travel back in time, what era would you visit?",
       ];
-      let timerInterval; // Interval Object for timr
+      var userName1 = sessionStorage.getItem("userName1");
+      var userPronouns1 = sessionStorage.getItem("userPronouns1");
+      var userName2 = sessionStorage.getItem("userName2");
+      var userPronouns2 = sessionStorage.getItem("userPronouns2");
+      document.getElementById("name1").textContent = userName1;
+      document.getElementById("name2").textContent = userName2;
+      document.getElementById("pronoun1").textContent = userPronouns1;
+      document.getElementById("pronoun2").textContent = userPronouns2;
+
+      let timerInterval; // Interval Object for timer
       const timer = document.getElementById("timer"); //! element of timer
       changeQuestion(); // Execute
     </script>
