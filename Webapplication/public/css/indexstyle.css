@@ -60,3 +60,7 @@ h3 {
   padding: 10px 20px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
+.start-button:hover {
+  background-color: rgb(206, 100, 244);
+  cursor: pointer;
+}

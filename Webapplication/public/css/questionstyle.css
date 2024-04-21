@@ -7,9 +7,7 @@
 body {
   background-color: rgb(255, 255, 255);
 }
-.new-container {
-  width: 100%;
-}
+
 .button-container {
   position: fixed;
   display: flex;
@@ -30,6 +28,7 @@ body {
 }
 .arrow-button:hover {
   background-color: rgb(206, 100, 244);
+  cursor: pointer;
 }
 .user-container {
   display: flex;
@@ -42,7 +41,7 @@ body {
   padding-right: 3rem;
   border-radius: 30px;
   margin: 0 3.5rem;
-  background-color: rgb(215, 200, 243);
+  background-color: rgb(206, 149, 244);
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
@@ -64,12 +63,7 @@ body {
   justify-content: center;
   align-items: center;
 }
-.button-container2 {
-  position: fixed;
-  display: flex;
-  right: 9rem;
-  bottom: 4rem;
-}
+
 .question-button {
   background-color: rgb(206, 149, 244);
   border-radius: 30px;
