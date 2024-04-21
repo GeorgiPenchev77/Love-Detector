@@ -2,65 +2,61 @@
 TFT_eSPI tft;
 
 #define STANDARD_HORIZONTAL_VIEW 3
+//define the three buttons of the terminal: 3 is left, 2 is middle, 1 is right
 #define START BUTTON_3
 #define NEXT_Q BUTTON_2
 #define HELP BUTTON_1
 
-String start_message ="Hello and Welcome to The Love Detector. Press the left button to begin. While in test, press the left button to stop the test or the middle button to change to the next question. Press the right button for help.";
-String result_message = "Your heart rate is: ";
-String loading_message = "Heart rate test has begun. You will be notified when it is complete or if there is an issue.";
-String error_message= "Heart rate measure error, test will restart automatically. Make sure the sensor is attached securely!";
-String reset_message= "Test has been stopped. Press button again to reset the test.";
 
+const String start_message = "Hello and Welcome to The Love Detector.\n Press the left button to begin. While in test, press the left button to stop the test or the middle button to change to the next question. Press the right button for help.";
+const String result_message = "Your heart rate is: ";
+const String loading_message = "Heart rate test has begun.\n You will be notified when it is complete or if there is an issue.";
+const String error_message = "Heart rate measure error, test will restart automatically.\n Make sure the sensor is attached securely!";
+const String reset_message = "Test has been stopped.\n Press button again to reset the test.";
+
+const int max_heartpluse_duty = 2000;  //maximum delay between sensor logs, i.e. if >2 seconds there will be an error pop-up
 
 unsigned long temp[21];
 unsigned char counter = 0;
-bool data_effect = true;
 unsigned int heart_rate;
-const int max_heartpluse_duty = 2000;
-volatile bool pressed_start= false;
-bool previous_state=false;
+
+bool previous_state = false;
+
+volatile bool data_effect = true;  // boolean to store whether data is valid or not
+volatile bool is_started = false;  // boolean to store whether the test has been started or not (this is the via BUTTON_3)
 
 
-void printMessage(String string)
-{
-  tft.setCursor(0, 0);
+void printMessage(String string) {
+  tft.setCursor(10, 10);
   tft.setTextColor(TFT_BLACK);
   tft.setTextSize(2);
   tft.println(string);
 }
 
-void clear()
-{
+void clear() {
   tft.fillScreen(TFT_WHITE);
 }
 
-void press()
-{
-  if(digitalRead(START)==LOW)
-  {
-    pressed_start=!pressed_start;
+//function to read every button press to start/stop the test
+void press() {
+  if (digitalRead(START) == LOW) {
+    is_started = !is_started;
   }
 }
 
-void reset()
-{
-  data_effect=0;
-  counter=0;
+void reset() {
+  data_effect = 0;
+  counter = 0;
 }
 
 void setup() {
-  pinMode(START,INPUT);
+  pinMode(START, INPUT); //initialize the button as an input device
   tft.begin();
-  tft.setRotation(STANDARD_HORIZONTAL_VIEW); //Set up commands to display messages on the Wio screen
-  Serial.begin(9600);  //Open port to display messages in the Arduino IDE terminal
+  tft.setRotation(STANDARD_HORIZONTAL_VIEW);  //Set up commands to display messages on the Wio screen
 
   printMessage(start_message);
 
-
   arrayInit();  //initialize the data array with 0s
-  attachInterrupt(digitalPinToInterrupt(START), press, CHANGE);
-  attachInterrupt(digitalPinToInterrupt(0), interrupt, RISING);
   /*
       attachInterrupt(pin, ISR, mode) creates an "event listener", that triggers whenever specified event happens on the monitored pins.
       In our case:
@@ -68,75 +64,68 @@ void setup() {
         - "interrupt" is the name of the callback function, called when a change occurs
         - "RISING" specifies that we only need to call the function when the pin goes from LOW to HIGH
   */
+  attachInterrupt(digitalPinToInterrupt(0), interrupt, RISING);
+  attachInterrupt(digitalPinToInterrupt(START), press, CHANGE);
 }
 
+//the loop will only change if there is a button press
 void loop() {
-  if(pressed_start!=previous_state)
-{
-  if(pressed_start)
-  {
+  if (is_started != previous_state) {
+    if (is_started) {
       clear();
-     printMessage(loading_message); 
+      printMessage(loading_message);
 
-  }
-  else if(!pressed_start)
-   {
-     clear();
-     printMessage(reset_message);
+    } else if (!is_started) {
+      clear();
+      printMessage(reset_message);
     }
-  
- previous_state=pressed_start;
+
+    previous_state = is_started;
+  }
 }
 
-}
-void interrupt() 
-{
-  if(pressed_start)
-  {
-  temp[counter] = millis();
+/* interrupt function is stopped via button press,
+when stopped the test will be marked as invalid and reset to run again,
+it will start running on next button press*/
+void interrupt() {
 
-  switch (counter) 
-  {
-    case 0:
-      break;
-    default:
-      unsigned long sub = temp[counter] - temp[counter - 1];
-      if (sub > max_heartpluse_duty) 
-      {
-        data_effect = false;
-        counter = 0;
-        clear();
-        printMessage(error_message);
-        arrayInit();
-        return;
-      }
-      break;
-  }
+  if (is_started) {
+    temp[counter] = millis();
 
-  if (counter == 20 && data_effect) 
-  {
-    counter = 0;
-    sum();
-  } 
-  else if (counter != 20 && data_effect)
-  {
-    counter++;
-  }
-  else 
-  {
-    counter = 0;
-    data_effect = true;
-  }
+    switch (counter) {
+      case 0:
+        break;
+      default:
+        unsigned long sub = temp[counter] - temp[counter - 1];
+        if (sub > max_heartpluse_duty) {
+          data_effect = false;
+          counter = 0;
+          clear();
+          printMessage(error_message);
+          arrayInit();
+          return;
+        }
+        break;
+    }
+
+    if (counter == 20 && data_effect) {
+      counter = 0;
+      sum();
+    } else if (counter != 20 && data_effect) {
+      counter++;
+    } else {
+      counter = 0;
+      data_effect = true;
+    }
 
   }
 
-  else if(!pressed_start)
-  {
+  else if (!is_started) {
     reset();
   }
-
 }
 
+//initializes the temp array
 void arrayInit() {
   for (unsigned char i = 0; i < 20; i++) {
     temp[i] = 0;
@@ -144,12 +133,12 @@ void arrayInit() {
   temp[20] = millis();
 }
 
+//calculates the heart rate over 20 readings from the sensor and prints it to the screen
 void sum() {
-  if (data_effect) 
-  {
+  if (data_effect) {
     heart_rate = 1200000 / (temp[20] - temp[0]);
     clear();
-    printMessage(result_message+ String(heart_rate));
+    printMessage(result_message + String(heart_rate));
   }
   data_effect = true;
 }
