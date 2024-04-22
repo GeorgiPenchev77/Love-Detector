@@ -36,3 +36,9 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+
+
+
+### Network specifications ###
+./wio/sketch_apr10a/secrets.h 
