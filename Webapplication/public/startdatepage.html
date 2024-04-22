@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Start date</title>
+    <link rel="icon" href="heart-png.webp" type="image/x-icon" />
+    <link rel="stylesheet" href="css/startdatepagestyle.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div class="heading-container">
+      <h1>Ready to start the speed date?</h1>
+    </div>
+    <div class="middle-container">
+      <div class="users">
+        <h2>User 1</h2>
+        <p>Name: <span id="displayUserName1"></span></p>
+        <p>Pronouns: <span id="displayUserPronouns1"></span></p>
+        <h2>User 2</h2>
+        <p>Name: <span id="displayUserName2"></span></p>
+        <p>Pronouns: <span id="displayUserPronouns2"></span></p>
+      </div>
+      <div class="instructions-container">
+        <div class="instruction">
+          <h2>STEP 1:</h2>
+          <p>Remove any accessories from your ear</p>
+        </div>
+        <div class="instruction">
+          <h2>STEP 2:</h2>
+          <p>Put the sensor ear-clip on your ear</p>
+        </div>
+        <div class="instruction">
+          <h2>STEP 3:</h2>
+          <p>Click the middle blue button on the terminal to begin the date</p>
+        </div>
+      </div>
+    </div>
+    <div class="button-container">
+      <button type="button" class="back-button" onclick="goBack()">Back</button>
+      <a class="arrow-button" href="./questions.html">
+        <img src="Arrow-right-512.png" alt="Arrow-right" height="50" />
+      </a>
+    </div>
+  </body>
+  <script>
+    // Retrieve user info from session storage
+    var userName1 = sessionStorage.getItem("userName1");
+    var userPronouns1 = sessionStorage.getItem("userPronouns1");
+    var userName2 = sessionStorage.getItem("userName2");
+    var userPronouns2 = sessionStorage.getItem("userPronouns2");
+
+    // Display user info on the page
+    document.getElementById("displayUserName1").textContent = userName1;
+    document.getElementById("displayUserPronouns1").textContent = userPronouns1;
+    document.getElementById("displayUserName2").textContent = userName2;
+    document.getElementById("displayUserPronouns2").textContent = userPronouns2;
+
+    function goBack() {
+      window.history.back();
+    }
+  </script>
+</html>

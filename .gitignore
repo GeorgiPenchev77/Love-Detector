@@ -38,7 +38,10 @@ build/
 .DS_Store
 
 
-
-
 ### Network specifications ###
 ./wio/sketch_apr10a/secrets.h 
+
+### Ignore all node modules directories ###
+node_modules
+
+
