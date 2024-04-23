@@ -1,5 +1,9 @@
 #include <TFT_eSPI.h>
+#include "rpcWiFi.h"
+#include <ArduinoMqttClient.h>
+#include "secrets.h"
 TFT_eSPI tft;
+
 
 #define STANDARD_HORIZONTAL_VIEW 3
 //define the three buttons of the terminal: 3 is left, 2 is middle, 1 is right
@@ -26,12 +30,39 @@ volatile bool data_effect = true;  // boolean to store whether data is valid or 
 volatile bool is_started = false;  // boolean to store whether the test has been started or not (this is the via BUTTON_3)
 
 
-void printMessage(String string) {
+
+///////please enter your sensitive data in the Secret tab/arduino_secrets.h
+char ssid[] = SECRET_SSID;        // your network SSID (name)
+char pass[] = SECRET_PASS;    // your network password (use for WPA, or use as key for WEP)
+
+WiFiClient wifiClient;
+MqttClient mqttClient(wifiClient);
+
+const char broker[] = "192.168.0.130";
+int        port     = 1883;
+const char topic[]  = "test";
+const char topic2[]  = "real_unique_topic_2";
+const char topic3[]  = "real_unique_topic_3";
+
+//set interval for sending messages (milliseconds)
+const long interval = 8000;
+unsigned long previousMillis = 0;
+
+
+
+void printNewMessage(String string) {
+  clear();
   tft.setCursor(10, 10);
   tft.setTextColor(TFT_BLACK);
   tft.setTextSize(2);
   tft.println(string);
 }
+
+void printMessage(String string){
+  tft.println(string);
+}
+
+
 
 void clear() {
   tft.fillScreen(TFT_WHITE);
@@ -50,11 +81,52 @@ void reset() {
 }
 
 void setup() {
+
+
+
   pinMode(START, INPUT); //initialize the button as an input device
   tft.begin();
   tft.setRotation(STANDARD_HORIZONTAL_VIEW);  //Set up commands to display messages on the Wio screen
 
-  printMessage(start_message);
+
+  WiFi.mode(WIFI_STA);
+  WiFi.disconnect();
+
+  printNewMessage("Attempting to connect to ");
+  printNewMessage(ssid);
+  
+
+  while (WiFi.begin(ssid, pass) != WL_CONNECTED) {
+    // failed, retry
+    printMessage(".");
+    delay(5000);
+  }
+
+  printNewMessage("Connection successful.");
+
+  delay(2000);
+
+  printNewMessage("Connecting to MQTT Broker: ");
+  printMessage(broker);
+
+
+  if (!mqttClient.connect(broker, port)) {
+    Serial.print("MQTT connection failed! Error code = ");
+    Serial.println(mqttClient.connectError());
+
+    while (1);
+  }
+
+  printNewMessage("You're connected to the MQTT broker!");
+
+  delay(2000);
+
+  mqttClient.beginMessage(topic);
+  mqttClient.print("test message from Wio");
+  mqttClient.endMessage();
+
+  printNewMessage(start_message);
+
 
   arrayInit();  //initialize the data array with 0s
   /*
@@ -70,14 +142,21 @@ void setup() {
 
 //the loop will only change if there is a button press
 void loop() {
+
+  mqttClient.poll();
+
+
+
+
+
   if (is_started != previous_state) {
     if (is_started) {
       clear();
-      printMessage(loading_message);
+      printNewMessage(loading_message);
 
     } else if (!is_started) {
       clear();
-      printMessage(reset_message);
+      printNewMessage(reset_message);
     }
 
     previous_state = is_started;
@@ -101,7 +180,7 @@ void interrupt() {
           data_effect = false;
           counter = 0;
           clear();
-          printMessage(error_message);
+          printNewMessage(error_message);
           arrayInit();
           return;
         }
@@ -138,7 +217,7 @@ void sum() {
   if (data_effect) {
     heart_rate = 1200000 / (temp[20] - temp[0]);
     clear();
-    printMessage(result_message + String(heart_rate));
+    printNewMessage(result_message + String(heart_rate));
   }
   data_effect = true;
 }
