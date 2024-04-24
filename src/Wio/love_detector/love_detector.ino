@@ -1,6 +1,4 @@
 #include <TFT_eSPI.h>
-#include "rpcWiFi.h"
-#include <ArduinoMqttClient.h>
 #include "secrets.h"
 TFT_eSPI tft;
 
@@ -29,10 +27,15 @@ bool previous_state = false;
 volatile bool data_effect = true;  // boolean to store whether data is valid or not
 volatile bool is_started = false;  // boolean to store whether the test has been started or not (this is the via BUTTON_3)
 
+unsigned long temp2[21];
+unsigned char counter2 = 0;
+unsigned int heart_rate2;
+
+volatile bool data_effect2 = true;  // boolean to store whether data is valid or not
 
 
 ///////please enter your sensitive data in the Secret tab/arduino_secrets.h
-char ssid[] = SECRET_SSID;        // your network SSID (name)
+/*char ssid[] = SECRET_SSID;        // your network SSID (name)
 char pass[] = SECRET_PASS;    // your network password (use for WPA, or use as key for WEP)
 
 WiFiClient wifiClient;
@@ -47,7 +50,7 @@ const char topic3[]  = "real_unique_topic_3";
 //set interval for sending messages (milliseconds)
 const long interval = 8000;
 unsigned long previousMillis = 0;
-
+*/
 
 
 void printNewMessage(String string) {
@@ -80,15 +83,26 @@ void reset() {
   counter = 0;
 }
 
+void reset_second(){
+  data_effect2=0;
+  counter2=0;
+}
+
 void setup() {
 
 
-
+  pinMode(PIN_WIRE_SCL, INPUT); //Defined SCL of I2C port as Digital Input
+  pinMode(D0, INPUT);
   pinMode(START, INPUT); //initialize the button as an input device
   tft.begin();
+  Serial.begin(9600);
+  while(!Serial);
+
   tft.setRotation(STANDARD_HORIZONTAL_VIEW);  //Set up commands to display messages on the Wio screen
+  Serial.clear();
+  Serial.println("Start");
 
-
+/*
   WiFi.mode(WIFI_STA);
   WiFi.disconnect();
 
@@ -125,8 +139,9 @@ void setup() {
   mqttClient.print("test message from Wio");
   mqttClient.endMessage();
 
+*/
+  
   printNewMessage(start_message);
-
 
   arrayInit();  //initialize the data array with 0s
   /*
@@ -136,19 +151,15 @@ void setup() {
         - "interrupt" is the name of the callback function, called when a change occurs
         - "RISING" specifies that we only need to call the function when the pin goes from LOW to HIGH
   */
-  attachInterrupt(digitalPinToInterrupt(0), interrupt, RISING);
+  attachInterrupt(digitalPinToInterrupt(D0), interrupt, RISING);
+  attachInterrupt(digitalPinToInterrupt(PIN_WIRE_SCL), interrupt_second, RISING);
   attachInterrupt(digitalPinToInterrupt(START), press, CHANGE);
 }
 
 //the loop will only change if there is a button press
 void loop() {
 
-  mqttClient.poll();
-
-
-
-
-
+  //mqttClient.poll();
   if (is_started != previous_state) {
     if (is_started) {
       clear();
@@ -176,6 +187,7 @@ void interrupt() {
         break;
       default:
         unsigned long sub = temp[counter] - temp[counter - 1];
+        Serial.println(sub);
         if (sub > max_heartpluse_duty) {
           data_effect = false;
           counter = 0;
@@ -190,6 +202,7 @@ void interrupt() {
     if (counter == 20 && data_effect) {
       counter = 0;
       sum();
+      Serial.println("2");
     } else if (counter != 20 && data_effect) {
       counter++;
     } else {
@@ -218,6 +231,70 @@ void sum() {
     heart_rate = 1200000 / (temp[20] - temp[0]);
     clear();
     printNewMessage(result_message + String(heart_rate));
+    Serial.print("1: ");
+    Serial.print(heart_rate);
   }
   data_effect = true;
 }
+
+void interrupt_second() {
+
+  if (is_started) {
+    temp2[counter] = millis();
+
+    switch (counter2) {
+      case 0:
+        break;
+      default:
+        unsigned long sub1 = temp2[counter2] - temp2[counter2 - 1];
+        Serial.println(sub1);
+        if (sub1 > max_heartpluse_duty) {
+          data_effect2 = false;
+          counter2 = 0;
+          clear();
+          printNewMessage(error_message);
+          arrayInit_second();
+          return;
+        }
+        break;
+    }
+
+    if (counter2 == 20 && data_effect2) {
+      counter2 = 0;
+      sum_second();
+      Serial.println("1");
+    } else if (counter2 != 20 && data_effect2) {
+      counter2++;
+    } else {
+      counter2 = 0;
+      data_effect2 = true;
+    }
+
+  }
+
+  else if (!is_started) {
+    reset_second();
+  }
+}
+
+//initializes the temp array
+void arrayInit_second() {
+  for (unsigned char i = 0; i < 20; i++) {
+    temp2[i] = 0;
+  }
+  temp2[20] = millis();
+}
+
+//calculates the heart rate over 20 readings from the sensor and prints it to the screen
+void sum_second() {
+  if (data_effect2) {
+    heart_rate2 = 1200000 / (temp2[20] - temp2[0]);
+    tft.setCursor(200,80);
+    tft.print(result_message + String(heart_rate2));
+    Serial.print("2: ");
+    Serial.print(heart_rate2);
+  }
+  data_effect2 = true;
+}
+
+
