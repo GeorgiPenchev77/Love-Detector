@@ -39,7 +39,7 @@ build/
 
 
 ### Network specifications ###
-./wio/sketch_apr10a/secrets.h 
+./src/Wio/love_detector/secrets.h 
 
 ### Ignore all node modules directories ###
 node_modules
