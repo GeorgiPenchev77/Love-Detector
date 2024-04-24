@@ -41,8 +41,9 @@ MqttClient mqttClient(wifiClient);
 const char broker[] = "192.168.0.130";
 int        port     = 1883;
 const char topic[]  = "test";
-const char topic2[]  = "real_unique_topic_2";
+const char topic2[]  = "startbutton_click";
 const char topic3[]  = "real_unique_topic_3";
+
 
 //set interval for sending messages (milliseconds)
 const long interval = 8000;
@@ -72,6 +73,13 @@ void clear() {
 void press() {
   if (digitalRead(START) == LOW) {
     is_started = !is_started;
+
+//sends topic to broker on buttonpress. 
+    if (is_started){
+      mqttClient.beginMessage("startbutton_click");
+      mqttClient.print("Start Button Clicked");
+      mqttClient.endMessage();
+    }
   }
 }
 
@@ -120,6 +128,7 @@ void setup() {
   printNewMessage("You're connected to the MQTT broker!");
 
   delay(2000);
+
 
   mqttClient.beginMessage(topic);
   mqttClient.print("test message from Wio");

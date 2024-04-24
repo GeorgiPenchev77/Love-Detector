@@ -28,7 +28,7 @@ const client = mqtt.connect(connectURL, {
   reconnectPeriod: 1000,
 })
 
-const topic = 'test';
+const topic = 'startbutton_click';
 
 client.on('connect', () => {
   console.log('Connected');
