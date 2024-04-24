@@ -38,7 +38,7 @@ char pass[] = SECRET_PASS;    // your network password (use for WPA, or use as k
 WiFiClient wifiClient;
 MqttClient mqttClient(wifiClient);
 
-const char broker[] = "192.168.0.130";
+const char broker[] = SECRET_IP;
 int        port     = 1883;
 const char topic[]  = "test";
 const char topic2[]  = "real_unique_topic_2";

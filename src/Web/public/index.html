@@ -44,6 +44,7 @@
                 </button>
         </div>
     </body>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <script> 
      function saveUserInfo() {
             // Get the input values
@@ -67,5 +68,11 @@
             window.location.href = "startdatepage.html";
         }
      }
+
+     var socket = io();
+     socket.on("message", (msg) => {
+         console.log(msg);
+     });
+
     </script>
 </html>
