@@ -40,7 +40,7 @@ client.on('connect', () => {
 
 client.on("message", (topic, payload) => {
   console.log('Received message:', topic, payload.toString());
-  io.emit('message', {"message": payload.toString()})
+  io.emit('switchpage', { nextPage: './questions.html' });
 });
 
 io.on('connection', (socket) => {
