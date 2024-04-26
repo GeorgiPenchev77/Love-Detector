@@ -28,7 +28,14 @@ build-job:       # This job runs in the build stage, which runs first.
 
     # Upload
     - arduino-cli board list                  # Check if device is connected
+  
+  
+    #node.js build steps
+    - cd ../../src/Web
+    - echo "Building the project..."
+    - npm install
+    - npm run build
+
   except:
     - tags
-
 
