@@ -18,7 +18,7 @@ build-job:       # This job runs in the build stage, which runs first.
     - export PATH=$PATH:/root/bin             # set the path to arduino-cli installation folder
     - pwd                                     # print the current working directory
     - cd src/Wio/love_detector                # change the directory to arduino folder
-    - echo "$SECRETS_H" > Secrets.h           # import secrets from GitLAB CI/CD Settings -> Variables
+    - echo "$SECRETS_H" > secrets.h           # import secrets from GitLAB CI/CD Settings -> Variables
     #- echo "$NETWORK_INFO_H" > NetworkInfo.h  # import secrets for WiFi from Gitlab CI/CD Settings -> Variables
     #- echo "$BROKER_INFO_H" > BrokerInfo.h    # import secrets for MQTT from Gitlab CI/CD Settings -> Variables
     - arduino-cli lib list                    # check that libraries are installed
