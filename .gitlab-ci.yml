@@ -39,7 +39,7 @@ npm_build_job:
 
   #node.js build steps
   script: 
-    - cd ../Web
+    - cd ../../Web
     - echo "Building the project..."
     - npm install
     - npm run build
