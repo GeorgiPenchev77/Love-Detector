@@ -29,20 +29,19 @@ arduino_build_job:
 
     # Upload
     - arduino-cli board list                  # Check if device is connected
-  
+  except:
+    - tags
 
-  npm_build_job:
-    stage: npm_build
-    tags:
-      - docker
+npm_build_job:
+  stage: npm_build
+  tags:
+    - docker
 
-    #node.js build steps
-    script: 
-      - cd ../../Web
-      - echo "Building the project..."
-      - npm install
-      - npm run build
+  #node.js build steps
+  script: 
+    - cd ../../Web
+    - echo "Building the project..."
+    - npm install
+    - npm run build
 
-    except:
-      - tags
 
