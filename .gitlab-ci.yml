@@ -8,10 +8,11 @@ before_script:
 
 
 stages:          # List of stages for jobs, and their order of execution
-  - build
+  - arduino_build
+  - npm_build
 
-build-job:       # This job runs in the build stage, which runs first.
-  stage: build
+arduino_build_job:
+  stage: arduino_build
   tags:
     - docker
   script:
@@ -29,13 +30,19 @@ build-job:       # This job runs in the build stage, which runs first.
     # Upload
     - arduino-cli board list                  # Check if device is connected
   
-  
-    #node.js build steps
-    - cd ../../Web
-    - echo "Building the project..."
-    - npm install
-    - npm run build
 
-  except:
-    - tags
+  npm_build_job:
+    stage: npm_build
+    tags:
+      - docker
+
+    #node.js build steps
+    script: 
+      - cd ../../Web
+      - echo "Building the project..."
+      - npm install
+      - npm run build
+
+    except:
+      - tags
 
