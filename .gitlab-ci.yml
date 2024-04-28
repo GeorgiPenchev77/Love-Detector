@@ -5,7 +5,7 @@ before_script:
   # required libraries
   - chmod +x setup-build-env.sh
   - ./setup-build-env.sh  
-
+  - apt-get install npm 
 
 stages:          # List of stages for jobs, and their order of execution
   - arduino_build
