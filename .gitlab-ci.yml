@@ -31,7 +31,7 @@ build-job:       # This job runs in the build stage, which runs first.
   
   
     #node.js build steps
-    - cd ../../src/Web
+    - cd ../../Web
     - echo "Building the project..."
     - npm install
     - npm run build
