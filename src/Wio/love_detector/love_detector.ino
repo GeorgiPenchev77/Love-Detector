@@ -1,4 +1,6 @@
 #include <TFT_eSPI.h>
+#include "rpcWiFi.h"
+#include <ArduinoMqttClient.h>
 #include "secrets.h"
 TFT_eSPI tft;
 
@@ -45,7 +47,7 @@ char pass[] = SECRET_PASS;  // your network password (use for WPA, or use as key
 WiFiClient wifiClient;
 MqttClient mqttClient(wifiClient);
 
-const char broker[] = "192.168.216.169";
+const char broker[] = SECRET_IP;
 int port = 1883;
 const char topic[] = "test";
 const char topic2[] = "real_unique_topic_2";
@@ -57,7 +59,8 @@ unsigned long previousMillis = 0;
 
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------//
-
+                                                                           //Printing functions//
+                                                        
 void printNewMessage(int p1, int p2, String string) {
   tft.setCursor(p1, p2);
   tft.setTextColor(TFT_BLACK);
@@ -73,6 +76,7 @@ void printMessage(String string){
   tft.println(string);
 }
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------//
 
 //function to read every button press to start/stop the test
 void press() {
@@ -80,6 +84,7 @@ void press() {
     is_started = !is_started;
   }
 }
+
 
 void reset1() {
   data_effect1 = 0;
@@ -101,6 +106,7 @@ void setup() {
   pinMode(START, INPUT);    //initialize the button as an input device
   tft.begin();
   tft.setRotation(STANDARD_HORIZONTAL_VIEW);  //Set up commands to display messages on the Wio screen
+  
   Serial.begin(9600);
 
   WiFi.mode(WIFI_STA);
@@ -111,15 +117,16 @@ void setup() {
 
   while (WiFi.begin(ssid, pass) != WL_CONNECTED) {
     // failed, retry
-    tft.println(".");
+    printMessage(".");
     delay(5000);
   }
 
   printNewMessage(200, 200, "Connection successful.");
 
   delay(2000);
-
-  printNewMessage("Connecting to MQTT Broker: ");
+  
+  clear();
+  printNewMessage(10,10,"Connecting to MQTT Broker: ");
   printMessage(broker);
 
 
@@ -151,18 +158,19 @@ void setup() {
         - "interrupt" is the name of the callback function, called when a change occurs
         - "RISING" specifies that we only need to call the function when the pin goes from LOW to HIGH
   */
-  attachInterrupt(SENSOR1, interrupt1, RISING);
-  attachInterrupt(SENSOR2, interrupt2, RISING);
+  attachInterrupt(SENSOR1, interrupt1, RISING); // Sensor 1 - left port of the Wio terminal
+  attachInterrupt(SENSOR2, interrupt2, RISING); // Sensor 2 - right port of the Wio terminal
   attachInterrupt(START, press, CHANGE);
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 
-//the loop will only change if there is a button press
+//the code in the loop will only execute on button press
 void loop() {
 
-  mqttClient.poll();
-  if (is_started != previous_state) {
+  mqttClient.poll();//keeps the connection alive
+
+  if (is_started != previous_state) { //interchange messages based on whether test is started or not
     if (is_started) {
       clear();
       printNewMessage(10, 10, loading_message);
@@ -171,24 +179,27 @@ void loop() {
       printNewMessage(10, 10, reset_message);
     }
   
-  
-
-  previous_state = is_started;
+  previous_state = is_started; //save the current value in order to check later whether there has been a change or not
   }
 }
 
 
+                                                                  //From here on all functions are doubled to account for the two sensors working in the system//
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-//From here on all functions are doubled to account for the two sensors working in the system
 
-/* interrupt function is stopped via button press,
-when stopped the test will be marked as invalid and reset to run again,
-it will start running on next button press */
+/*interrupt functions are event listeners that execute everytime the sensor
+gets a reading(eg beat of the users heart), the time of these readings is stored
+in an array which is used to calculate the heart rate.*/
 
 void interrupt1() {
 
+
+  /* interrupt function is stopped via button press,
+  when stopped the test will be marked as invalid and reset to run again,
+  it will start running on next button press */
+
   if (is_started) {
-    temp1[counter1] = millis();
+    temp1[counter1] = millis(); //start counting time between sensor ticks
 
     switch (counter1) {
       case 0:
@@ -198,7 +209,7 @@ void interrupt1() {
         break;
     }
 
-    if (sub1 > max_heartpluse_duty) {
+    if (sub1 > max_heartpluse_duty) { //check whether the time between the now and the last tick was greater than 2 seconds, if so reset the test as it would be invalid
       reset1();
       clear();
       printNewMessage(10, 10, error_message1);
@@ -217,7 +228,7 @@ void interrupt1() {
 
   }
 
-  else if (!is_started) {
+  else if (!is_started) { // reset the test if the test has been paused as data would not be valid then
     reset1();
   }
 }
@@ -231,12 +242,13 @@ void interrupt2() {
       case 0:
         break;
       default:
-        sub2 = temp2[counter2] - temp2[counter2 - 1];
+        sub2 = temp2[counter2] - temp2[counter2 - 1]; 
+        // dont need to check in switch as it makes code more clearer
         break;
     }
 
 
-    if (sub2 > max_heartpluse_duty) {
+    if (sub2 > max_heartpluse_duty) { //check whether the time between the now and the last tick was greater than 2 seconds, if so reset the test as it would be invalid
       reset2();
       clear();
       printNewMessage(10, 10, error_message2);
@@ -255,12 +267,14 @@ void interrupt2() {
 
   }
 
-  else if (!is_started) {
+  else if (!is_started) { // reset the test if the test has been paused as data would not be valid then
     reset2();
   }
 }
 
-//initializes the temp array
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+
+//initializes the temp array, which will store time readings for every sensor reading.
 void arrayInit1() {
   for (unsigned char i = 0; i < 20; i++) {
     temp1[i] = 0;
@@ -275,19 +289,21 @@ void arrayInit2() {
   temp2[20] = millis();
 }
 
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+
 //calculates the heart rate over 20 readings from the sensor and prints it to the screen
 void sum1() {
-  if (data_effect1) {
+  if (data_effect1) { // only calculate if the variable showing whether the data is valid is true.
     heart_rate1 = 1200000 / (temp1[20] - temp1[0]);
-    Serial.println(result_message1+String(heart_rate1));
+    Serial.println(result_message1+String(heart_rate1)); // print results in serial monitor screen to reduce terminal screen overloading. Results will be shown in UI anyways.
   }
   data_effect1 = true;
 }
 
 void sum2() {
-  if (data_effect2) {
-    heart_rate2 = 1200000 / (temp2[20] - temp2[0]);
-    Serial.println(result_message2+String(heart_rate2));
+  if (data_effect2) { // only calculate if the variable showing whether the data is valid is true.
+    heart_rate2 = 1200000 / (temp2[20] - temp2[0]); 
+    Serial.println(result_message2+String(heart_rate2)); // print results in serial monitor screen to reduce terminal screen overloading. Results will be shown in UI anyways.
   }
   data_effect2 = true;
 }
