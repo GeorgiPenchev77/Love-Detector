@@ -28,7 +28,6 @@ const int max_heartpluse_duty = 2000;  //maximum delay between sensor logs, i.e.
 volatile bool previous_state = false; //boolean to store the previous state of the program
 volatile bool is_started = false;  // boolean to store whether the test has been started or not (this is the via BUTTON_3)
 
-bool updated1 = false, updated2 = false; 
 
 //all used variables are duplicated in order to get the second sensor working
 unsigned long sub1, sub2;
@@ -46,7 +45,7 @@ char pass[] = SECRET_PASS;  // your network password (use for WPA, or use as key
 WiFiClient wifiClient;
 MqttClient mqttClient(wifiClient);
 
-const char broker[] = "192.168.0.130";
+const char broker[] = "192.168.216.169";
 int port = 1883;
 const char topic[] = "test";
 const char topic2[] = "real_unique_topic_2";
@@ -55,7 +54,6 @@ const char topic3[] = "real_unique_topic_3";
 //set interval for sending messages (milliseconds)
 const long interval = 8000;
 unsigned long previousMillis = 0;
-
 
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------//
@@ -71,6 +69,10 @@ void clear() {
   tft.fillScreen(TFT_WHITE);
 }
 
+void printMessage(String string){
+  tft.println(string);
+}
+
 
 //function to read every button press to start/stop the test
 void press() {
@@ -82,11 +84,13 @@ void press() {
 void reset1() {
   data_effect1 = 0;
   counter1 = 0;
+  sub1 = 0;
 }
 
 void reset2() {
   data_effect2 = 0;
   counter2 = 0;
+  sub2 = 0;
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
@@ -97,6 +101,7 @@ void setup() {
   pinMode(START, INPUT);    //initialize the button as an input device
   tft.begin();
   tft.setRotation(STANDARD_HORIZONTAL_VIEW);  //Set up commands to display messages on the Wio screen
+  Serial.begin(9600);
 
   WiFi.mode(WIFI_STA);
   WiFi.disconnect();
@@ -139,7 +144,6 @@ void setup() {
 
   arrayInit2();
   arrayInit1();
-  delay(1000);
   /*
       attachInterrupt(pin, ISR, mode) creates an "event listener", that triggers whenever specified event happens on the monitored pins.
       In our case:
@@ -166,19 +170,11 @@ void loop() {
       clear();
       printNewMessage(10, 10, reset_message);
     }
-  }
-
-  if (is_started) {
-    if (updated1 == true && updated2 == true) {
-      clear();
-      printNewMessage(10, 10, result_message1 + String(heart_rate1));
-      printNewMessage(100, 150, result_message2 + String(heart_rate2));
-      updated1 = false;
-      updated2 = false;
-    }
-  }
+  
+  
 
   previous_state = is_started;
+  }
 }
 
 
@@ -283,7 +279,7 @@ void arrayInit2() {
 void sum1() {
   if (data_effect1) {
     heart_rate1 = 1200000 / (temp1[20] - temp1[0]);
-    updated1 = true;
+    Serial.println(result_message1+String(heart_rate1));
   }
   data_effect1 = true;
 }
@@ -291,7 +287,7 @@ void sum1() {
 void sum2() {
   if (data_effect2) {
     heart_rate2 = 1200000 / (temp2[20] - temp2[0]);
-    updated2 = true;
+    Serial.println(result_message2+String(heart_rate2));
   }
   data_effect2 = true;
 }
