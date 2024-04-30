@@ -1,6 +1,6 @@
 # Love Detector
 
-![Love Detector Official Logo](love-detector-logo.png)
+![Love Detector Official Logo](Love-Detector-Logo.png)
 
 ### Table of Contents
 - [Love Detector](#love-detector)
@@ -11,14 +11,14 @@
 - [Dependencies](#dependecies)
 - [System Sensors](#system-sensors)
 - [Installation](#installation)
-- [Hardware and Software Diagrams](LovedetectorDiagram4.0-Page-1.drawio.png)  
+- [Hardware and Software Diagrams](#hardware-and-software-diagrams)  
 - [Documentation](#documentation)
-- [License](LICENSE)
+- [License](#license)
     - [Team members](#team-members)
 
 ## Project Description:
-**The Love Detector** is an all-in-one integrated system that provides a new and fun approach to the speed-date experience. The system measures your heartbeat as you engage in conversation with your potential match and suggests whether there seems to be a spark. 
-Through the use of sensors information is conveyed from the Wio Seeed Terminal to a web-based user interface that displays the information.
+***The Love Detector*** is an all-in-one integrated system that provides a new and fun approach to the speed-date experience. The system measures your heartbeat as you engage in conversation with your potential match and suggests whether there seems to be a spark. 
+Through the use of **sensors** information is conveyed from the ***Wio Seeed Terminal*** to a web-based user interface that displays the information.
 
 ## Purpose:
 The purpose of our project, Love Detector is to create a scientifically driven analytical tool that assesses the likelihoos of a romantic connection or "spark" between two individuals during a speed date. By combining heatbeat, a rotating lis tof questions, and an algorith the project aims to find connection based on uncontrollable reactions from the body.
@@ -41,15 +41,19 @@ installation process described in the next section:
 
 ## System Sensors:
 In no particular order the sensors used in this project(as per the initial scope are the following):
-*Grove - [RGB LED Stick (10 – WS2813 Mini)](https://wiki.seeedstudio.com/Grove-RGB_LED_Stick-10-WS2813_Mini/) 
-*Grove - [Ear-clip Heart Rate Sensor](https://wiki.seeedstudio.com/Grove-Ear-clip_Heart_Rate_Sensor/) Note: two(2) of these sensors are needed.
-*Grove - [Speaker](https://wiki.seeedstudio.com/Grove-Speaker/)
-*Grove - [Grove LED Bar v2.0](https://wiki.seeedstudio.com/Grove-LED_Bar/)
++ Grove - [RGB LED Stick (10 – WS2813 Mini)](https://wiki.seeedstudio.com/Grove-RGB_LED_Stick-10-WS2813_Mini/) 
++ Grove - [Ear-clip Heart Rate Sensor](https://wiki.seeedstudio.com/Grove-Ear-clip_Heart_Rate_Sensor/) Note: two(2) of these sensors are needed.
++ Grove - [Speaker](https://wiki.seeedstudio.com/Grove-Speaker/)
++ Grove - [Grove LED Bar v2.0](https://wiki.seeedstudio.com/Grove-LED_Bar/)
 
 
 ## Installation:
 
-## Hardware and Software Diagrams
+
+## Hardware and Software Diagrams:
+This is the design diagram that the team followed during the lifecycle of the project:
+
+![Design Diagram Final Version](Design-Diagram.png)
 
 ## Documentation
 
@@ -60,5 +64,5 @@ The project is licensed under the MIT License. Refer to the [**LICENSE**](LICENS
 -Georgi Penchev (penchev@student.chalmers.se)
 -Kristina Trampush (enter email here)
 -Pavlo Ovchynnykov (enter email here)
--René Ignacio González Pérez (renei@student.chalmers.se@)
+-René Ignacio González Pérez (renei@student.chalmers.se)
 -Telina Hjärtberg (enter email here)
