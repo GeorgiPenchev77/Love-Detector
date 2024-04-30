@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Start date</title>
+    <title>Individual heartbeat</title>
     <link rel="icon" href="heart-png.webp" type="image/x-icon" />
-    <link rel="stylesheet" href="css/startdatepagestyle.css" />
+    <link rel="stylesheet" href="css/individual-heart-beat-style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -14,35 +14,27 @@
 
   <body>
     <div class="heading-container">
-      <h1>Ready to start the speed date?</h1>
+      <h1>Measure your individual heartbeat! </h1>
+        <h3>Each participant will now get their normal individual heartbeat measured. </h3>
     </div>
     <div class="middle-container">
       <div class="users">
-        <h2>User 1</h2>
-        <p>Name: <span id="displayUserName1"></span></p>
-        <p>Pronouns: <span id="displayUserPronouns1"></span></p>
-        <h2>User 2</h2>
-        <p>Name: <span id="displayUserName2"></span></p>
-        <p>Pronouns: <span id="displayUserPronouns2"></span></p>
-      </div>
-      <div class="instructions-container">
-        <div class="instruction">
-          <h2>STEP 1:</h2>
-          <p>Remove any accessories from your ear</p>
+        <div class="user-container" id="user1">
+            <h2>User 1</h2>
+            <p>Name: <span id="displayUserName1"></span></p>
+            <p>Pronouns: <span id="displayUserPronouns1"></span></p>
         </div>
-        <div class="instruction">
-          <h2>STEP 2:</h2>
-          <p>Put the sensor ear-clip on your ear</p>
-        </div>
-        <div class="instruction">
-          <h2>STEP 3:</h2>
-          <p>Click the left blue button on the terminal to begin the date</p>
+        <div class="user-container" id="user2">
+            <h2>User 2</h2>
+            <p>Name: <span id="displayUserName2"></span></p>
+            <p>Pronouns: <span id="displayUserPronouns2"></span></p>
         </div>
       </div>
+      <button id="nextUserButton">Next User</button>
     </div>
     <div class="button-container">
       <button type="button" class="back-button" onclick="goBack()">Back</button>
-      <a class="arrow-button" href="./questions.html">
+      <a class="arrow-button" href="./startdatepage.html">
         <img src="Arrow-right-512.png" alt="Arrow-right" height="50" />
       </a>
     </div>
@@ -63,5 +55,15 @@
     function goBack() {
       window.history.back();
     }
+    
+    document.getElementById('user1').style.display = 'block';
+    document.getElementById('user2').style.display = 'none';
+
+    document.getElementById('nextUserButton').addEventListener('click', function() {
+    // Toggle visibility of user containers
+    document.getElementById('user1').style.display = 'none';
+    document.getElementById('user2').style.display = 'block';
+    document.getElementById('nextUserButton').style.display = 'none';
+});
   </script>
 </html>

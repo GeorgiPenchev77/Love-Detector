@@ -14,6 +14,7 @@ body {
 h1 {
   color: rgb(206, 149, 244);
   font-size: 3.5rem;
+  font-family: "Nunito Sans", sans-serif;
 }
 
 .middle-container {
@@ -24,6 +25,7 @@ h1 {
 h2 {
   margin-bottom: 1rem;
   margin-top: 0;
+  color: rgb(206, 149, 244);
 }
 
 .arrow-right-picture {
@@ -57,11 +59,12 @@ h2 {
   border-radius: 30px;
   margin: 3rem;
   margin-top: 0;
-  background-color: rgb(206, 149, 244);
+  background-color: rgb(56, 38, 68);
 }
 
 p {
   margin: 4px;
+  color: rgb(206, 149, 244);
 }
 
 .instructions-container {
