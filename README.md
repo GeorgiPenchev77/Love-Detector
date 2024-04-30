@@ -17,14 +17,15 @@
     - [Team members](#team-members)
 
 ## Project Description:
-***The Love Detector*** is an all-in-one integrated system that provides a new and fun approach to the speed-date experience. The system measures your heartbeat as you engage in conversation with your potential match and suggests whether there seems to be a spark. 
+***The Love Detector*** is an all-in-one integrated system that provides a new and fun approach to the speed-date experience. 
+The system measures your heartbeat as you engage in conversation with your potential match and suggests whether there seems to be a spark. 
 Through the use of **sensors** information is conveyed from the ***Wio Seeed Terminal*** to a web-based user interface that displays the information.
 
 ## Purpose:
-The purpose of our project, Love Detector is to create a scientifically driven analytical tool that assesses the likelihoos of a romantic connection or "spark" between two individuals during a speed date. By combining heatbeat, a rotating lis tof questions, and an algorith the project aims to find connection based on uncontrollable reactions from the body.
+The purpose of our project, ***The Love Detector*** is to create a scientifically driven analytical tool that assesses the likelihoos of a romantic connection or "spark" between two individuals during a speed date. By combining heatbeat, a rotating lis tof questions, and an algorith the project aims to find connection based on uncontrollable reactions from the body.
 
 ## Benefits:
-The Love Detector offers significant benefits in enhancing connections during speed dates.By utilizing scientifically driven analysis of physiological responses such as bpm, coupled with a thought provoking questions, the Love Detector provides a unique insight into the compatibility between people during these brief interactions. This technology-driven approach not only facilitates genuine and engaging conversations based on participants' shared interests but also introduces a novel way to uncover potential connections based on uncontrollable reactions from the body. As a result, the Love Detector help foster meaningful and authentic connections during the fast paced setting of speed dates.
+***The Love Detector*** offers significant benefits in enhancing connections during speed dates.By utilizing scientifically driven analysis of physiological responses such as bpm, coupled with a thought provoking questions, the Love Detector provides a unique insight into the compatibility between people during these brief interactions. This technology-driven approach not only facilitates genuine and engaging conversations based on participants' shared interests but also introduces a novel way to uncover potential connections based on uncontrollable reactions from the body. As a result, the Love Detector help foster meaningful and authentic connections during the fast paced setting of speed dates.
 
 ## Dependencies: 
 The following section lists the dependencies and requirements for the project. These should be installed prior to the 
