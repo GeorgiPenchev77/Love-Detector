@@ -60,6 +60,7 @@ unsigned long previousMillis = 0;
 
 
 
+
 void printNewMessage(String string) {
   clear();
   tft.setCursor(10, 10);
@@ -134,6 +135,7 @@ void setup() {
   mqttClient.beginMessage(topic);
   mqttClient.print("test message from Wio");
   mqttClient.endMessage();
+  
 
   printNewMessage(start_message);
 
@@ -193,7 +195,7 @@ void loop() {
   delay(5000);
 }
 
-/* interrupt function is stopped via button press,
+/*interrupt function is stopped via button press,
 when stopped the test will be marked as invalid and reset to run again,
 it will start running on next button press*/
 void interrupt() {
@@ -262,18 +264,25 @@ void light(int level){
       pixels.show();// This sends the updated pixel color to the hardware.
       delay(1500);// The amount of time between each individually lit up pixel
     }
-  }else if(level > 25 && level <=75){
+  } else if(level > 25 && level <=75){
     for (int i = 0; i < 6; i++){ 
       pixels.setPixelColor(i, pixels.Color(0, 0, 255)); // blue color
       pixels.show(); 
       delay(500); 
     }   
-  }else{
+  } else {
 
     for (int i = 0; i < level; i++) {
+      for (int i = 0; i < 10; i++) { 
         pixels.setPixelColor(i, pixels.Color(255, 0, 127)); //pink color
         pixels.show();
-        delay(100);
+        delay(30);
+      }
+      for (int i = 10; i >= 0; i--) {
+        pixels.setPixelColor(i, pixels.Color(255, 255, 168)); //brighter color
+        pixels.show();
+        delay(30);
+      }
     }
   }
 }
