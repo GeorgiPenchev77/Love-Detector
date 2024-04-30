@@ -1,8 +1,13 @@
 #include <TFT_eSPI.h>
-#include "rpcWiFi.h"
+#include "rpcWiFi.h" 
 #include <ArduinoMqttClient.h>
 #include "secrets.h"
 TFT_eSPI tft;
+
+//NeoPixels
+#include "Adafruit_NeoPixel.h"
+#ifdef __AVR__
+#endif
 
 
 #define STANDARD_HORIZONTAL_VIEW 3
@@ -10,6 +15,11 @@ TFT_eSPI tft;
 #define START BUTTON_3
 #define NEXT_Q BUTTON_2
 #define HELP BUTTON_1
+
+//Neopixels
+#define PIN            D0
+#define NUMPIXELS      10
+Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 
 
 const String start_message = "Hello and Welcome to The Love Detector.\n Press the left button to begin. While in test, press the left button to stop the test or the middle button to change to the next question. Press the right button for help.";
@@ -97,7 +107,7 @@ void setup() {
   
 
   while (WiFi.begin(ssid, pass) != WL_CONNECTED) {
-    // failed, retry
+     failed, retry
     printMessage(".");
     delay(5000);
   }
@@ -138,12 +148,27 @@ void setup() {
   */
   attachInterrupt(digitalPinToInterrupt(0), interrupt, RISING);
   attachInterrupt(digitalPinToInterrupt(START), press, CHANGE);
+
+
+  //Neopixels Setup
+  randomSeed(analogRead(0));
+  pixels.setBrightness(255);
+    pixels.begin(); // This initializes the NeoPixel library.
+
+    // Set all pixels to "off" (black)
+    for (int i = 0; i < NUMPIXELS; i++) {
+        pixels.setPixelColor(i, pixels.Color(0, 0, 0));
+    }
+     pixels.show();
 }
+
+
+
 
 //the loop will only change if there is a button press
 void loop() {
 
-  mqttClient.poll();
+ mqttClient.poll();
 
 
 
@@ -161,6 +186,11 @@ void loop() {
 
     previous_state = is_started;
   }
+
+  //Neopixels test-value
+  int randomLevel = random(1, 100);
+  light(randomLevel);
+  delay(5000);
 }
 
 /* interrupt function is stopped via button press,
@@ -220,4 +250,30 @@ void sum() {
     printNewMessage(result_message + String(heart_rate));
   }
   data_effect = true;
+}
+
+
+//LED neopixels function for the different compatibility levels
+void light(int level){
+
+  if(level <= 25){
+    for (int i = 0; i < 3; i++) {
+      pixels.setPixelColor(i, pixels.Color(255, 0, 0)); // red color.
+      pixels.show();// This sends the updated pixel color to the hardware.
+      delay(1500);// The amount of time between each individually lit up pixel
+    }
+  }else if(level > 25 && level <=75){
+    for (int i = 0; i < 6; i++){ 
+      pixels.setPixelColor(i, pixels.Color(0, 0, 255)); // blue color
+      pixels.show(); 
+      delay(500); 
+    }   
+  }else{
+
+    for (int i = 0; i < level; i++) {
+        pixels.setPixelColor(i, pixels.Color(255, 0, 127)); //pink color
+        pixels.show();
+        delay(100);
+    }
+  }
 }
