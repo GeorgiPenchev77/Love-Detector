@@ -45,8 +45,8 @@ volatile bool is_started = false;  // boolean to store whether the test has been
 char ssid[] = SECRET_SSID;        // your network SSID (name)
 char pass[] = SECRET_PASS;    // your network password (use for WPA, or use as key for WEP)
 
-WiFiClient wifiClient;
-MqttClient mqttClient(wifiClient);
+/*WiFiClient wifiClient;
+MqttClient mqttClient(wifiClient);*/
 
 const char broker[] = SECRET_IP;
 int        port     = 1883;
@@ -99,7 +99,7 @@ void setup() {
   tft.setRotation(STANDARD_HORIZONTAL_VIEW);  //Set up commands to display messages on the Wio screen
 
 
-  WiFi.mode(WIFI_STA);
+  /*WiFi.mode(WIFI_STA);
   WiFi.disconnect();
 
   printNewMessage("Attempting to connect to ");
@@ -110,7 +110,7 @@ void setup() {
      failed, retry
     printMessage(".");
     delay(5000);
-  }
+  } 
 
   printNewMessage("Connection successful.");
 
@@ -139,16 +139,15 @@ void setup() {
 
 
   arrayInit();  //initialize the data array with 0s
-  /*
+  
       attachInterrupt(pin, ISR, mode) creates an "event listener", that triggers whenever specified event happens on the monitored pins.
       In our case:
         - "digitalPinToInterrupt(0)" shows that we're monitoring changes on Digital Pin 0(D0)
         - "interrupt" is the name of the callback function, called when a change occurs
         - "RISING" specifies that we only need to call the function when the pin goes from LOW to HIGH
-  */
+  
   attachInterrupt(digitalPinToInterrupt(0), interrupt, RISING);
-  attachInterrupt(digitalPinToInterrupt(START), press, CHANGE);
-
+  attachInterrupt(digitalPinToInterrupt(START), press, CHANGE);*/
 
   //Neopixels Setup
   randomSeed(analogRead(0));
@@ -168,7 +167,7 @@ void setup() {
 //the loop will only change if there is a button press
 void loop() {
 
- mqttClient.poll();
+ //mqttClient.poll();
 
 
 
@@ -189,8 +188,8 @@ void loop() {
 
   //Neopixels test-value
   int randomLevel = random(1, 100);
-  light(randomLevel);
-  delay(5000);
+  light(30);
+  delay(200);
 }
 
 /* interrupt function is stopped via button press,
@@ -253,27 +252,43 @@ void sum() {
 }
 
 
-//LED neopixels function for the different compatibility levels
-void light(int level){
+void lightUpAndBlinkSequence() {
+  
+  for (int i = 0; i < NUMPIXELS; i++) {//light up LEDS one by one
+    pixels.setPixelColor(i, pixels.Color(0, 0, 255)); // Blue 
+    pixels.show();
+    delay(750); // Delay for the build up
+  }
+  delay(500);
+  pixels.clear(); 
 
-  if(level <= 25){
+  for (int j = 0; j < 5; j++) { // makes it on off then on 5 times, with small delay
+    for (int i = 0; i < NUMPIXELS; i++) {
+      pixels.setPixelColor(i, pixels.Color(0, 0, 255)); // Blue color
+    }
+    pixels.show(); 
+    delay(200); 
+    pixels.clear(); 
+    pixels.show(); 
+    delay(200); 
+  }
+}
+
+void light(int level) {
+  if (level <= 25) {
     for (int i = 0; i < 3; i++) {
       pixels.setPixelColor(i, pixels.Color(255, 0, 0)); // red color.
-      pixels.show();// This sends the updated pixel color to the hardware.
-      delay(1500);// The amount of time between each individually lit up pixel
+      pixels.show(); // This sends the updated pixel color to the hardware.
+      delay(1500); // The amount of time between each individually lit up pixel
     }
-  }else if(level > 25 && level <=75){
-    for (int i = 0; i < 6; i++){ 
-      pixels.setPixelColor(i, pixels.Color(0, 0, 255)); // blue color
-      pixels.show(); 
-      delay(500); 
-    }   
-  }else{
-
+  } else if (level > 25 && level <= 75) {
+    lightUpAndBlinkSequence();
+    delay(100);
+  } else {
     for (int i = 0; i < level; i++) {
-        pixels.setPixelColor(i, pixels.Color(255, 0, 127)); //pink color
-        pixels.show();
-        delay(100);
+      pixels.setPixelColor(i, pixels.Color(255, 0, 127)); // pink color
+      pixels.show();
+      delay(100);
     }
   }
 }
