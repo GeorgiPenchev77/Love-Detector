@@ -20,19 +20,35 @@
     <div class="middle-container">
       <div class="users">
         <div class="user-container" id="user1">
-            <h2>User 1</h2>
-            <p>Name: <span id="displayUserName1"></span></p>
-            <p>Pronouns: <span id="displayUserPronouns1"></span></p>
+            <h2><span id="displayUserName1"></span> </h2>
+            <p><span id="displayUserPronouns1"></span></p>
+              <div class="instruction-container">
+                <p>1: remove any accessories from your ear</p>
+                <br>
+                <p>2: attach the earklip to your earbud</p>
+                <br>
+                <p>3: Press the RIGHT button on the terminal to start the heartbeatsensor</p>
+              </div>
+              <button class="measure-button" onclick="displayMeasureMessage('user1')">Start on terminal button</button>
         </div>
         <div class="user-container" id="user2">
-            <h2>User 2</h2>
-            <p>Name: <span id="displayUserName2"></span></p>
-            <p>Pronouns: <span id="displayUserPronouns2"></span></p>
+            <h2><span id="displayUserName2"></span></h2>
+            <p><span id="displayUserPronouns2"></span></p>
+            <div class="instruction-container">
+              <p>1: remove any accessories from your ear</p>
+              <br>
+              <p>2: attach the earklip to your earbud</p>
+              <br>
+              <p>3: Press the RIGHT button on the terminal to start the heartbeatsensor</p>
+            </div>
+            <button class="measure-button" onclick="displayMeasureMessage('user2')">Start on terminal button</button>
+        </div>
+        <div class="nextUserButton-container">
+          <button id="nextUserButton">Next User</button>
         </div>
       </div>
-      <button id="nextUserButton">Next User</button>
     </div>
-    <div class="button-container">
+    <div class="navigationButton-container">
       <button type="button" class="back-button" onclick="goBack()">Back</button>
       <a class="arrow-button" href="./startdatepage.html">
         <img src="Arrow-right-512.png" alt="Arrow-right" height="50" />
@@ -40,7 +56,7 @@
     </div>
   </body>
   <script>
-    // Retrieve user info from session storage
+    // Retrieve user info from previous page
     var userName1 = sessionStorage.getItem("userName1");
     var userPronouns1 = sessionStorage.getItem("userPronouns1");
     var userName2 = sessionStorage.getItem("userName2");
@@ -56,14 +72,46 @@
       window.history.back();
     }
     
+    //show only container with user 1 first.
     document.getElementById('user1').style.display = 'block';
     document.getElementById('user2').style.display = 'none';
+    document.getElementById('nextUserButton').style.display = 'none';
 
-    document.getElementById('nextUserButton').addEventListener('click', function() {
     // Toggle visibility of user containers
+    document.getElementById('nextUserButton').addEventListener('click', function() {
     document.getElementById('user1').style.display = 'none';
     document.getElementById('user2').style.display = 'block';
     document.getElementById('nextUserButton').style.display = 'none';
+   
 });
+
+    /*function for displaying a waiting message while each user is measuring heartbeat,
+     then after measurement is done, the users normal heartbeat is displayed. */
+    function displayMeasureMessage(userId) {
+      var userContainer = document.getElementById(userId);
+      var messageParagraph = document.createElement('p');
+      messageParagraph.textContent = "Measuring heartbeat..."; 
+      messageParagraph.classList.add('message-text'); // Add a class for CSS to style the text
+      userContainer.appendChild(messageParagraph);
+
+      //hide the measureButton and the nextUserButton while the measuring process is running.  
+      userContainer.querySelector('.measure-button').style.display = 'none';
+      document.getElementById('nextUserButton').style.display = 'none';
+
+      //hide the instructions while the measuring process is running. 
+      var instructionContainer = userContainer.querySelector('.instruction-container');
+      instructionContainer.style.display = 'none';
+
+      // Display "Measuring heartbeat..." for 10 seconds, temporary function that will be replaced by the actual measuring!
+      setTimeout(function() {
+        messageParagraph.textContent = "Heartbeat: 75"; //this will be replaced with real data from broker!
+        
+        //put in the nextUserButton if only 1 user has been measured so far. 
+        if (userId == 'user1'){
+        document.getElementById('nextUserButton').style.display = 'block';
+        }
+      }, 5000); 
+      
+}
   </script>
 </html>
