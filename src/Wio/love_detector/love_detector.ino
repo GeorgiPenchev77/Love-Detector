@@ -190,7 +190,7 @@ void loop() {
 
   //Neopixels test-value
   int randomLevel = random(1, 100);
-  light(30);
+  light(80);
   delay(200);
 }
 
@@ -276,6 +276,33 @@ void lightUpAndBlinkSequence() {
   }
 }
 
+void fadeInAndBlink() {
+ //Fading effect
+    for (int b = 0; b < 256; b++) {
+      for (int i = 0; i < NUMPIXELS; i++) {
+        pixels.setPixelColor(i, pixels.Color(b-1, 0, b/2)); // Fade in
+      }
+      pixels.show();
+      delay(5); 
+    }
+
+    delay(1000); 
+
+    for (int j = 0; j < 5; j++) { // 5 blink cycles
+      pixels.clear(); 
+      pixels.show(); 
+      delay(200); 
+      for (int i = 0; i < NUMPIXELS; i++) {
+        pixels.setPixelColor(i, pixels.Color(255, 0, 127));
+      }
+      pixels.show(); 
+      delay(200); 
+    }
+
+    delay(500); 
+}
+
+
 void light(int level) {
   if (level <= 25) {
     for (int i = 0; i < 3; i++) {
@@ -288,8 +315,7 @@ void light(int level) {
     delay(100);
   } else {
     for (int i = 0; i < level; i++) {
-      pixels.setPixelColor(i, pixels.Color(255, 0, 127)); // pink color
-      pixels.show();
+      fadeInAndBlink();
       delay(100);
    }
   }
