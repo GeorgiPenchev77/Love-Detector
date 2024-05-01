@@ -283,7 +283,6 @@ void light(int level) {
       pixels.show(); // This sends the updated pixel color to the hardware.
       delay(1500); // The amount of time between each individually lit up pixel
     }
-<<<<<<< HEAD
   } else if (level > 25 && level <= 75) {
     lightUpAndBlinkSequence();
     delay(100);
@@ -292,27 +291,6 @@ void light(int level) {
       pixels.setPixelColor(i, pixels.Color(255, 0, 127)); // pink color
       pixels.show();
       delay(100);
-=======
-  } else if(level > 25 && level <=75){
-    for (int i = 0; i < 6; i++){ 
-      pixels.setPixelColor(i, pixels.Color(0, 0, 255)); // blue color
-      pixels.show(); 
-      delay(500); 
-    }   
-  } else {
-
-    for (int i = 0; i < level; i++) {
-      for (int i = 0; i < 10; i++) { 
-        pixels.setPixelColor(i, pixels.Color(255, 0, 127)); //pink color
-        pixels.show();
-        delay(30);
-      }
-      for (int i = 10; i >= 0; i--) {
-        pixels.setPixelColor(i, pixels.Color(255, 255, 168)); //brighter color
-        pixels.show();
-        delay(30);
-      }
->>>>>>> be843cead52bf5fdb031d0b0f5964c9471314e69
-    }
+   }
   }
 }
