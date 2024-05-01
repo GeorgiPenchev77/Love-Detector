@@ -253,18 +253,8 @@ void sum() {
   data_effect = true;
 }
 
-
-void lightUpAndBlinkSequence() {
-  
-  for (int i = 0; i < NUMPIXELS; i++) {//light up LEDS one by one
-    pixels.setPixelColor(i, pixels.Color(0, 0, 255)); // Blue 
-    pixels.show();
-    delay(750); // Delay for the build up
-  }
-  delay(500);
-  pixels.clear(); 
-
-  for (int j = 0; j < 5; j++) { // makes it on off then on 5 times, with small delay
+void blinkSequence(){
+for (int j = 0; j < 5; j++) { // makes it on off then on 5 times, with small delay
     for (int i = 0; i < NUMPIXELS; i++) {
       pixels.setPixelColor(i, pixels.Color(0, 0, 255)); // Blue color
     }
@@ -274,6 +264,16 @@ void lightUpAndBlinkSequence() {
     pixels.show(); 
     delay(200); 
   }
+}
+void lightUpAndBlinkSequence() {
+  
+  for (int i = 0; i < NUMPIXELS; i++) {//light up LEDS one by one
+    pixels.setPixelColor(i, pixels.Color(0, 0, 255)); // Blue 
+    pixels.show();
+    delay(750); // Delay for the build up
+  }
+  delay(500);
+  pixels.clear(); 
 }
 
 void fadeInAndBlink() {
@@ -287,19 +287,6 @@ void fadeInAndBlink() {
     }
 
     delay(1000); 
-
-    for (int j = 0; j < 5; j++) { // 5 blink cycles
-      pixels.clear(); 
-      pixels.show(); 
-      delay(200); 
-      for (int i = 0; i < NUMPIXELS; i++) {
-        pixels.setPixelColor(i, pixels.Color(255, 0, 127));
-      }
-      pixels.show(); 
-      delay(200); 
-    }
-
-    delay(500); 
 }
 
 
@@ -313,9 +300,13 @@ void light(int level) {
   } else if (level > 25 && level <= 75) {
     lightUpAndBlinkSequence();
     delay(100);
+    blinkSequence();
+    delay(100);
   } else {
     for (int i = 0; i < level; i++) {
       fadeInAndBlink();
+      delay(100);
+      blinkSequence();
       delay(100);
    }
   }
