@@ -57,7 +57,7 @@ The following list contains the sensors used in this project(as per the initial 
 + Grove - [Ear-clip Heart Rate Sensor](https://wiki.seeedstudio.com/Grove-Ear-clip_Heart_Rate_Sensor/) Note: two(2) of these sensors are needed.
 + Grove - [Speaker](https://wiki.seeedstudio.com/Grove-Speaker/)
 + Grove - [Grove LED Bar v2.0](https://wiki.seeedstudio.com/Grove-LED_Bar/)
-
+  
 ## Installation:
 The following section lists the needed steps in order to complete the installation process for the project:
 
