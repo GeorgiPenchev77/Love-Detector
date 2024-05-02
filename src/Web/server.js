@@ -28,19 +28,21 @@ const client = mqtt.connect(connectURL, {
   reconnectPeriod: 1000,
 })
 
-const topic = 'startbutton_click';
+const topics = ['startbutton_click', 'individualMeasure_button'];
 
 client.on('connect', () => {
   console.log('Connected');
-  client.subscribe([topic], () => {
-    console.log(`Subscribe to topic '${topic}'`)
+  client.subscribe(topics, () => {
+    console.log(`Subscribe to topics: '${topics.join(', ')}'`)
   });
 });
 
 
 client.on("message", (topic, payload) => {
+  if (topics[0] == topic){
+    io.emit('switchpage', { nextPage: './questions.html' });
+  }
   console.log('Received message:', topic, payload.toString());
-  io.emit('switchpage', { nextPage: './questions.html' });
 });
 
 io.on('connection', (socket) => {
