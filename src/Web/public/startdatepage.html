@@ -47,7 +47,15 @@
       </a>
     </div>
   </body>
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
   <script>
+
+    const socket = io();
+
+    socket.on('switchpage', function(data){
+      window.location.href = data.nextPage;
+    });
+
     // Retrieve user info from session storage
     var userName1 = sessionStorage.getItem("userName1");
     var userPronouns1 = sessionStorage.getItem("userPronouns1");
