@@ -55,7 +55,10 @@
       </a>
     </div>
   </body>
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
   <script>
+
+
     // Retrieve user info from previous page
     var userName1 = sessionStorage.getItem("userName1");
     var userPronouns1 = sessionStorage.getItem("userPronouns1");
@@ -85,6 +88,13 @@
    
 });
 
+    const socket = io();
+
+    socket.on('measuringMessage', function(data){
+      console.log('Received measuringMessage event');
+      displayMeasureMessage('user1');
+    });
+    
     /*function for displaying a waiting message while each user is measuring heartbeat,
      then after measurement is done, the users normal heartbeat is displayed. */
     function displayMeasureMessage(userId) {
@@ -112,6 +122,6 @@
         }
       }, 5000); 
       
-}
+    }
   </script>
 </html>

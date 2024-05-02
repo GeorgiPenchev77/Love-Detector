@@ -42,6 +42,9 @@ client.on("message", (topic, payload) => {
   if (topics[0] == topic){
     io.emit('switchpage', { nextPage: './questions.html' });
   }
+  else if(topics[1] == topic){
+    io.emit('measuringMessage'); 
+  }
   console.log('Received message:', topic, payload.toString());
 });
 
