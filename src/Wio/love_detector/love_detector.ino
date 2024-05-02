@@ -253,10 +253,17 @@ void sum() {
   data_effect = true;
 }
 
-void blinkSequence(){
+void alternatingBlink(uint32_t color){
+ for (int j = 0; j < 10 ; j++){
+  pixels.setPixelColor(i, color);
+  
+ }
+}
+
+void blinkSequence(uint32_t color){
 for (int j = 0; j < 5; j++) { // makes it on off then on 5 times, with small delay
     for (int i = 0; i < NUMPIXELS; i++) {
-      pixels.setPixelColor(i, pixels.Color(0, 0, 255)); // Blue color
+      pixels.setPixelColor(i, color); //picks the color from light()
     }
     pixels.show(); 
     delay(200); 
@@ -265,18 +272,19 @@ for (int j = 0; j < 5; j++) { // makes it on off then on 5 times, with small del
     delay(200); 
   }
 }
-void lightUpAndBlinkSequence() {
+void lightUpSequence(uint32_t color) {
   
   for (int i = 0; i < NUMPIXELS; i++) {//light up LEDS one by one
-    pixels.setPixelColor(i, pixels.Color(0, 0, 255)); // Blue 
+    pixels.setPixelColor(i, color);
     pixels.show();
-    delay(750); // Delay for the build up
+    delay(250); // Delay for the build up
   }
   delay(500);
   pixels.clear(); 
 }
 
-void fadeInAndBlink() {
+
+void fadeInSequence() {
  //Fading effect
     for (int b = 0; b < 256; b++) {
       for (int i = 0; i < NUMPIXELS; i++) {
@@ -287,10 +295,25 @@ void fadeInAndBlink() {
     }
 
     delay(1000); 
+
+    for (int j = 0; j < 5; j++) { // 5 blink cycles
+      pixels.clear(); 
+      pixels.show(); 
+      delay(200); 
+      for (int i = 0; i < NUMPIXELS; i++) {
+        pixels.setPixelColor(i, pixels.Color(255, 0, 127));
+      }
+      pixels.show(); 
+      delay(200); 
+    }
+
+    delay(500); 
 }
 
 
+
 void light(int level) {
+  uint32_t color;
   if (level <= 25) {
     for (int i = 0; i < 3; i++) {
       pixels.setPixelColor(i, pixels.Color(255, 0, 0)); // red color.
@@ -298,16 +321,23 @@ void light(int level) {
       delay(1500); // The amount of time between each individually lit up pixel
     }
   } else if (level > 25 && level <= 75) {
-    lightUpAndBlinkSequence();
+    color = pixels.Color(0, 0, 255);
+    lightUpSequence(color);
     delay(100);
-    blinkSequence();
+    blinkSequence(color);
     delay(100);
   } else {
     for (int i = 0; i < level; i++) {
-      fadeInAndBlink();
+      color = pixels.Color(0, 100, 127);
+      fadeInSequence(color);
       delay(100);
-      blinkSequence();
+      color = pixels.Color(255, 0, 0);
+      blinkSequence(color);
       delay(100);
+      color = pixels.Color(0, 0, 255);
+      lightUpSequence(color);
+      delay(100);
+      
    }
   }
 }
