@@ -63,7 +63,7 @@ The following section lists the needed steps in order to complete the installati
 
   ## *Installation: Wio Seeed Terminal*
 
-  ## *Installation: Web-Based UI*
+  ## *Installation: Web-Based UI*  
 
 
 ## Usage:
