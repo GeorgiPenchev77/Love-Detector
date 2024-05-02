@@ -1,0 +1,47 @@
+image: ubuntu:24.04
+
+before_script:
+  # run the script to install arduino-cli, Wio terminal core and all
+  # required libraries
+  - chmod +x setup-build-env.sh
+  - ./setup-build-env.sh  
+
+stages:          # List of stages for jobs, and their order of execution
+  - arduino_build
+  - npm_build
+
+arduino_build_job:
+  stage: arduino_build
+  tags:
+    - docker
+  script:
+    - export PATH=$PATH:/root/bin             # set the path to arduino-cli installation folder
+    - pwd                                     # print the current working directory
+    - cd src/Wio/love_detector                # change the directory to arduino folder
+    - echo "$SECRETS_H" > secrets.h           # import secrets from GitLAB CI/CD Settings -> Variables
+    #- echo "$NETWORK_INFO_H" > NetworkInfo.h  # import secrets for WiFi from Gitlab CI/CD Settings -> Variables
+    #- echo "$BROKER_INFO_H" > BrokerInfo.h    # import secrets for MQTT from Gitlab CI/CD Settings -> Variables
+    - arduino-cli lib list                    # check that libraries are installed
+    
+    # Compile
+    - arduino-cli compile --fqbn Seeeduino:samd:seeed_wio_terminal
+
+    # Upload
+    - arduino-cli board list                  # Check if device is connected
+  except:
+    - tags
+
+npm_build_job:
+  stage: npm_build
+  tags:
+    - docker
+
+  #node.js build steps
+  script: 
+    - cd src/Web
+    - echo "Building the project..."
+    - apt-get update && apt-get install -y nodejs npm
+    - npm install
+    - echo "Build complete"
+
+
