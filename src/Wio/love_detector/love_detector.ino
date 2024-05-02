@@ -21,15 +21,16 @@ const String start_message = "Hello and Welcome to The Love Detector.\n Press th
 const String result_message1 = "Heart rate of left user is: ";
 const String result_message2 = "Heart rate of right user is: ";
 const String loading_message = "Heart rate test has begun.\n You will be notified when it is complete or if there is an issue.";
-const String error_message1 = "Heart rate1 measure error, test will restart automatically.\n Make sure the sensor is attached securely!";
-const String error_message2 = "Heart rate2 measure error, test will restart automatically.\n Make sure the sensor is attached securely!";
+const String error_message1 = "Heart rate of left user measure error, test will restart automatically.\n Make sure the sensor is attached securely!";
+const String error_message2 = "Heart rate of right user measure error, test will restart automatically.\n Make sure the sensor is attached securely!";
 const String reset_message = "Test has been stopped.\n Press button again to reset the test.";
 
 const int max_heartpluse_duty = 2000;  //maximum delay between sensor logs, i.e. if >2 seconds there will be an error pop-up
+const int total = 1200000; // used to calculate heart-rate
+const int measure_limit = 20 //the limit of sensor measurements
 
 volatile bool previous_state = false; //boolean to store the previous state of the program
 volatile bool is_started = false;  // boolean to store whether the test has been started or not (this is the via BUTTON_3)
-
 
 //all used variables are duplicated in order to get the second sensor working
 unsigned long sub1, sub2;
@@ -59,20 +60,16 @@ unsigned long previousMillis = 0;
 
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------//
-                                                                           //Printing functions//
-                                                        
-void printNewMessage(int p1, int p2, String string) {
-  tft.setCursor(p1, p2);
-  tft.setTextColor(TFT_BLACK);
-  tft.setTextSize(2);
+                                                                           //Printing functions//                                                        
+void printMessage(String string){
   tft.println(string);
 }
 
-void clear() {
+void printNewMessage(String string) {
   tft.fillScreen(TFT_WHITE);
-}
-
-void printMessage(String string){
+  tft.setCursor(10,10);
+  tft.setTextColor(TFT_BLACK);
+  tft.setTextSize(2);
   tft.println(string);
 }
 
@@ -84,7 +81,6 @@ void press() {
     is_started = !is_started;
   }
 }
-
 
 void reset1() {
   data_effect1 = 0;
@@ -105,15 +101,15 @@ void setup() {
   pinMode(SENSOR2, INPUT);  //Define the right port
   pinMode(START, INPUT);    //initialize the button as an input device
   tft.begin();
+  Serial.begin(9600);
+  
   tft.setRotation(STANDARD_HORIZONTAL_VIEW);  //Set up commands to display messages on the Wio screen
   
-  Serial.begin(9600);
-
   WiFi.mode(WIFI_STA);
   WiFi.disconnect();
 
-  printNewMessage(10, 10, "Attempting to connect to ");
-  printNewMessage(100, 100, ssid);
+  printMessage("Attempting to connect to:");
+  printMessage(ssid);
 
   while (WiFi.begin(ssid, pass) != WL_CONNECTED) {
     // failed, retry
@@ -121,21 +117,18 @@ void setup() {
     delay(5000);
   }
 
-  printNewMessage(200, 200, "Connection successful.");
+  printNewMessage("Connection successful.");
 
   delay(2000);
   
-  clear();
-  printNewMessage(10,10,"Connecting to MQTT Broker: ");
+  printNewMessage("Connecting to MQTT Broker:");
   printMessage(broker);
-
 
   if (!mqttClient.connect(broker, port)) {
     Serial.print("MQTT connection failed! Error code = ");
     Serial.println(mqttClient.connectError());
 
-    while (1)
-      ;
+    while (1);
   }
 
   printNewMessage("You're connected to the MQTT broker!");
@@ -146,8 +139,7 @@ void setup() {
   mqttClient.print("test message from Wio");
   mqttClient.endMessage();
 
-
-  printNewMessage(10, 10, start_message);
+  printNewMessage(start_message);
 
   arrayInit2();
   arrayInit1();
@@ -172,11 +164,9 @@ void loop() {
 
   if (is_started != previous_state) { //interchange messages based on whether test is started or not
     if (is_started) {
-      clear();
-      printNewMessage(10, 10, loading_message);
+      printNewMessage(loading_message);
     } else if (!is_started) {
-      clear();
-      printNewMessage(10, 10, reset_message);
+      printNewMessage(reset_message);
     }
   
   previous_state = is_started; //save the current value in order to check later whether there has been a change or not
@@ -211,15 +201,14 @@ void interrupt1() {
 
     if (sub1 > max_heartpluse_duty) { //check whether the time between the now and the last tick was greater than 2 seconds, if so reset the test as it would be invalid
       reset1();
-      clear();
-      printNewMessage(10, 10, error_message1);
+      printNewMessage(error_message1);
       arrayInit1();
     }
 
-    if (counter1 == 20 && data_effect1) {
+    if (counter1 == measure_limit && data_effect1) {
       counter1 = 0;
       sum1();
-    } else if (counter1 != 20 && data_effect1) {
+    } else if (counter1 != measure_limit && data_effect1) {
       counter1++;
     } else {
       counter1 = 0;
@@ -232,6 +221,7 @@ void interrupt1() {
     reset1();
   }
 }
+
 
 void interrupt2() {
 
@@ -250,15 +240,14 @@ void interrupt2() {
 
     if (sub2 > max_heartpluse_duty) { //check whether the time between the now and the last tick was greater than 2 seconds, if so reset the test as it would be invalid
       reset2();
-      clear();
-      printNewMessage(10, 10, error_message2);
+      printNewMessage(error_message2);
       arrayInit2();
     }
 
-    if (counter2 == 20 && data_effect2) {
+    if (counter2 == measure_limit && data_effect2) {
       counter2 = 0;
       sum2();
-    } else if (counter2 != 20 && data_effect2) {
+    } else if (counter2 != measure_limit && data_effect2) {
       counter2++;
     } else {
       counter2 = 0;
@@ -294,7 +283,7 @@ void arrayInit2() {
 //calculates the heart rate over 20 readings from the sensor and prints it to the screen
 void sum1() {
   if (data_effect1) { // only calculate if the variable showing whether the data is valid is true.
-    heart_rate1 = 1200000 / (temp1[20] - temp1[0]);
+    heart_rate1 = total / (temp1[20] - temp1[0]);
     Serial.println(result_message1+String(heart_rate1)); // print results in serial monitor screen to reduce terminal screen overloading. Results will be shown in UI anyways.
   }
   data_effect1 = true;
@@ -302,7 +291,7 @@ void sum1() {
 
 void sum2() {
   if (data_effect2) { // only calculate if the variable showing whether the data is valid is true.
-    heart_rate2 = 1200000 / (temp2[20] - temp2[0]); 
+    heart_rate2 = total / (temp2[20] - temp2[0]); 
     Serial.println(result_message2+String(heart_rate2)); // print results in serial monitor screen to reduce terminal screen overloading. Results will be shown in UI anyways.
   }
   data_effect2 = true;
