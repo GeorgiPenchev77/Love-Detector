@@ -1,6 +1,6 @@
 #include <TFT_eSPI.h>
-#include "rpcWiFi.h" 
-#include <ArduinoMqttClient.h>
+//#include "rpcWiFi.h" 
+//#include <ArduinoMqttClient.h>
 #include "secrets.h"
 TFT_eSPI tft;
 
@@ -252,18 +252,16 @@ void sum() {
   }
   data_effect = true;
 }
-
-void alternatingBlink(uint32_t color){
- for (int j = 0; j < 10 ; j++){
-  pixels.setPixelColor(i, color);
-  
- }
+void alterningBlink (uint32_t color) {
+  for (int j = 0; j < 10; j++) {
+    pixels.setPixelColor(j, color);
+  }
 }
 
 void blinkSequence(uint32_t color){
-for (int j = 0; j < 5; j++) { // makes it on off then on 5 times, with small delay
+for (int j = 0; j < 2; j++) { // makes it on off then on 2 times, with small delay
     for (int i = 0; i < NUMPIXELS; i++) {
-      pixels.setPixelColor(i, color); //picks the color from light()
+      pixels.setPixelColor(i, color);
     }
     pixels.show(); 
     delay(200); 
@@ -296,7 +294,7 @@ void fadeInSequence() {
 
     delay(1000); 
 
-    for (int j = 0; j < 5; j++) { // 5 blink cycles
+      for (int j = 0; j < 5; j++) { // 5 blink cycles
       pixels.clear(); 
       pixels.show(); 
       delay(200); 
@@ -309,7 +307,23 @@ void fadeInSequence() {
 
     delay(500); 
 }
-
+void upAndDown() { // function for the lights fillup and down 
+    for (int i = 0; i < NUMPIXELS; i++) { 
+        pixels.setPixelColor(i, pixels.Color(255, 0, 127)); //pink color
+        pixels.show();
+        delay(25);
+      }
+      for (int i = 10; i >= 0; i--) {
+        pixels.setPixelColor(i, pixels.Color(255, 255, 168)); //brighter color
+        pixels.show();
+        delay(25);
+      }
+}
+void crazyMode() { // for ultimate love match
+  uint32_t color = pixels.Color(255, 0, 127); // pink color for the blinking
+  blinkSequence(color);
+  upAndDown();
+}
 
 
 void light(int level) {
@@ -328,16 +342,7 @@ void light(int level) {
     delay(100);
   } else {
     for (int i = 0; i < level; i++) {
-      color = pixels.Color(0, 100, 127);
-      fadeInSequence(color);
-      delay(100);
-      color = pixels.Color(255, 0, 0);
-      blinkSequence(color);
-      delay(100);
-      color = pixels.Color(0, 0, 255);
-      lightUpSequence(color);
-      delay(100);
-      
+      crazyMode();
    }
   }
 }
