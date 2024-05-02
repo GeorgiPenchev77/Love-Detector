@@ -48,10 +48,10 @@ WiFiClient wifiClient;
 MqttClient mqttClient(wifiClient);
 
 const char broker[] = SECRET_IP;
-int port = 1883;
-const char topic[] = "test";
-const char topic2[] = "real_unique_topic_2";
-const char topic3[] = "real_unique_topic_3";
+int        port     = 1883;
+const char topic[]  = "test";
+const char topic2[]  = "real_unique_topic_2";
+const char topic3[]  = "real_unique_topic_3";
 
 //set interval for sending messages (milliseconds)
 const long interval = 8000;
