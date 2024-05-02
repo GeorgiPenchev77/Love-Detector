@@ -27,7 +27,7 @@ const String reset_message = "Test has been stopped.\n Press button again to res
 
 const int max_heartpluse_duty = 2000;  //maximum delay between sensor logs, i.e. if >2 seconds there will be an error pop-up
 const int total = 1200000; // used to calculate heart-rate
-const int measure_limit = 20 //the limit of sensor measurements
+const int measure_limit = 20; //the limit of sensor measurements
 
 volatile bool previous_state = false; //boolean to store the previous state of the program
 volatile bool is_started = false;  // boolean to store whether the test has been started or not (this is the via BUTTON_3)
@@ -62,6 +62,7 @@ unsigned long previousMillis = 0;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------//
                                                                            //Printing functions//                                                        
 void printMessage(String string){
+  tft.setTextSize(2);
   tft.println(string);
 }
 
