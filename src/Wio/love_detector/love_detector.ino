@@ -1,6 +1,6 @@
 #include <TFT_eSPI.h>
-//#include "rpcWiFi.h" 
-//#include <ArduinoMqttClient.h>
+#include "rpcWiFi.h" 
+#include <ArduinoMqttClient.h>
 #include "secrets.h"
 TFT_eSPI tft;
 
@@ -45,8 +45,8 @@ volatile bool is_started = false;  // boolean to store whether the test has been
 char ssid[] = SECRET_SSID;        // your network SSID (name)
 char pass[] = SECRET_PASS;    // your network password (use for WPA, or use as key for WEP)
 
-/*WiFiClient wifiClient;
-MqttClient mqttClient(wifiClient);*/
+WiFiClient wifiClient;
+MqttClient mqttClient(wifiClient);
 
 const char broker[] = SECRET_IP;
 int        port     = 1883;
@@ -100,7 +100,7 @@ void setup() {
   tft.setRotation(STANDARD_HORIZONTAL_VIEW);  //Set up commands to display messages on the Wio screen
 
 
-  /*WiFi.mode(WIFI_STA);
+  WiFi.mode(WIFI_STA);
   WiFi.disconnect();
 
   printNewMessage("Attempting to connect to ");
@@ -149,7 +149,7 @@ void setup() {
         - "RISING" specifies that we only need to call the function when the pin goes from LOW to HIGH
   
   attachInterrupt(digitalPinToInterrupt(0), interrupt, RISING);
-  attachInterrupt(digitalPinToInterrupt(START), press, CHANGE);*/
+  attachInterrupt(digitalPinToInterrupt(START), press, CHANGE);
 
   //Neopixels Setup
   randomSeed(analogRead(0));
@@ -169,7 +169,7 @@ void setup() {
 //the loop will only change if there is a button press
 void loop() {
 
- //mqttClient.poll();
+ mqttClient.poll();
 
 
 
