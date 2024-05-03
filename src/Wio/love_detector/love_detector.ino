@@ -190,7 +190,7 @@ void loop() {
 
   //Neopixels test-value
   int randomLevel = random(1, 100);
-  light(80);
+  light(10);
   delay(200);
 }
 
@@ -262,6 +262,7 @@ for (int j = 0; j < 2; j++) {
     delay(200); 
     pixels.clear(); 
     pixels.show(); 
+    delay(200);
   }
 }
 void lightUpSequence(uint32_t color) {//lights up LEDS one by one
@@ -294,8 +295,21 @@ void upAndDown() { // function for the lights fillup and down
       delay(25);
     }
 }
+void slowFillUp(uint32_t color) {
+  for (int i = 0; i < 3; i++) { 
+      pixels.setPixelColor(i, pixels.Color(255, 0, 0)); //pink color
+      pixels.show();
+      delay(500);
+    }
+}
+void noMatchMode(uint32_t color) {
+  color = pixels.Color(255, 0, 0);
+  slowFillUp(color); 
+  blinkSequence(color);
+  delay(150); // The amount of time between each individually lit up pixel  
+}
 
-void normalMode(){
+void normalMode(uint32_t color){
   color = pixels.Color(0, 0, 255);
   lightUpSequence(color);
   delay(100);
@@ -313,14 +327,12 @@ void crazyMode() { // for ultimate love match
 void light(int level) {
   uint32_t color;
   if (level <= 25) {
-    for (int i = 0; i < 3; i++) {
-      pixels.setPixelColor(i, pixels.Color(255, 0, 0)); // red color.
-      pixels.show(); // This sends the updated pixel color to the hardware.
-      delay(1500); // The amount of time between each individually lit up pixel
+    for (int i = 0; i < level; i++) {
+      noMatchMode(color);
     }
   } else if (level > 25 && level <= 75) {
     for (int i = 0; i < level; i++) {
-      normalMode();
+      normalMode(color);
    }
   } else {
     for (int i = 0; i < level; i++) {
