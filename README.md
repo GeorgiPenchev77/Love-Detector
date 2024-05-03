@@ -29,7 +29,7 @@ Through the use of ***Heart Rate Sensors*** information is conveyed from the ***
 After careful analyzation, results are calculated based on a pre-established ***Love Detection Algorithm***(can be found [here](https://git.chalmers.se/courses/dit113/2024/group-4/love-detector/-/wikis/Love-Detector-Algorithm)).
 
 ## Purpose:
-The purpose of our project, ***The Love Detector*** is to create a scientifically driven, analytical tool that assesses the likelihood of a romantic connection or a so-called **"spark"** between two individuals during a speed-date. By combining continious *heartbeat detection*, a rotating *list of questions*, and a special *algorithm*, the project relies on the *physical reactions* our body exerts in moments of excitement, 
+The purpose of our project, ***The Love Detector*** is to create a scientifically driven, analytical tool that assesses the likelyhood of a deeper connection or a so-called **"spark"** between two individuals during a speed-date. By combining continious *heartbeat detection*, a rotating *list of questions*, and a special *algorithm*, the project relies on the *physical reactions* our body exerts in moments of excitement, 
 to achieve the best possible *deduction*. 
 
 ## Benefits:
@@ -46,24 +46,23 @@ installation process described in the next section:
    - *Arduino MQTT Client*
    - *Adafruit_NeoPixel*
  5. The needed Grove Sensors for the project can be found [here](#system-sensors)
- 6. [Node.js](https://nodejs.org/en) and **npm** (the Node Package Manager) for the web-based application (it is required to go with the latest stable version of **Node.js**)
-     * **Node.js** comes pre-packaged with **npm**, so there's no need to install npm separately.
-     * All the required dependencies for the web-based application are listed in the [package.json](src/Web/package.json) file and no additional packages and/or global dependencies are required to be installed.
- 7. [Git](https://git-scm.com/downloads) should be installed and working on your machine so the repository of the project can be cloned.
+ 6. [Git](https://git-scm.com/downloads) should be installed and working on your machine so the repository of the project can be cloned.
 
 ## System Sensors:
 The following list contains the sensors used in this project(as per the initial scope):
 + Grove - [RGB LED Stick (10 – WS2813 Mini)](https://wiki.seeedstudio.com/Grove-RGB_LED_Stick-10-WS2813_Mini/) 
 + Grove - [Ear-clip Heart Rate Sensor](https://wiki.seeedstudio.com/Grove-Ear-clip_Heart_Rate_Sensor/) Note: two(2) of these sensors are needed.
 + Grove - [Speaker](https://wiki.seeedstudio.com/Grove-Speaker/)
-+ Grove - [Grove LED Bar v2.0](https://wiki.seeedstudio.com/Grove-LED_Bar/)
   
 ## Installation:
 The following section lists the needed steps in order to complete the installation process for the project:
 
   ## *Installation: Wio Seeed Terminal*
 
-  ## *Installation: Web-Based UI*  
+  ## *Installation: Web-Based UI*
+  1. Ensure you have **Node.js** and **npm** installed. If not, download and install them from [here](https://nodejs.org/en/).
+  2. Navigate to the directory in your terminal.
+  3. Run 'npm install' to install all the required dependencies listed in the [package.json](src/Web/package.json) file.
 
 
 ## Usage:
@@ -87,10 +86,10 @@ The following section contains the design diagram, that the team followed during
 The project is licensed under the MIT License. Refer to the [**LICENSE**](LICENSE) file for more information.
 
 ### Team members:
--Georgi Penchev (penchev@student.chalmers.se)
--Kristina Trampush (gustramkr@student.gu.se)
--Pavlo Ovchynnykov (gusovchpa@student.gu.se)
--René Ignacio González Pérez (renei@student.chalmers.se)
--Telina Hjärtberg (telina.hjartberg@icloud.com)
+- Georgi Penchev (penchev@student.chalmers.se)
+- Kristina Trampush (gustramkr@student.gu.se)
+- Pavlo Ovchynnykov (gusovchpa@student.gu.se)
+- René Ignacio González Pérez (renei@student.chalmers.se)
+- Telina Hjärtberg (telina.hjartberg@icloud.com)
 
-*The Love Detector 2024*, **DIT113, University of Gothenburg | Chalmers University of Technology, Sweden**  
+*Love Detector 2024*, **DIT113, University of Gothenburg | Chalmers University of Technology, Sweden**  
