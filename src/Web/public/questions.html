@@ -70,7 +70,15 @@
       </a>
     </div>
 
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <script>
+
+      const socket = io();
+
+      socket.on('next_question', function() {
+        changeQuestion();
+      });
+
       // Randomly selects and removes question from the array.
       function randomize() {
         const random = Math.floor(Math.random() * questions.length);

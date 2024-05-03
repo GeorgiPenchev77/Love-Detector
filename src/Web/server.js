@@ -28,7 +28,7 @@ const client = mqtt.connect(connectURL, {
   reconnectPeriod: 1000,
 })
 
-const topics = ['startbutton_click', 'individualMeasure_button'];
+const topics = ['startbutton_click', 'individualMeasure_button', 'change_question'];
 
 client.on('connect', () => {
   console.log('Connected');
@@ -41,6 +41,10 @@ client.on('connect', () => {
 client.on("message", (topic, payload) => {
   if (topics[0] == topic){
     io.emit('switchpage', { nextPage: './questions.html' });
+  }
+  if ( topics[2] == topic){
+    io.emit('next_question');
+    console.log("1");
   }
   console.log('Received message:', topic, payload.toString());
 });
