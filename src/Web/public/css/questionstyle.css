@@ -1,11 +1,11 @@
 .header {
-  color: rgb(206, 149, 244);
+  color: rgb(61, 0, 69);
   font-family: "Nunito Sans", sans-serif;
   font-size: xx-large;
   text-align: center;
 }
 body {
-  background-color: rgb(255, 255, 255);
+  background-color:rgb(247, 0, 209); 
 }
 
 .button-container {
@@ -19,7 +19,7 @@ body {
 }
 
 .arrow-button {
-  background-color: rgb(206, 149, 244);
+  background-color: rgb(169, 0, 121);
   border-radius: 30px;
   border: none;
   padding: 10px 20px;
@@ -27,7 +27,7 @@ body {
   cursor: pointer;
 }
 .arrow-button:hover {
-  background-color: rgb(206, 100, 244);
+  background-color: rgb(125, 10, 93);
   cursor: pointer;
 }
 .user-container {
@@ -41,7 +41,7 @@ body {
   padding-right: 3rem;
   border-radius: 30px;
   margin: 0 3.5rem;
-  background-color: rgb(206, 149, 244);
+  background-color: rgb(169, 0, 121);
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
@@ -65,12 +65,18 @@ body {
 }
 
 .question-button {
-  background-color: rgb(206, 149, 244);
+  background-color: rgb(169, 0, 121);
   border-radius: 30px;
   border: none;
   padding: 10px 20px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
+
+.question-button:hover {
+  background-color: rgb(125, 10, 93);
+  cursor: pointer;
+}
+
 #timer {
   color: rgb(0, 0, 0);
   font-family: "Nunito Sans", sans-serif;
