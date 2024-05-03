@@ -31,6 +31,7 @@ const int measure_limit = 20; //the limit of sensor measurements
 
 volatile bool previous_state = false; //boolean to store the previous state of the program
 volatile bool is_started = false;  // boolean to store whether the test has been started or not (this is the via BUTTON_3)
+volatile bool start_button_clicked = false;
 
 //all used variables are duplicated in order to get the second sensor working
 unsigned long sub1, sub2;
@@ -56,7 +57,7 @@ const char topic3[]  = "real_unique_topic_3";
 
 
 //set interval for sending messages (milliseconds)
-const long interval = 8000;
+const long interval = 1000;
 unsigned long previousMillis = 0;
 
 
@@ -84,9 +85,7 @@ void press() {
 
 //sends topic to broker on buttonpress. 
     if (is_started){
-      mqttClient.beginMessage("startbutton_click");
-      mqttClient.print("Start Button Clicked");
-      mqttClient.endMessage();
+      start_button_clicked = true;
     }
   }
 }
@@ -181,6 +180,19 @@ void loop() {
   
   previous_state = is_started; //save the current value in order to check later whether there has been a change or not
   }
+
+  unsigned long currentMillis = millis();
+  if(currentMillis - previousMillis >= interval){
+    previousMillis = currentMillis;
+    if(start_button_clicked){
+      start_button_clicked = false;
+
+      mqttClient.beginMessage("startbutton_click");
+      mqttClient.print("Start Button Clicked");
+      mqttClient.endMessage();
+    }
+  }
+
 }
 
 
