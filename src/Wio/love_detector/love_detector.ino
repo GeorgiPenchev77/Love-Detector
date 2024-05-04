@@ -16,9 +16,12 @@ TFT_eSPI tft;
 #define NEXT_Q BUTTON_2
 #define HELP BUTTON_1
 
+#define SENSOR1 PIN_WIRE_SCL //define the left pin of the terminal as Sensor 1 
+#define SENSOR2 0 //define the right pin of the terminal as Sensor 2
+
 //Neopixels
-#define PIN            D0
-#define NUMPIXELS      10
+#define PIN     D0
+#define NUMPIXELS    10
 Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 
 
@@ -119,7 +122,7 @@ void setup() {
   printMessage(ssid);
 
   while (WiFi.begin(ssid, pass) != WL_CONNECTED) {
-     failed, retry
+     //failed, retry
     printMessage(".");
     delay(5000);
   } 
@@ -150,16 +153,18 @@ void setup() {
   printNewMessage(start_message);
 
 
-  arrayInit();  //initialize the data array with 0s
-  
+  arrayInit2();
+  arrayInit1();
+    /*
       attachInterrupt(pin, ISR, mode) creates an "event listener", that triggers whenever specified event happens on the monitored pins.
       In our case:
         - "digitalPinToInterrupt(0)" shows that we're monitoring changes on Digital Pin 0(D0)
         - "interrupt" is the name of the callback function, called when a change occurs
         - "RISING" specifies that we only need to call the function when the pin goes from LOW to HIGH
-  
-  attachInterrupt(digitalPinToInterrupt(0), interrupt, RISING);
-  attachInterrupt(digitalPinToInterrupt(START), press, CHANGE);
+    */
+  attachInterrupt(SENSOR1, interrupt1, RISING); // Sensor 1 - left port of the Wio terminal
+  attachInterrupt(SENSOR2, interrupt2, RISING); // Sensor 2 - right port of the Wio terminal
+  attachInterrupt(START, press, CHANGE);
 
   //Neopixels Setup
   randomSeed(analogRead(0));
@@ -200,7 +205,7 @@ void loop() {
 /*interrupt function is stopped via button press,
 when stopped the test will be marked as invalid and reset to run again,
 it will start running on next button press*/
-void interrupt() {
+void interrupt1() {
 
   if (is_started) {
     temp1[counter1] = millis(); //start counting time between sensor ticks
@@ -295,6 +300,7 @@ void arrayInit2() {
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 
 //calculates the heart rate over 20 readings from the sensor and prints it to the screen
+
 void sum1() {
   if (data_effect1) { // only calculate if the variable showing whether the data is valid is true.
     heart_rate1 = total / (temp1[20] - temp1[0]);
@@ -310,6 +316,8 @@ void sum2() {
   }
   data_effect2 = true;
 }
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 
 void blinkSequence(uint32_t color){// makes it on off then on 2 times, with small delay
 for (int j = 0; j < 2; j++) { 
