@@ -70,17 +70,40 @@
       </a>
     </div>
 
+  
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <script>
       let lastQuestionIndex = -1; //index to keep track of last question
       let randomIndex; // index to ensure that the question is different than the previous one
+      let questions = [];
+      let question;
 
-      const socket = io();
-      socket.on("next_question", function () {
+      async function fetchQuestions() {
+    try {
+        const response = await fetch('assets/question_list.json'); // Fetch data from server endpoint
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        questions = data.questions;
+       
         changeQuestion();
-      });
+    } catch (error) {
+        console.error('Error loading questions:', error);
+    }
+}
 
-      function randomize() {
+      fetchQuestions();
+
+       
+            
+        const socket = io();
+        socket.on("next_question", function () {
+        changeQuestion();
+        });
+
+
+        function randomize() {
         do {
           randomIndex = Math.floor(Math.random() * questions.length);
         } while (randomIndex === lastQuestionIndex); //create a random number from the question size until its different than the previous one
@@ -98,6 +121,7 @@
         question = randomize();
         document.getElementById("question").textContent = question;
       }
+
       // Function that counts down the timer, with 1 second interval.
       function countdown() {
         let timeLeft = 90;
@@ -110,59 +134,7 @@
           }
         }, 1000);
       }
-      // Array for questions
-      const questions = [
-        "What's your idea of a perfect day?",
-        "Do you believe in second chances?",
-        "What's your opinion on fate and destiny?",
-        "What makes you feel most alive?",
-        "What are your career goals?",
-        "If you could do anything for a living and money wasn't a factor, what would you do?",
-        "What are your hobbies or interests?",
-        "Do you have a favorite movie or TV show?",
-        "What's the most memorable trip you've ever taken?",
-        "Are you a morning person or a night owl?",
-        "Do you prefer the beach or the mountains?",
-        "If you could learn one new skill, what would it be?",
-        "How do you usually spend your weekends?",
-        "What's your favorite type of music, and your favorite band or artist?",
-        "Are you a city person or a countryside person?",
-        "What's your favorite way to relax after a long day?",
-        "Do you prefer to plan things out or be spontaneous?",
-        "What's your favorite type of cuisine?",
-        "Do you prefer indoor activities or outdoor activities?",
-        "What's your favorite season and why?",
-        "What's your love language?",
-        "Do you believe in soulmates?",
-        "What's your idea of the perfect date?",
-        "How do you prefer to resolve conflicts?",
-        "What's the best way someone can show they care about you?",
-        "How do you express your feelings when you're upset?",
-        "What's your opinion on honesty, even if it might hurt the other person?",
-        "What's your opinion on giving each other space in a relationship?",
-        "What does a healthy lifestyle mean to you?",
-        "Do you have any daily routines or rituals?",
-        "Where do you see yourself in 5 years?",
-        "What's on your travel bucket list?",
-        "What's one thing you've always wanted to do but haven't yet?",
-        "What's one thing you want to accomplish in the next year?",
-        "How do you envision your retirement?",
-        "How do you want to contribute to the world?",
-        "If you could have dinner with any historical figure, who would it be?",
-        "If you could travel back in time, what era would you visit?",
-        "If you could have any superpower, what would it be?",
-        "What's the most spontaneous thing you've ever done?",
-        "What's the most interesting fact you know?",
-        "If you could have any talent, what would you choose?",
-        "What's your favorite way to spend a rainy day?",
-        "What's your favorite type of holiday?",
-        "What's your biggest fear?",
-        "How do you overcome your fears?",
-        "What do you do to boost your confidence?",
-        "What social or environmental issue are you most passionate about?",
-        "How do you handle failure or setbacks?",
-      ];
-
+      
       var userName1 = sessionStorage.getItem("userName1");
       var userPronouns1 = sessionStorage.getItem("userPronouns1");
       var userName2 = sessionStorage.getItem("userName2");

@@ -6,12 +6,15 @@ const http = require('http');
 const server = http.createServer(app);
 const io = new Server(server);
 const mqtt = require('mqtt');
+const fs = require('fs');
 
 
 app.use(express.static('public')); // Serve static files from the 'public' directory
-
+app.use(express.static('public/assets')); // serve questions from assets folder
 // Start the server
 const PORT = process.env.PORT || 3000;
+
+
 
 
 const protocol = 'mqtt';
