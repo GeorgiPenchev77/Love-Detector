@@ -20,9 +20,9 @@ TFT_eSPI tft;
 #define SENSOR2 0 //define the right pin of the terminal as Sensor 2
 
 //Neopixels
-#define PIN     D0
+#define LED_PIN D2
 #define NUMPIXELS    10
-Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, LED_PIN, NEO_GRB + NEO_KHZ800);
 
 
 const String start_message = "Hello and Welcome to The Love Detector.\n Press the left button to begin. While in test, press the left button to stop the test or the middle button to change to the next question. Press the right button for help.";
@@ -149,9 +149,18 @@ void setup() {
   mqttClient.print("test message from Wio");
   mqttClient.endMessage();
   
+  //Neopixels Setup
+  randomSeed(analogRead(LED_PIN));
+  pixels.setBrightness(255);
+  pixels.begin(); // This initializes the NeoPixel library.
+
+    // Set all pixels to "off" (black)
+    for (int i = 0; i < NUMPIXELS; i++) {
+        pixels.setPixelColor(i, pixels.Color(0, 0, 0));
+    }
+     pixels.show();
 
   printNewMessage(start_message);
-
 
   arrayInit2();
   arrayInit1();
@@ -165,17 +174,6 @@ void setup() {
   attachInterrupt(SENSOR1, interrupt1, RISING); // Sensor 1 - left port of the Wio terminal
   attachInterrupt(SENSOR2, interrupt2, RISING); // Sensor 2 - right port of the Wio terminal
   attachInterrupt(START, press, CHANGE);
-
-  //Neopixels Setup
-  randomSeed(analogRead(0));
-  pixels.setBrightness(255);
-    pixels.begin(); // This initializes the NeoPixel library.
-
-    // Set all pixels to "off" (black)
-    for (int i = 0; i < NUMPIXELS; i++) {
-        pixels.setPixelColor(i, pixels.Color(0, 0, 0));
-    }
-     pixels.show();
 }
 
 
@@ -185,6 +183,7 @@ void setup() {
 void loop() {
 
  mqttClient.poll();
+ Serial.println(is_started);
 
   if (is_started != previous_state) { //interchange messages based on whether test is started or not
     if (is_started) {
@@ -193,12 +192,12 @@ void loop() {
       printNewMessage(reset_message);
     }
   
-  previous_state = is_started; //save the current value in order to check later whether there has been a change or not
+    previous_state = is_started; //save the current value in order to check later whether there has been a change or not
   }
 
   //Neopixels test-value
   int randomLevel = random(1, 100);
-  light(10);
+  light(randomLevel);
   delay(200);
 }
 
