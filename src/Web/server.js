@@ -6,12 +6,15 @@ const http = require('http');
 const server = http.createServer(app);
 const io = new Server(server);
 const mqtt = require('mqtt');
+const fs = require('fs');
 
 
 app.use(express.static('public')); // Serve static files from the 'public' directory
-
+app.use(express.static('public/assets')); // serve questions from assets folder
 // Start the server
 const PORT = process.env.PORT || 3000;
+
+
 
 
 const protocol = 'mqtt';
@@ -28,19 +31,25 @@ const client = mqtt.connect(connectURL, {
   reconnectPeriod: 1000,
 })
 
-const topic = 'test';
+const topics = ['startbutton_click', 'individualMeasure_button', 'change_question'];
 
 client.on('connect', () => {
   console.log('Connected');
-  client.subscribe([topic], () => {
-    console.log(`Subscribe to topic '${topic}'`)
+  client.subscribe(topics, () => {
+    console.log(`Subscribe to topics: '${topics.join(', ')}'`)
   });
 });
 
 
 client.on("message", (topic, payload) => {
+  if (topics[0] == topic){
+    io.emit('switchpage', { nextPage: './questions.html' });
+  }
+  if ( topics[2] == topic){
+    io.emit('next_question');
+    console.log("1");
+  }
   console.log('Received message:', topic, payload.toString());
-  io.emit('message', {"message": payload.toString()})
 });
 
 io.on('connection', (socket) => {
