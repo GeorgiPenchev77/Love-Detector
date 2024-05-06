@@ -2,8 +2,7 @@
 
 TFT_eSPI tft;
 
-/* ------------------------------ Wio printing ------------------------------ */
-                                                                                                                                   
+/* ------------------------------ Wio printing ------------------------------ */                                                                                                                 
 void printMessage(String string){
   tft.setTextSize(2);
   tft.println(string);
@@ -17,12 +16,10 @@ void printNewMessage(String string) {
   tft.println(string);
 }
 
-/* -------------------------------------------------------------------------- */
-
-void setupOutput(){
+void setupWioOutput(){
   tft.begin();
   tft.setRotation(STANDARD_HORIZONTAL_VIEW);  //Set up commands to display messages on the Wio screen
 
   Serial.begin(9600);
-
 }
+/* -------------------------------------------------------------------------- */

@@ -1,11 +1,9 @@
 //Interrupt solution inspired by https://arduino.stackexchange.com/questions/73287/interrupts-inside-a-class-attaching-to-the-function-of-the-class
 
-
 #ifndef HBS_H
 #define HBS_H
 
 #include "util.h"
-
 
 extern volatile bool isStarted;
 extern volatile bool previousState;
@@ -19,49 +17,19 @@ extern volatile bool previousState;
 
 
 class HBSensor{
-  private:
-    void tempReset() {
-      for (unsigned char i = 0; i < MEASURE_LIMIT; i++) {
-        temp[i] = 0;
-      }
-      temp[MEASURE_LIMIT-1] = millis();
-    }
-
-    void reset(){
-      sub = 0;
-      counter = 0;
-      dataEffect = false;
-      tempReset();
-    } 
-
-    static HBSensor* instances [2];
-
-    static void interruptLeft(){
-      if(HBSensor::instances[LEFT] != NULL){
-        HBSensor::instances[LEFT]->interrupt();
-      }
-    }
-
-    static void interruptRight(){
-      if(HBSensor::instances[RIGHT] != NULL){
-        HBSensor::instances[RIGHT]->interrupt();
-      }
-    }
-
-
   public:
     // maximum delay between sensor logs in ms
     // i.e. if there are no new logs for >2 seconds it will trigger an error
     static const int MAX_HEARTPULSE_DUTY = 2000;  
 
-    static const int TOTAL = 1200000; // const used to calculate heart-rate
+    static const int TOTAL = 1200000;    // const used to calculate heart-rate
     static const int MEASURE_LIMIT = 20; //the limit of sensor measurements
 
     unsigned long sub;
     unsigned long temp[MEASURE_LIMIT+1];
     unsigned char counter;
-    unsigned int  heartRate = 0;
-    volatile bool dataEffect = true;  // boolean to store whether data is valid or not
+    unsigned int  heartRate = 0;        
+    volatile bool dataEffect = true;    // Store whether data is valid or not
     byte SENSOR;
     
 
@@ -138,6 +106,30 @@ class HBSensor{
         Serial.println(RESULT_MESSAGE1+String(heartRate)); 
       }
       dataEffect = true;
+    }
+ private:
+    void reset(){
+      sub = 0;
+      counter = 0;
+      dataEffect = false;
+      for (unsigned char i = 0; i < MEASURE_LIMIT; i++) {
+        temp[i] = 0;
+      }
+      temp[MEASURE_LIMIT-1] = millis();
+    } 
+
+    static HBSensor* instances [2];
+
+    static void interruptLeft(){
+      if(HBSensor::instances[LEFT] != NULL){
+        HBSensor::instances[LEFT]->interrupt();
+      }
+    }
+
+    static void interruptRight(){
+      if(HBSensor::instances[RIGHT] != NULL){
+        HBSensor::instances[RIGHT]->interrupt();
+      }
     }
 
 };
