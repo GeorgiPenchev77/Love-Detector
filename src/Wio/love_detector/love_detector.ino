@@ -13,7 +13,7 @@ TFT_eSPI tft;
 #define STANDARD_HORIZONTAL_VIEW 3
 //define the three buttons of the terminal: 3 is left, 2 is middle, 1 is right
 #define START BUTTON_3
-#define NEXT_Q BUTTON_2
+#define NEXT_QUESTION BUTTON_2
 #define HELP BUTTON_1
 
 #define SENSOR1 PIN_WIRE_SCL //define the left pin of the terminal as Sensor 1 
@@ -39,6 +39,8 @@ const int measure_limit = 20; //the limit of sensor measurements
 
 volatile bool previous_state = false; //boolean to store the previous state of the program
 volatile bool is_started = false;  // boolean to store whether the test has been started or not (this is the via BUTTON_3)
+bool start_button_clicked = false;
+bool next_question_clicked = false;
 
 //all used variables are duplicated in order to get the second sensor working
 unsigned long sub1, sub2;
@@ -59,11 +61,12 @@ MqttClient mqttClient(wifiClient);
 const char broker[] = SECRET_IP;
 int        port     = 1883;
 const char topic[]  = "test";
-const char topic2[]  = "real_unique_topic_2";
-const char topic3[]  = "real_unique_topic_3";
+const char topic2[]  = "startbutton_click";
+const char topic_nextq[]  = "change_question";
+
 
 //set interval for sending messages (milliseconds)
-const long interval = 8000;
+const long interval = 1000;
 unsigned long previousMillis = 0;
 
 
@@ -82,6 +85,18 @@ void printNewMessage(String string) {
   tft.setTextSize(2);
   tft.println(string);
 }
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------//
+                                                                        //Publishing functions//
+
+void pubNextQuestion(){
+  if(next_question_clicked){
+  next_question_clicked = false;
+  mqttClient.beginMessage(topic_nextq);
+  mqttClient.print("Change to next question");
+  mqttClient.endMessage();
+  }
+}
+
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------//
 
@@ -89,6 +104,17 @@ void printNewMessage(String string) {
 void press() {
   if (digitalRead(START) == LOW) {
     is_started = !is_started;
+
+//sends topic to broker on buttonpress. 
+    if (is_started){
+      start_button_clicked = true;
+    }
+  }
+}
+
+void chng_quest(){
+  if (digitalRead(NEXT_QUESTION) == LOW){
+    next_question_clicked = true;
   }
 }
 
@@ -110,6 +136,7 @@ void setup() {
   pinMode(SENSOR1, INPUT);  //Define the analog/digital port as a digital port (left port)
   pinMode(SENSOR2, INPUT);  //Define the right port
   pinMode(START, INPUT);    //initialize the button as an input device
+  pinMode(NEXT_QUESTION, INPUT);
   tft.begin();
   Serial.begin(9600);
   
@@ -145,6 +172,7 @@ void setup() {
 
   delay(2000);
 
+
   mqttClient.beginMessage(topic);
   mqttClient.print("test message from Wio");
   mqttClient.endMessage();
@@ -174,6 +202,7 @@ void setup() {
   attachInterrupt(SENSOR1, interrupt1, RISING); // Sensor 1 - left port of the Wio terminal
   attachInterrupt(SENSOR2, interrupt2, RISING); // Sensor 2 - right port of the Wio terminal
   attachInterrupt(START, press, CHANGE);
+  attachInterrupt(NEXT_QUESTION, chng_quest, CHANGE);
 }
 
 
