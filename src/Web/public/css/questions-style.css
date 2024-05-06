@@ -4,6 +4,7 @@
   font-size: xx-large;
   text-align: center;
 }
+
 body {
   background-color: rgb(255, 255, 255);
 }
@@ -18,7 +19,7 @@ body {
   bottom: 12rem;
 }
 
-.arrow-button {
+.next-button {
   background-color: rgb(206, 149, 244);
   border-radius: 30px;
   border: none;
@@ -26,15 +27,18 @@ body {
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   cursor: pointer;
 }
-.arrow-button:hover {
+
+.next-button:hover {
   background-color: rgb(206, 100, 244);
   cursor: pointer;
 }
+
 .user-container {
   display: flex;
   width: 100%;
   justify-content: space-between;
 }
+
 .user {
   padding-top: 1rem;
   padding-left: 3rem;
@@ -54,6 +58,7 @@ body {
   width: 60%;
   margin: auto;
 }
+
 #question {
   font-size: 48px;
   font-family: "Nunito Sans", sans-serif;
@@ -71,6 +76,7 @@ body {
   padding: 10px 20px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
+
 #timer {
   color: rgb(0, 0, 0);
   font-family: "Nunito Sans", sans-serif;
