@@ -1,6 +1,6 @@
 /*Specifies how the page will look like; colors, margins, size...*/
         body { 
-            background-color: #ffffff; 
+            background: linear-gradient(to bottom, rgb(169, 0, 121),rgb(245, 2, 156));
             background-size: cover;
             color: #333333;
             margin: 0;
