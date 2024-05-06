@@ -52,7 +52,7 @@ Composite Score ≤ Threshold: Suggests that certain essential elements associat
 
 ---
 
-**_Purpose:_**The purpose of the Love Detector is to draw smiles on their users' faces, bring them closer, and be an exciting and fun way to meet new people, make new friends, and create meaningful relationships - no matter what kind. In case you don't agree with the result our tool has calculated, please select the appropriate option at the end of your date and understand that technology cannot be perfect, but you are :).
+**_Purpose:_** The purpose of the Love Detector is to draw smiles on their users' faces, bring them closer, and be an exciting and fun way to meet new people, make new friends, and create meaningful relationships - no matter what kind. In case you don't agree with the result our tool has calculated, please select the appropriate option at the end of your date and understand that technology cannot be perfect, but you are :).
 
 ---
 

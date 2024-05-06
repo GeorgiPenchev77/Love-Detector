@@ -83,7 +83,7 @@ The following section contains the design diagram, that the team followed during
 ## Documentation
 
 ## License
-The project is licensed under the MIT License. Refer to the [**LICENSE**](LICENSE) file for more information.
+The project is licensed under the MIT License. Refer to the [**LICENSE**](documents/License) file for more information.
 
 ### Team members:
 - Georgi Penchev (penchev@student.chalmers.se)
