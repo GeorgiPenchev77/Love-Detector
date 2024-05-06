@@ -6,12 +6,15 @@ const http = require('http');
 const server = http.createServer(app);
 const io = new Server(server);
 const mqtt = require('mqtt');
+const fs = require('fs');
 
 
 app.use(express.static('public')); // Serve static files from the 'public' directory
-
+app.use(express.static('public/assets')); // serve questions from assets folder
 // Start the server
 const PORT = process.env.PORT || 3000;
+
+
 
 
 const protocol = 'mqtt';
@@ -28,7 +31,7 @@ const client = mqtt.connect(connectURL, {
   reconnectPeriod: 1000,
 })
 
-const topics = ['startbutton_click', 'individualMeasure_button'];
+const topics = ['startbutton_click', 'individualMeasure_button', 'change_question'];
 
 client.on('connect', () => {
   console.log('Connected');
@@ -44,6 +47,9 @@ client.on("message", (topic, payload) => {
   }
   else if(topics[1] == topic){
     io.emit('measuringMessage'); 
+  }else{
+    io.emit('next_question');
+    console.log("1");
   }
   console.log('Received message:', topic, payload.toString());
 });

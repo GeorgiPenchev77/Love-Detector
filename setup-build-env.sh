@@ -20,6 +20,7 @@ arduino-cli core install Seeeduino:samd --config-file .arduino-cli.yaml
 # Install 'native' packages (libraries that do not come with the core)
 arduino-cli lib install "Seeed Arduino rpcWiFi@1.0.6"
 arduino-cli lib install "ArduinoMqttClient@0.1.8"
+arduino-cli lib install "Adafruit NeoPixel@1.12.1"
 
 cd -
 
