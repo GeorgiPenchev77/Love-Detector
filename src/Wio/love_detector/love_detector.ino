@@ -12,9 +12,9 @@ TFT_eSPI tft;
 
 #define STANDARD_HORIZONTAL_VIEW 3
 //define the three buttons of the terminal: 3 is left, 2 is middle, 1 is right
-#define START BUTTON_3
+#define SPEED_DATE BUTTON_3
 #define NEXT_QUESTION BUTTON_2
-#define HELP BUTTON_1
+#define INDIVIDUAL_MEASUREMENT BUTTON_1
 
 #define SENSOR1 PIN_WIRE_SCL //define the left pin of the terminal as Sensor 1 
 #define SENSOR2 0 //define the right pin of the terminal as Sensor 2
@@ -36,18 +36,23 @@ const String reset_message = "Test has been stopped.\n Press button again to res
 const int max_heartpluse_duty = 2000;  //maximum delay between sensor logs, i.e. if >2 seconds there will be an error pop-up
 const int total = 1200000; // used to calculate heart-rate
 const int measure_limit = 20; //the limit of sensor measurements
+int im_avg = 0;
 
 volatile bool previous_state = false; //boolean to store the previous state of the program
 volatile bool is_started = false;  // boolean to store whether the test has been started or not (this is the via BUTTON_3)
+volatile bool im_is_started = false;
 bool start_button_clicked = false;
 bool next_question_clicked = false;
+bool im_button_clicked=false;
 
 //all used variables are duplicated in order to get the second sensor working
 unsigned long sub1, sub2;
 unsigned long temp1[21], temp2[21];
 unsigned char counter1, counter2;
+volatile int counter_im = 0;
 unsigned int heart_rate1 = 0, heart_rate2 = 0;
 volatile bool data_effect1 = true, data_effect2 = true;  // boolean to store whether data is valid or not
+int im_hr[5];
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------//
 
@@ -63,6 +68,8 @@ int        port     = 1883;
 const char topic[]  = "test";
 const char topic2[]  = "startbutton_click";
 const char topic_nextq[]  = "change_question";
+const char topic_im[] = "individual_measurement";
+const char topic_im_started[] = "im_started";
 
 
 //set interval for sending messages (milliseconds)
@@ -97,12 +104,52 @@ void pubNextQuestion(){
   }
 }
 
+void pubIndividualMeasurementStarted(){
+  if(im_button_clicked){
+    im_button_clicked = false;
+    mqttClient.beginMessage(topic_im_started);
+    mqttClient.print("Individual Measurement has been started.");
+    mqttClient.endMessage();
+    Serial.println("Individual measurement has been started.");
+  }
+}
+
+void pubIndividualMeasurement(){
+  Serial.println("Publish try called");
+  if(counter_im==4){
+  mqttClient.beginMessage(topic_im);
+  mqttClient.print(String(calculateAvg()));
+  mqttClient.endMessage();
+  Serial.println(calculateAvg());
+  }
+}
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------//
 
+int calculateAvg(){
+  Serial.println("called");
+  for(int i=0;i<=sizeof(im_hr) / sizeof(int);i++){
+    im_avg=im_avg+im_hr[i];
+  }
+  return (im_avg/ (sizeof(im_hr) / sizeof(int)));
+}
+
+
+
+void start_im() {
+  if (digitalRead(INDIVIDUAL_MEASUREMENT) == LOW) {
+    im_is_started = !im_is_started;
+
+//sends topic to broker on buttonpress. 
+    if (im_is_started){
+      im_button_clicked = true;
+    }
+  }
+}
+
 //function to read every button press to start/stop the test
 void press() {
-  if (digitalRead(START) == LOW) {
+  if (digitalRead(SPEED_DATE) == LOW) {
     is_started = !is_started;
 
 //sends topic to broker on buttonpress. 
@@ -135,8 +182,9 @@ void reset2() {
 void setup() {
   pinMode(SENSOR1, INPUT);  //Define the analog/digital port as a digital port (left port)
   pinMode(SENSOR2, INPUT);  //Define the right port
-  pinMode(START, INPUT);    //initialize the button as an input device
+  pinMode(SPEED_DATE, INPUT);    //initialize the button as an input device
   pinMode(NEXT_QUESTION, INPUT);
+  pinMode(INDIVIDUAL_MEASUREMENT, INPUT);
   tft.begin();
   Serial.begin(9600);
   
@@ -201,8 +249,9 @@ void setup() {
     */
   attachInterrupt(SENSOR1, interrupt1, RISING); // Sensor 1 - left port of the Wio terminal
   attachInterrupt(SENSOR2, interrupt2, RISING); // Sensor 2 - right port of the Wio terminal
-  attachInterrupt(START, press, CHANGE);
+  attachInterrupt(SPEED_DATE, press, CHANGE);
   attachInterrupt(NEXT_QUESTION, chng_quest, CHANGE);
+  attachInterrupt(INDIVIDUAL_MEASUREMENT, start_im, CHANGE);
 }
 
 
@@ -212,7 +261,6 @@ void setup() {
 void loop() {
 
  mqttClient.poll();
- Serial.println(is_started);
 
   if (is_started != previous_state) { //interchange messages based on whether test is started or not
     if (is_started) {
@@ -224,10 +272,27 @@ void loop() {
     previous_state = is_started; //save the current value in order to check later whether there has been a change or not
   }
 
+   unsigned long currentMillis = millis();
+  if(currentMillis - previousMillis >= interval){
+    previousMillis = currentMillis;
+    if(start_button_clicked){
+      start_button_clicked = false;
+
+      mqttClient.beginMessage("startbutton_click");
+      mqttClient.print("Start Button Clicked");
+      mqttClient.endMessage();
+    }
+
+    pubNextQuestion();
+    pubIndividualMeasurementStarted();
+    pubIndividualMeasurement();
+  }
+
   //Neopixels test-value
-  int randomLevel = random(1, 100);
+  /*int randomLevel = random(1, 100);
   light(randomLevel);
   delay(200);
+  */
 }
 
 /*interrupt function is stopped via button press,
@@ -235,7 +300,7 @@ when stopped the test will be marked as invalid and reset to run again,
 it will start running on next button press*/
 void interrupt1() {
 
-  if (is_started) {
+  if (is_started || im_is_started) {
     temp1[counter1] = millis(); //start counting time between sensor ticks
 
     switch (counter1) {
@@ -264,7 +329,7 @@ void interrupt1() {
 
   }
 
-  else if (!is_started) { // reset the test if the test has been paused as data would not be valid then
+  else if (!is_started && !im_is_started) { // reset the test if the test has been paused as data would not be valid then
     reset1();
   }
 }
@@ -333,6 +398,11 @@ void sum1() {
   if (data_effect1) { // only calculate if the variable showing whether the data is valid is true.
     heart_rate1 = total / (temp1[20] - temp1[0]);
     Serial.println(result_message1+String(heart_rate1)); // print results in serial monitor screen to reduce terminal screen overloading. Results will be shown in UI anyways.
+    if(counter_im<5){
+      im_hr[counter_im]=heart_rate1;
+      Serial.println(im_hr[counter_im]);
+      counter_im++;
+    }
   }
   data_effect1 = true;
 }
