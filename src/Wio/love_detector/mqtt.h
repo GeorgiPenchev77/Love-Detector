@@ -31,11 +31,14 @@ const char pass[] = SECRET_PASS;  // your network password (use for WPA, or use 
 const char broker[] = SECRET_IP;
 int        port     = 1883;
 
-const char topic_start[] = "startbutton_click";
+const char topic_start[] = "start_button_click";
 const char topic_nextQ[] = "change_question";
+const char topic_individualM[] = "individual_measure_button_click";
+const char topic_heartRate[] = "heart_rate";
 
 const char payload_start[]  = "Start button has been clicked";
 const char payload_nextQ[]  = "Change to the next question";
+const char payload_individualM[] = "Individual measurement has been started";
 
 //set interval for sending messages (milliseconds)
 const long interval = 1000;
@@ -75,6 +78,8 @@ void setupMQTT(){
 
     delay(5000);
   }
+  
+  //mqttClient.setKeepAliveInterval(60); // Set the keep-alive interval to 60 seconds
   printNewMessage("You're connected to the MQTT broker!");
 
   delay(2000);
@@ -86,6 +91,29 @@ void maintainMQTTConnection(){
   mqttClient.poll();
 }
 
+/*void reconnect() {
+    while (!mqttClient.connected()) {
+        Serial.print("Attempting MQTT connection...");
+        if (mqttClient.connect(broker, port)) {
+            Serial.println("connected");
+            // Set the keep-alive interval here
+            mqttClient.setKeepAliveInterval(60); // Set the keep-alive interval to 60 seconds
+        } else {
+            Serial.print("failed, rc=");
+            Serial.println(" try again in 5 seconds");
+            delay(5000);
+        }
+    }
+}
+*/
+
+bool wifiConnected() {
+  if(WiFi.status() == WL_CONNECTED) {
+    return true;
+  } else {
+    return false;
+  }
+}
 
 bool MQTTpublishCheck(){
   // method to check if there has passed enough time since the last 
