@@ -1,5 +1,22 @@
 #include "led.h"
 
+Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, LED_PIN, NEO_GRB + NEO_KHZ800);
+
+
+void neoPixelSetup(){
+  //Neopixels Setup
+  randomSeed(analogRead(LED_PIN));
+  pixels.setBrightness(255);
+  pixels.begin(); // This initializes the NeoPixel library.
+
+  // Set all pixels to "off" (black)
+  for (int i = 0; i < NUMPIXELS; i++) {
+      pixels.setPixelColor(i, pixels.Color(0, 0, 0));
+  }
+  pixels.show();
+
+}
+
 void blinkSequence(uint32_t color){// makes it on off then on 2 times, with small delay
 for (int j = 0; j < 2; j++) { 
     for (int i = 0; i < NUMPIXELS; i++) {

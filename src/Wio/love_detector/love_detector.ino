@@ -4,6 +4,9 @@
 #include "led.h"
 
 
+
+
+
 volatile bool previousState = false; // store the previous state of the START button
 volatile bool isStarted = false;     // store whether the test has been started or not (this is the via S)
 bool startButtonClicked = false;
@@ -27,14 +30,17 @@ void changeQuestion(){
 }
 
 
-
-
 void setup() {
 
   pinMode(START, INPUT);    //initialize the button as an input device
   pinMode(NEXT_QUESTION, INPUT);
+
+
+
   setupWioOutput();            
-  mqtt.setup();
+  setupMQTT();
+  neoPixelSetup();
+  
 
   printNewMessage(START_MESSAGE);
   leftSensor.setup();
@@ -48,7 +54,7 @@ void setup() {
 //the code in the loop will only execute on button press
 void loop() {
 
-  mqtt.maintainConnection();
+  maintainMQTTConnection();
 
   if (isStarted != previousState) { //interchange messages based on whether test is started or not
     if (isStarted) {
@@ -60,19 +66,19 @@ void loop() {
   previousState = isStarted; //save the current value in order to check later whether there has been a change or not
   }
 
-  mqtt.currentMillis = millis();
-  if(currentMillis - previousMillis >= interval){
-    previousMillis = currentMillis;
+  
+  if(MQTTpublishCheck){
+
     if(startButtonClicked){
       startButtonClicked = false;
 
-      mqtt.publish(mqtt.topic_start, mqtt.payload_start);
+      MQTTpublish(topic_start, payload_start);
     }
 
     if(nextQuestionClicked){
       nextQuestionClicked = false;
 
-      mqtt.publish(mqtt.topic_nextQ, mqtt.payload_nextQ);
+      MQTTpublish(topic_nextQ, payload_nextQ);
     }
   }
 

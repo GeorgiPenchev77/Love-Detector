@@ -9,7 +9,7 @@ extern TFT_eSPI tft;
 
 //Terminal button macros
 #define START BUTTON_3             // Left button
-#define NEXT_Q BUTTON_2            // Middle button
+#define NEXT_QUESTION BUTTON_2            // Middle button
 #define HELP BUTTON_1              // Right button
 /* -------------------------------------------------------------------------- */
 
