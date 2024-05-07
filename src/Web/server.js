@@ -9,8 +9,11 @@ const mqtt = require('mqtt');
 const fs = require('fs');
 
 
-app.use(express.static('public')); // Serve static files from the 'public' directory
+app.use(express.static('public/html')); // Serve static files from the 'public' directory
 app.use(express.static('public/assets')); // serve questions from assets folder
+app.use(express.static('public/css'));
+app.use(express.static('public'));
+
 // Start the server
 const PORT = process.env.PORT || 3000;
 
@@ -42,16 +45,17 @@ client.on('connect', () => {
 
 
 client.on("message", (topic, payload) => {
-  if (topics[0] == topic){
+  if (topics[0] == topic) {
     io.emit('switchpage', { nextPage: './questions.html' });
   }
   else if(topics[1] == topic){
     io.emit('measuringMessage'); 
   }else{
+  if (topics[2] == topic) {
     io.emit('next_question');
-    console.log("1");
   }
   console.log('Received message:', topic, payload.toString());
+}
 });
 
 io.on('connection', (socket) => {
