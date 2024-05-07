@@ -1,9 +1,9 @@
 body {
   width: 100%;
   height: 100%;
-  background: linear-gradient(to bottom, rgb(169, 0, 121),rgb(245, 2, 156));
+  background-color: rgb(255, 255, 255);
   /* Fallback background color */
-  font-family: "Nico Moji", sans-serif;
+  font-family: "Nunito Sans", sans-serif;
 }
 
 .heading-container {
@@ -12,9 +12,8 @@ body {
 }
 
 h1 {
-  color: rgb(61, 0, 69) ;
+  color: rgb(206, 149, 244);
   font-size: 3.5rem;
-  font-family: "Nunito Sans", sans-serif;
 }
 
 .middle-container {
@@ -25,7 +24,27 @@ h1 {
 h2 {
   margin-bottom: 1rem;
   margin-top: 0;
-  color: rgb(61, 0, 69);
+}
+
+.next-button-picture {
+  width: 50px;
+  height: 50px;
+}
+
+.button-container {
+  display: flex;
+  width: 90%;
+  justify-content: space-between;
+}
+
+.back-button {
+  margin-top: 20px;
+  margin-left: 3rem;
+  padding: 15px 30px;
+  background-color: rgb(206, 149, 244);
+  border-radius: 20px;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
 .users {
@@ -38,12 +57,11 @@ h2 {
   border-radius: 30px;
   margin: 3rem;
   margin-top: 0;
-  background-color: rgb(169, 0, 121);
+  background-color: rgb(206, 149, 244);
 }
 
 p {
   margin: 4px;
-  color: rgb(61, 0, 69) ;
 }
 
 .instructions-container {
@@ -52,42 +70,22 @@ p {
   flex-direction: column;
   align-items: center;
 }
+
 .instruction {
   align-items: left;
   width: 80%;
 }
 
-.button-container {
-  display: flex;
-  width: 90%;
-  justify-content: space-between;
-}
-.arrow-button {
-  background-color: rgb(169, 0, 121);
+.next-button {
+  background-color: rgb(206, 149, 244);
   border-radius: 30px;
   border: none;
   padding: 10px 20px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   cursor: pointer;
 }
-.arrow-button:hover {
-  background-color: rgb(125, 10, 93);
-  cursor: pointer;
-}
-.arrow-right-picture {
-  width: 50px;
-  height: 50px;
-}
-.back-button {
-  margin-top: 20px;
-  margin-left: 3rem;
-  padding: 15px 30px;
-  background-color: rgb(169, 0, 121);
-  border-radius: 20px;
-  border: none;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-}
-.back-button:hover {
-  background-color: rgb(125, 10, 93);
+
+.next-button:hover {
+  background-color: rgb(206, 100, 244);
   cursor: pointer;
 }

@@ -1,6 +1,6 @@
 # Love Detector
 
-![Love Detector Official Logo](Love-Detector-Logo.png)
+![Love Detector Official Logo](documents/images/Love-Detector-Logo.png)
 
 ### Table of Contents
 - [Love Detector](#love-detector)
@@ -78,12 +78,12 @@ The following section lists the different ways in which our project can be used:
 ## Hardware and Software Diagrams:
 The following section contains the design diagram, that the team followed during the lifecycle of the project:
 
-![Design Diagram Final Version](Design-Diagram.png)
+![Design Diagram Final Version](documents/images/Design-Diagram.png)
 
 ## Documentation
 
 ## License
-The project is licensed under the MIT License. Refer to the [**LICENSE**](LICENSE) file for more information.
+The project is licensed under the MIT License. Refer to the [**LICENSE**](documents/License) file for more information.
 
 ### Team members:
 - Georgi Penchev (penchev@student.chalmers.se)
