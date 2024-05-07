@@ -104,7 +104,7 @@ body {
     background-color: rgb(125, 10, 93);
     cursor: pointer;
   }
-  .arrow-button {
+  .next-button {
     background-color: rgb(169, 0, 121);
     border-radius: 20px;
     border: none;
@@ -112,7 +112,7 @@ body {
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     cursor: pointer;
   }
-  .arrow-button:hover {
+  .next-button:hover {
     background-color: rgb(125, 10, 93);
     cursor: pointer;
   }
