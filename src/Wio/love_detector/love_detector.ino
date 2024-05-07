@@ -89,13 +89,13 @@ void loop() {
 
     if(leftSensor.isUpdated){
       leftSensor.setIsUpdated();
-      MQTTpublish(topic_heartRate, String(leftSensor.heartRate));
+      MQTTpublish(topic_heartRateLeft, String(leftSensor.heartRate));
       Serial.println("Left Success");
     }
 
     if(rightSensor.isUpdated){
       rightSensor.setIsUpdated();
-      MQTTpublish(topic_heartRate, String(rightSensor.heartRate));
+      MQTTpublish(topic_heartRateRight, String(rightSensor.heartRate));
       Serial.println("Right Success");
     }
 

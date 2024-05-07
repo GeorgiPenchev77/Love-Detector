@@ -34,7 +34,8 @@ int        port     = 1883;
 const char topic_start[] = "start_button_click";
 const char topic_nextQ[] = "change_question";
 const char topic_individualM[] = "individual_measure_button_click";
-const char topic_heartRate[] = "heart_rate";
+const char topic_heartRateLeft[] = "heart_rate_left";
+const char topic_heartRateRight[] = "heart_rate_right";
 
 const char payload_start[]  = "Start button has been clicked";
 const char payload_nextQ[]  = "Change to the next question";

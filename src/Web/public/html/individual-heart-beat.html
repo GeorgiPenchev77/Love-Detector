@@ -23,11 +23,11 @@
             <h2><span id="displayUserName1"></span> </h2>
             <p><span id="displayUserPronouns1"></span></p>
               <div class="instruction-container">
-                <p>1: remove any accessories from your ear</p>
+                <p>Step 1: Remove any accessories from your ear.</p>
                 <br>
-                <p>2: attach the earklip to your earbud</p>
+                <p>Step 2: Attach the sensor to your ear securely.</p>
                 <br>
-                <p>3: Press the RIGHT button on the terminal to start the heartbeatsensor</p>
+                <p>Step 3: Press the Right button on the terminal to start the individual measurement.</p>
               </div>
             
         </div>
@@ -35,11 +35,11 @@
             <h2><span id="displayUserName2"></span></h2>
             <p><span id="displayUserPronouns2"></span></p>
             <div class="instruction-container">
-              <p>1: remove any accessories from your ear</p>
+              <p>Step 1: Remove any accessories from your ear.</p>
               <br>
-              <p>2: attach the earklip to your earbud</p>
+              <p>Step 2: Attach the sensor to your ear securely.</p>
               <br>
-              <p>3: Press the RIGHT button on the terminal to start the heartbeatsensor</p>
+              <p>Step 3: Press the Right button on the terminal to start the individual measurement.</p>
             </div>
         </div>
         <div class="nextUserButton-container">
@@ -55,7 +55,9 @@
     </div>
   </body>
   <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <script src="/server.js"></script>
   <script>
+    const socket = io();
 
 
     // Retrieve user info from previous page
@@ -73,14 +75,17 @@
     function goBack() {
       window.history.back();
     }
+
+    socket.on('ready', function(data){
+      console.log(getAvg());
+    })
     
     //show only container with user 1 first.
     document.getElementById('user1').style.display = 'block';
     document.getElementById('user2').style.display = 'none';
     document.getElementById('nextUserButton').style.display = 'none';
 
-    const socket = io();
-
+    
     socket.on('measuringMessage', function(data){
       console.log('Received measuringMessage event');
       displayMeasureMessage('user1');
