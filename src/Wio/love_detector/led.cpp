@@ -11,7 +11,7 @@ void neoPixelSetup(){
 
   // Set all pixels to "off" (black)
   for (int i = 0; i < NUMPIXELS; i++) {
-      pixels.setPixelColor(i, pixels.Color(0, 0, 0));
+      pixels.setPixelColor(i, pixels.Color(BLACK));
   }
   pixels.show();
 
@@ -49,32 +49,32 @@ void fadeInSequence() {//Fading effect only blue
 }
 void upAndDown() { // function for the lights fillup and down 
   for (int i = 0; i < NUMPIXELS; i++) { 
-      pixels.setPixelColor(i, pixels.Color(255, 0, 127)); //pink color
+      pixels.setPixelColor(i, pixels.Color(PINK)); //pink color
       pixels.show();
       delay(25);
     }
     for (int i = 10; i >= 0; i--) {
-      pixels.setPixelColor(i, pixels.Color(255, 255, 168)); //brighter color
+      pixels.setPixelColor(i, pixels.Color(YELLOW)); //brighter color
       pixels.show();
       delay(25);
     }
 }
 void slowFillUp(uint32_t color) {
   for (int i = 0; i < 3; i++) { 
-      pixels.setPixelColor(i, pixels.Color(255, 0, 0)); //pink color
+      pixels.setPixelColor(i, pixels.Color(RED)); //pink(ish) color
       pixels.show();
       delay(500);
     }
 }
 void noMatchMode(uint32_t color) {
-  color = pixels.Color(255, 0, 0);
+  color = pixels.Color(RED);
   slowFillUp(color); 
   blinkSequence(color);
   delay(150); // The amount of time between each individually lit up pixel  
 }
 
 void normalMode(uint32_t color){
-  color = pixels.Color(0, 0, 255);
+  color = pixels.Color(BLUE);
   lightUpSequence(color);
   delay(100);
   blinkSequence(color);
@@ -82,7 +82,7 @@ void normalMode(uint32_t color){
   fadeInSequence();
 }
 void crazyMode() { // for ultimate love match
-  uint32_t color = pixels.Color(255, 0, 127); // pink color for the blinking
+  uint32_t color = pixels.Color(PINK); // pink color for the blinking
   blinkSequence(color);
   upAndDown();
 }
