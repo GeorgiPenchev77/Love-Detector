@@ -81,10 +81,15 @@ void setupMQTT(){
 }
 
 void maintainMQTTConnection(){
+  //mqttClient.poll() "keeps alive" connection between the broker and client
+  //by periodically pinging the broker
   mqttClient.poll();
 }
 
+
 bool MQTTpublishCheck(){
+  // method to check if there has passed enough time since the last 
+  // MQTT publish 
   unsigned long currentMillis = 0;
   if(currentMillis - previousMillis >= interval){
     previousMillis = currentMillis;

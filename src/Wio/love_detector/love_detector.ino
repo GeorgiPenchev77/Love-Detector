@@ -3,70 +3,65 @@
 #include "heartBeatSensor.h"
 #include "led.h"
 
-
-
-
-
-volatile bool previousState = false; // store the previous state of the START button
+volatile bool previousState = false; // store the previous state of the START_DATE button
 volatile bool isStarted = false;     // store whether the test has been started or not (this is the via S)
 bool startButtonClicked = false;
 bool nextQuestionClicked = false;
 
 //function to read every button press to start/stop the test
 void press() {
-  if (digitalRead(START) == LOW) {
     isStarted = !isStarted;
-    //sends topic to broker on buttonpress. 
+
+    // MQTT flag
     if (isStarted){
       startButtonClicked = true;
     }
-  }
 }
 
 void changeQuestion(){
-  if (digitalRead(NEXT_QUESTION) == LOW){
-    nextQuestionClicked = true;
-  }
+  // MQTT flag
+  nextQuestionClicked = true;
 }
 
 
 void setup() {
-
-  pinMode(START, INPUT);    //initialize the button as an input device
+  // initialization of buttons as an input devices
+  pinMode(START_DATE, INPUT);    
   pinMode(NEXT_QUESTION, INPUT);
-
 
 
   setupWioOutput();            
   setupMQTT();
   neoPixelSetup();
   
-
   printNewMessage(START_MESSAGE);
+
+  // interrupts attachment
   leftSensor.setup();
   rightSensor.setup();
-  attachInterrupt(START, press, CHANGE);
-  attachInterrupt(NEXT_QUESTION, changeQuestion, CHANGE);
+  attachInterrupt(START_DATE, press, FALLING);
+  attachInterrupt(NEXT_QUESTION, changeQuestion, FALLING);
+
 }
 
 /* -------------------------------------------------------------------------- */
 
-//the code in the loop will only execute on button press
+ 
 void loop() {
 
   maintainMQTTConnection();
 
-  if (isStarted != previousState) { //interchange messages based on whether test is started or not
+  // change message based on whether test is started or not
+  if (isStarted != previousState) { 
     if (isStarted) {
       printNewMessage(LOADING_MESSAGE);
     } else if (!isStarted) {
       printNewMessage(RESET_MESSAGE);
     }
-  
-  previousState = isStarted; //save the current value in order to check later whether there has been a change or not
+    //save the current value in order to check later whether there has been a change or not
+    previousState = isStarted; 
   }
 
-  
   if(MQTTpublishCheck){
 
     if(startButtonClicked){
@@ -81,7 +76,6 @@ void loop() {
       MQTTpublish(topic_nextQ, payload_nextQ);
     }
   }
-
 }
 
 

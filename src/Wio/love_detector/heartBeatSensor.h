@@ -8,6 +8,7 @@
 extern volatile bool isStarted;
 extern volatile bool previousState;
 
+//Sensors macross
 #define LEFT 0
 #define RIGHT 1
 
@@ -50,6 +51,13 @@ class HBSensor{
       attachSensorInterrupt(SENSOR);
     }
     
+    /*
+      attachInterrupt(pin, ISR, mode) creates an "event listener", that triggers whenever specified event happens on the monitored pins.
+      In our case:
+        - "digitalPinToInterrupt(x)" shows that we're monitoring changes on Digital Pin x
+        - "interrupt[...]" is the name of the callback function, called when a change occurs
+        - "RISING" specifies that we only need to call the function when the pin goes from LOW to HIGH
+    */
     void attachSensorInterrupt(const byte SENSOR, const byte MODE = RISING){
       switch(SENSOR){
         case LEFT: 
