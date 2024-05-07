@@ -10,3 +10,6 @@ body {
     background: linear-gradient(to bottom, rgb(169, 0, 121),rgb(245, 2, 156));
     height: 100vh;
 }
+.info_container {
+    text-align: center;
+}
