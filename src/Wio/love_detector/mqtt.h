@@ -22,6 +22,8 @@ changing NETWORK to the name of the network the Wio is connecting to,
 
 
 
+
+
 class MQTT{
   public:
 
@@ -34,13 +36,18 @@ class MQTT{
 
     const char broker[] = SECRET_IP;
     int        port     = 1883;
-    const char topic1[]  = "test";
-    const char topic2[]  = "real_unique_topic_2";
+    const char topic_start[]  = "startbutton_click";
+    const char topic_nextQ[]  = "change_question";
     const char topic3[]  = "real_unique_topic_3";
 
+    const char payload_start[]  = "Start button has been clicked";
+    const char payload_nextQ[]  = "Change to the next question";
+
+
     //set interval for sending messages (milliseconds)
-    const long interval = 8000;
+    const long interval = 1000;
     unsigned long previousMillis = 0;
+    unsigned long currentMillis = 0;
 
     void setup(){
       setupWifi();
