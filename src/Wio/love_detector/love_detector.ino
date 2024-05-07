@@ -1,6 +1,8 @@
 #include "util.h"
 #include "mqtt.h"
 #include "heartBeatSensor.h"
+#include "led.h"
+
 
 volatile bool previousState = false; // store the previous state of the START button
 volatile bool isStarted = false;     // store whether the test has been started or not (this is the via S)
