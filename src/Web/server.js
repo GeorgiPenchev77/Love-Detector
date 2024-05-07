@@ -53,8 +53,8 @@ client.on("message", (topic, payload) => {
   }else{
   if (topics[2] == topic) {
     io.emit('next_question');
-    console.log("1");
   }
+}
   console.log('Received message:', topic, payload.toString());
 });
 
