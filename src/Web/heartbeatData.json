@@ -1,0 +1,30 @@
+{
+    "users": [
+        {
+           "username": "user1", 
+           "all_measurements_date": [
+            {"heartbeat": 75},
+            {"heartbeat": 75},
+            {"heartbeat": 75}
+           ],
+           "normal_heartbeat": "65",
+           "date_heartbeat_peak": "100",
+           "date_heartbeat_avg": "83"
+        },
+        {
+            "username": "user2", 
+            "all_measurements_date": [
+            {"heartbeat": 75},
+            {"heartbeat": 75},
+            {"heartbeat": 75}
+            ],
+            "normal_heartbeat": "65",
+            "date_heartbeat_peak": "100",
+            "date_heartbeat_avg": "89"
+        }
+    ],
+    "test_data_for_graph": { 
+        "timeSeconss": "120",
+        "numberOfPoints": "10"
+    }
+}
