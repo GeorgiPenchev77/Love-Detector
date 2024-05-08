@@ -2,10 +2,8 @@
     "users": [
         {
            "username": "user1", 
-           "all_measurements_date": [
-            {"heartbeat": 75},
-            {"heartbeat": 75},
-            {"heartbeat": 75}
+           "heartbeat_data": [
+                75, 60, 65
            ],
            "normal_heartbeat": "65",
            "date_heartbeat_peak": "100",
@@ -13,10 +11,8 @@
         },
         {
             "username": "user2", 
-            "all_measurements_date": [
-            {"heartbeat": 75},
-            {"heartbeat": 75},
-            {"heartbeat": 75}
+            "heartbeat_data": [
+                65, 60, 81
             ],
             "normal_heartbeat": "65",
             "date_heartbeat_peak": "100",
@@ -24,7 +20,8 @@
         }
     ],
     "test_data_for_graph": { 
-        "timeSeconss": "120",
-        "numberOfPoints": "10"
-    }
+        "time_seconds": "120",
+        "number_of_points": "10"
+    },
+    "match_result": "Match"
 }
