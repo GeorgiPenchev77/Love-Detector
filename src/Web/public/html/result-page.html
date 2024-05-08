@@ -6,42 +6,25 @@
     -->
 
     <head>
-        <title> Start date </title>
+        <title> Results </title>
         <link rel="icon" href="./assets/images/Heart-Image.webp" type="image/x-icon">
         <link rel="stylesheet" href="./css/result-page-style.css">
     </head>
 
-<body>
-    <div class="header">
-        <h1>Results</h1>
-    </div>
-    <div class="button-container">
-        <button type="button" class="button" onclick="redirectToPage('./start-date-page.html')">
-            <img class="next-button-picture" src="./assets/images/Next-Button.png" alt="Continue"/>
-        </button>
-        <button type="button" class="button" onclick="redirectToPage('./index.html')">
-            <img class="home-button-picture" src="./assets/images/Home-Button.png" alt="Home"> </img>
-        </button>
-    </div>
-
-    <div class="user-container">
-        <div class="user-box">
-            <div class="headerUserName">
-                <h3>User 1</h3>
-            </div>
-            <div class="chart-container" id="chart_div1">
-            </div>
+    <body>
+        <div class="heading-container">
+            <h1>Speed Date Results</h1>
+            <h3>Compatibility result:</h3>
         </div>
-
-        <div class="user-box">
-            <div class="headerUserName">
-                <h3>User 2</h3>
-            </div>
-            <div class="chart-container" id="chart_div2">
-            </div>
+        <div class="result-container">
+            <h2>Level X!</h2>
         </div>
-    </div>
-</body>
+        <div class="button-container">
+            <button type="button" class="start-button" onclick="saveUserInfo()">
+                <img class="next-button-picture" src="./assets/images/Next-Button.png" alt="Continue"/>
+            </button>
+        </div>
+    </body>
 
     <!-- 
     Uses script from googlecharts, original code is in Gitlab: ChartsGoogle.html
