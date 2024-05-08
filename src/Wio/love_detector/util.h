@@ -10,7 +10,7 @@ extern TFT_eSPI tft;
 //Terminal button macros
 #define START_DATE BUTTON_3               // Left button
 #define NEXT_QUESTION BUTTON_2            // Middle button
-#define HELP BUTTON_1                     // Right button
+#define INDIVIDUAL_MEASUREMENT BUTTON_1   // Right button
 /* -------------------------------------------------------------------------- */
 
 /* ------------------------------ Wio Printing ------------------------------ */
