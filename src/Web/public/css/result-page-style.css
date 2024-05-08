@@ -1,0 +1,86 @@
+body {
+    width: 100%;
+    height: 100%;
+    background-color: rgb(255, 255, 255);
+    /* Fallback background color */
+    font-family: "Nunito Sans", sans-serif;
+  }
+  
+  .heading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  h1 {
+    color: rgb(206, 149, 244);
+    font-size: 3.5rem;
+  }
+  
+  .input {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .result-container {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    padding: 3rem;
+    border-radius: 30px;
+    margin: 3em;
+    background-color: rgb(206, 149, 244);
+    text-align: center;
+  }
+  
+  h2 {
+    margin: 10px;
+    margin-left: 0;
+    justify-self: center;
+  }
+  
+  h3 {
+    text-align: center;
+    margin: 0;
+    line-height: 15px;
+  }
+  
+  .next-button-picture {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .button-container {
+    display: flex;
+    width: 90%;
+    justify-content: end;
+  }
+  
+  .users {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+  
+  .start-button {
+    background-color: rgb(206, 149, 244);
+    border-radius: 30px;
+    border: none;
+    padding: 10px 20px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  }
+  
+  .start-button:hover {
+    background-color: rgb(206, 100, 244);
+    cursor: pointer;
+  }
+
+.home-button-picture {
+    width: 50px;
+    height: 50px;
+}
+
+.chart-container {
+    margin-top: 20px;
+    height: 90%;
+}
