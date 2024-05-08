@@ -1,27 +1,31 @@
 {
-    "users": [
-        {
-           "username": "user1", 
-           "heartbeat_data": [
-                75, 60, 65
-           ],
-           "normal_heartbeat": "65",
-           "date_heartbeat_peak": "100",
-           "date_heartbeat_avg": "83"
-        },
-        {
-            "username": "user2", 
-            "heartbeat_data": [
-                65, 60, 81
-            ],
-            "normal_heartbeat": "65",
-            "date_heartbeat_peak": "100",
-            "date_heartbeat_avg": "89"
-        }
-    ],
-    "test_data_for_graph": { 
-        "time_seconds": "120",
-        "number_of_points": "10"
+  "users": [
+    {
+      "username": "user1",
+      "heartbeat_data": [
+        75,
+        60,
+        65
+      ],
+      "normal_heartbeat": "0",
+      "date_heartbeat_avg": null,
+      "date_heartbeat_peak": null
     },
-    "match_result": "Match"
+    {
+      "username": "user2",
+      "heartbeat_data": [
+        65,
+        60,
+        81
+      ],
+      "normal_heartbeat": "0",
+      "date_heartbeat_avg": null,
+      "date_heartbeat_peak": null
+    }
+  ],
+  "test_data_for_graph": {
+    "time_seconds": null,
+    "number_of_points": 10
+  },
+  "match_result": null
 }
