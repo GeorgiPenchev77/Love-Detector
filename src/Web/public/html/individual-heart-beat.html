@@ -14,33 +14,41 @@
 
   <body>
     <div class="heading-container">
-      <h1>Measure your individual heartbeat! </h1>
-        <h3>Each participant will now get their normal individual heartbeat measured. </h3>
+      <h1>Measure your individual heartbeat!</h1>
+      <h3>
+        Each participant will now get their normal individual heartbeat
+        measured.
+      </h3>
     </div>
     <div class="middle-container">
       <div class="users">
         <div class="user-container" id="user1">
-            <h2><span id="displayUserName1"></span> </h2>
-            <p><span id="displayUserPronouns1"></span></p>
-              <div class="instruction-container">
-                <p>1: remove any accessories from your ear</p>
-                <br>
-                <p>2: attach the earklip to your earbud</p>
-                <br>
-                <p>3: Press the RIGHT button on the terminal to start the heartbeatsensor</p>
-              </div>
-            
+          <h2><span id="displayUserName1"></span></h2>
+          <p><span id="displayUserPronouns1"></span></p>
+          <div class="instruction-container">
+            <p>1: Remove any accessories from your ear</p>
+            <br />
+            <p>2: Attach the ear-clip to your earbud</p>
+            <br />
+            <p>
+              3: Press the RIGHT button on the terminal to start the heartbeat
+              sensor
+            </p>
+          </div>
         </div>
         <div class="user-container" id="user2">
-            <h2><span id="displayUserName2"></span></h2>
-            <p><span id="displayUserPronouns2"></span></p>
-            <div class="instruction-container">
-              <p>1: remove any accessories from your ear</p>
-              <br>
-              <p>2: attach the earklip to your earbud</p>
-              <br>
-              <p>3: Press the RIGHT button on the terminal to start the heartbeatsensor</p>
-            </div>
+          <h2><span id="displayUserName2"></span></h2>
+          <p><span id="displayUserPronouns2"></span></p>
+          <div class="instruction-container">
+            <p>1: Remove any accessories from your ear</p>
+            <br />
+            <p>2: Attach the ear-clip to your earbud</p>
+            <br />
+            <p>
+              3: Press the RIGHT button on the terminal to start the heartbeat
+              sensor
+            </p>
+          </div>
         </div>
         <div class="nextUserButton-container">
           <button id="nextUserButton">Next User</button>
@@ -56,8 +64,6 @@
   </body>
   <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
   <script>
-
-
     // Retrieve user info from previous page
     var userName1 = sessionStorage.getItem("userName1");
     var userPronouns1 = sessionStorage.getItem("userPronouns1");
@@ -73,62 +79,61 @@
     function goBack() {
       window.history.back();
     }
-    
+
     //show only container with user 1 first.
-    document.getElementById('user1').style.display = 'block';
-    document.getElementById('user2').style.display = 'none';
-    document.getElementById('nextUserButton').style.display = 'none';
+    document.getElementById("user1").style.display = "block";
+    document.getElementById("user2").style.display = "none";
+    document.getElementById("nextUserButton").style.display = "none";
 
     const socket = io();
 
-    socket.on('measuringMessage', function(data){
-      console.log('Received measuringMessage event');
-      displayMeasureMessage('user1');
+    socket.on("measuringMessage", function (data) {
+      console.log("Received measuringMessage event");
+      displayMeasureMessage("user1");
     });
 
     // Toggle visibility of user containers
-    document.getElementById('nextUserButton').addEventListener('click', function() {
-      document.getElementById('user1').style.display = 'none';
-      document.getElementById('user2').style.display = 'block';
-      document.getElementById('nextUserButton').style.display = 'none';
+    document
+      .getElementById("nextUserButton")
+      .addEventListener("click", function () {
+        document.getElementById("user1").style.display = "none";
+        document.getElementById("user2").style.display = "block";
+        document.getElementById("nextUserButton").style.display = "none";
 
-      
-
-        socket.on('measuringMessage', function(data){
-          console.log('Received measuringMessage event');
-          displayMeasureMessage('user2');
+        socket.on("measuringMessage", function (data) {
+          console.log("Received measuringMessage event");
+          displayMeasureMessage("user2");
         });
-    });
-    
-    
+      });
+
     /*function for displaying a waiting message while each user is measuring heartbeat,
      then after measurement is done, the users normal heartbeat is displayed. */
     function displayMeasureMessage(userId) {
       var userContainer = document.getElementById(userId);
 
-      //hide the instructions while the measuring process is running. 
-      var instructionContainer = userContainer.querySelector('.instruction-container');
-      instructionContainer.style.display = 'none';
+      //hide the instructions while the measuring process is running.
+      var instructionContainer = userContainer.querySelector(
+        ".instruction-container"
+      );
+      instructionContainer.style.display = "none";
 
-      var messageParagraph = document.createElement('p');
-      messageParagraph.textContent = "Measuring heartbeat..."; 
-      messageParagraph.classList.add('message-text'); // Add a class for CSS to style the text
+      var messageParagraph = document.createElement("p");
+      messageParagraph.textContent = "Measuring heartbeat...";
+      messageParagraph.classList.add("message-text"); // Add a class for CSS to style the text
       userContainer.appendChild(messageParagraph);
 
-      //hide the  nextUserButton while the measuring process is running.  
-      document.getElementById('nextUserButton').style.display = 'none';
+      //hide the  nextUserButton while the measuring process is running.
+      document.getElementById("nextUserButton").style.display = "none";
 
-      
-
-      setTimeout(function() {
+      setTimeout(function () {
         messageParagraph.textContent = "heartbeat: X";
 
-        if(userId == 'user1'){
-          document.getElementById('nextUserButton').style.display = 'block';
-        }else{
-          document.getElementById('nextUserButton').style.display = 'none';
+        if (userId == "user1") {
+          document.getElementById("nextUserButton").style.display = "block";
+        } else {
+          document.getElementById("nextUserButton").style.display = "none";
         }
-      }, 5000); 
+      }, 5000);
     }
   </script>
 </html>

@@ -4,15 +4,16 @@ body {
   background: linear-gradient(to bottom, rgb(169, 0, 121), rgb(245, 2, 156));
   /* Fallback background color */
   font-family: "Audiowide", sans-serif;
-  color: white;
+  color: rgb(0, 0, 0);
   height: 100vh;
 }
 .info {
   width: 100%;
   text-align: center;
+  color: #000000;
 }
 a {
-  color: #ffffff;
+  color: #000000;
   text-decoration: none;
 }
 
@@ -31,7 +32,7 @@ h1 {
   flex-direction: column;
   width: 100%;
   margin-bottom: 20px;
-  font-family: "Nunito Sans", "sans-serif";
+  font-family: sans-serif;
 }
 
 .user-container {
@@ -41,7 +42,8 @@ h1 {
   padding-right: 1rem;
   border-radius: 30px;
   margin: 3em;
-  background-color: rgb(206, 149, 244);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: rgb(255, 255, 255);
 }
 
 h2 {
@@ -67,6 +69,7 @@ h3 {
   display: flex;
   width: 90%;
   justify-content: end;
+  margin-top: 40px;
 }
 
 .users {
@@ -76,7 +79,7 @@ h3 {
 }
 
 .start-button {
-  background-color: rgb(206, 149, 244);
+  background-color: rgb(169, 0, 121);
   border-radius: 30px;
   border: none;
   padding: 10px 20px;
@@ -84,6 +87,6 @@ h3 {
 }
 
 .start-button:hover {
-  background-color: rgb(206, 100, 244);
+  background-color: rgb(125, 10, 93);
   cursor: pointer;
 }

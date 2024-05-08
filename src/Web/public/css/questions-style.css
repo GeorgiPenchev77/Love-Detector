@@ -1,26 +1,43 @@
 .header {
-  color: rgb(206, 149, 244);
-  font-family: "Nunito Sans", sans-serif;
+  color: rgb(0, 0, 0);
+  font-family: "Audiowide", sans-serif;
   font-size: xx-large;
   text-align: center;
 }
+.header h1 {
+  margin: 10px;
+}
 
 body {
-  background: linear-gradient(to bottom, rgb(169, 0, 121),rgb(245, 2, 156));
+  background: linear-gradient(to bottom, rgb(169, 0, 121), rgb(245, 2, 156));
+  height: 100vh;
 }
 
 .button-container {
-  position: fixed;
   display: flex;
   width: 80%;
+  margin: 80px auto;
   justify-content: space-between;
+  height: 7rem;
   align-items: center;
-  right: 9rem;
-  bottom: 12rem;
+}
+.button-container2 {
+  display: flex;
+  gap: 1rem;
 }
 
+.back-button {
+  display: block;
+  padding: 15px 30px;
+  height: 70px;
+  background-color: rgb(169, 0, 121);
+  border-radius: 30px;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
 .next-button {
-  background-color: rgb(206, 149, 244);
+  display: block;
+  background-color: rgb(169, 0, 121);
   border-radius: 30px;
   border: none;
   padding: 10px 20px;
@@ -29,24 +46,27 @@ body {
 }
 
 .next-button:hover {
-  background-color: rgb(206, 100, 244);
+  background-color: rgb(125, 10, 93);
+  cursor: pointer;
+}
+.back-button:hover {
+  background-color: rgb(125, 10, 93);
   cursor: pointer;
 }
 
 .user-container {
+  position: absolute;
   display: flex;
-  width: 100%;
-  justify-content: space-between;
-}
+  flex-direction: column;
+  width: 10%;
 
-.user {
-  padding-top: 1rem;
-  padding-left: 3rem;
-  padding-right: 3rem;
-  border-radius: 30px;
-  margin: 0 3.5rem;
-  background-color: rgb(206, 149, 244);
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  padding: 1rem;
+  border-radius: 30px;
+  margin: 0 3rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  font-family: sans-serif;
+  color: rgb(255, 255, 255);
 }
 
 #question-container {
@@ -54,14 +74,15 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
-  /* height: 10rem; */
-  width: 60%;
+  height: 10rem;
+  width: 50%;
   margin: auto;
+  padding: 80px 0;
 }
 
 #question {
-  font-size: 48px;
-  font-family: "Nunito Sans", sans-serif;
+  font-size: 42px;
+  font-family: "Audiowide", sans-serif;
   color: rgb(0, 0, 0);
   text-align: center;
   display: flex;
@@ -70,16 +91,27 @@ body {
 }
 
 .question-button {
-  background-color: rgb(206, 149, 244);
+  background-color: rgb(169, 0, 121);
   border-radius: 30px;
   border: none;
   padding: 10px 20px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  position: relative;
+}
+.question-button:hover {
+  background-color: rgb(125, 10, 93);
+  cursor: pointer;
+}
+.timer_container {
+  position: relative;
+  display: flex;
+  justify-content: center; /* Center the timer horizontally */
+  align-items: center;
 }
 
 #timer {
   color: rgb(0, 0, 0);
-  font-family: "Nunito Sans", sans-serif;
+  font-family: "Audiowide", sans-serif;
   font-size: xx-large;
   text-align: center;
 }
