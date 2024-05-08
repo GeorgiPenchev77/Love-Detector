@@ -97,18 +97,18 @@ p {
 
 .back-button {
   padding: 15px 30px;
-  background-color: rgb(169, 0, 121);
+  background-color: rgb(255, 255, 255);
   border-radius: 30px;
   border: none;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   margin-top: 10px;
 }
 .back-button:hover {
-  background-color: rgb(125, 10, 93);
+  background-color: rgb(141, 141, 141);
   cursor: pointer;
 }
 .next-button {
-  background-color: rgb(169, 0, 121);
+  background-color: rgb(255, 255, 255);
   border-radius: 30px;
   border: none;
   padding: 10px 20px;
@@ -117,6 +117,6 @@ p {
   margin-top: 10px;
 }
 .next-button:hover {
-  background-color: rgb(125, 10, 93);
+  background-color: rgb(141, 141, 141);
   cursor: pointer;
 }

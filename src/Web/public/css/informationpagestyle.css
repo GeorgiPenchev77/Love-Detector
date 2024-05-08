@@ -1,5 +1,5 @@
 .header {
-  color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
   background-color: rgb(245, 2, 156);
   font-size: xx-large;
   text-align: center;
@@ -9,10 +9,10 @@
 body {
   background: linear-gradient(to bottom, rgb(169, 0, 121), rgb(245, 2, 156));
   height: 100vh;
-  display: flex;
+  /* display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: center; */
 }
 .info_container {
   display: flex;
@@ -22,9 +22,10 @@ body {
   /* height: 10rem; */
   width: 60%;
   margin: auto;
-  color: aliceblue;
+  color: rgb(0, 0, 0);
+  font-family: "Audiowide", sans-serif;
 }
-.back-button {
+/*.back-button {
   margin-top: 20rem;
   margin-left: 3rem;
   padding: 15px 30px;
@@ -33,9 +34,20 @@ body {
   border: none;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   color: aliceblue;
+}*/
+.back-button {
+  display: block;
+  margin: 300px 50px;
+  padding: 15px 30px;
+  height: 70px;
+  background-color: rgb(196, 178, 191);
+  border-radius: 30px;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 .back-button:hover {
-  background-color: rgb(61, 0, 69);
+  background-color: rgb(255, 255, 255);
+  cursor: pointer;
 }
 /*.background {
   position: relative;
