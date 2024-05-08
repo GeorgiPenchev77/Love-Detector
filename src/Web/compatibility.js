@@ -15,6 +15,7 @@ const compCalc = () => {
     data.users.forEach(user => {
       user.date_heartbeat_avg = dateAvr(user);
       user.date_heartbeat_peak = datePeak(user);
+      user.date_heartbeat_peak = calculateSpike(user);
     });
 
     data.test_data_for_graph.number_of_points = comparePointsNum;
@@ -41,19 +42,61 @@ const regAvr = (user) => {
 };
 
 const dateAvr = (user) => {
+  const arrayHb = user.heartbeat_data;
+  let sum = 0;
+  for (let i = 0; i < arrayHb.length; i++) {
+    sum = arrayHb[i] + sum;
+  }
+  const averageHb = sum / arrayHb.length;
+
   //return dateAvr hb of a user
+  return averageHb;
+};
+
+
+const datePeak = (user) => {
+  let peak = 0;
+  const arrayHb = user.heartbeat_data;
+  for (let i=0; i< arrayHb.length; i++){
+    if ( peak > arrayHb){
+      peak = arrayHb[i];
+    }
+  }
+  return peak;
+};
+
+const calculateSpike = (user) => {
+  let spikeCounter=0;
+  const arrayHb = user.heartbeat_data;
+
+  if (arrayHb.length<=2){
+    for (let i=1; i<= arrayHb.length; i++){
+      const difference = arrayHb[i-1] - arrayHb[i];
+      if (difference<15){
+        spikeCounter = spikeCounter+1;
+      }
+    }
+  }
+  return spikeCounter;
+};
+const UpperBracket = (user) =>{
+ // indAverageHb
   return null;
 };
 
-const datePeak = (user) => {
-  //return peak hb of a user during the date
+const indCompositeScore = (user) =>{
+
   return null;
 };
 
 const match = (users) => {
+
+
   //return compatibility score
   return null;
 };
+
+
 
 
 module.exports = compCalc;
