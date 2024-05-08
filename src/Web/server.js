@@ -8,6 +8,7 @@ const io = new Server(server);
 const mqtt = require('mqtt');
 const fs = require('fs');
 
+const compCalc = require('compatibility.js')
 
 app.use(express.static('public/html')); // Serve static files from the 'public' directory
 app.use(express.static('public/assets')); // serve questions from assets folder
