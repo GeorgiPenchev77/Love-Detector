@@ -32,14 +32,14 @@ const char broker[] = SECRET_IP;
 int        port     = 1883;
 
 const char topic_start[] = "start_button_click";
+const char topic_stop[] = "stop_button_click";
 const char topic_nextQ[] = "change_question";
-const char topic_individualM[] = "individual_measure_button_click";
 const char topic_heartRateLeft[] = "heart_rate_left";
 const char topic_heartRateRight[] = "heart_rate_right";
 
 const char payload_start[]  = "Start button has been clicked";
+const char payload_stop[] = "Stop button has been clicked";
 const char payload_nextQ[]  = "Change to the next question";
-const char payload_individualM[] = "Individual measurement has been started";
 
 //set interval for sending messages (milliseconds)
 const long interval = 1000;
@@ -92,30 +92,6 @@ void maintainMQTTConnection(){
   mqttClient.poll();
 }
 
-/*void reconnect() {
-    while (!mqttClient.connected()) {
-        Serial.print("Attempting MQTT connection...");
-        if (mqttClient.connect(broker, port)) {
-            Serial.println("connected");
-            // Set the keep-alive interval here
-            mqttClient.setKeepAliveInterval(60); // Set the keep-alive interval to 60 seconds
-        } else {
-            Serial.print("failed, rc=");
-            Serial.println(" try again in 5 seconds");
-            delay(5000);
-        }
-    }
-}
-*/
-
-bool wifiConnected() {
-  if(WiFi.status() == WL_CONNECTED) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
 bool MQTTpublishCheck(){
   // method to check if there has passed enough time since the last 
   // MQTT publish 
@@ -127,7 +103,6 @@ bool MQTTpublishCheck(){
     return false;
   }
 }
-
 
 void MQTTpublish(String topic, String payload){
     mqttClient.beginMessage(topic);
