@@ -15,7 +15,7 @@ const compCalc = () => {
     data.users.forEach(user => {
       user.date_heartbeat_avg = dateAvr(user);
       user.date_heartbeat_peak = datePeak(user);
-      user.date_heartbeat_peak = calculateSpike(user);
+      user.date_spike_Counter = calculateSpike(user);
     });
 
     data.test_data_for_graph.number_of_points = comparePointsNum;
@@ -58,27 +58,26 @@ const datePeak = (user) => {
   let peak = 0;
   const arrayHb = user.heartbeat_data;
   for (let i=0; i< arrayHb.length; i++){
-    if ( peak > arrayHb){
+    if ( peak < arrayHb[i]){
       peak = arrayHb[i];
     }
   }
-  return peak;
+  return peak ;
 };
 
-const calculateSpike = (user) => {
+const calculateSpike = (user) => { // there is no spike in json file
   let spikeCounter=0;
   const arrayHb = user.heartbeat_data;
 
-  if (arrayHb.length<=2){
-    for (let i=1; i<= arrayHb.length; i++){
-      const difference = arrayHb[i-1] - arrayHb[i];
-      if (difference<15){
-        spikeCounter = spikeCounter+1;
-      }
+  for (let i=1; i< arrayHb.length; i++){
+    const difference = Math.abs(arrayHb[i] - arrayHb[i - 1]);
+    if (difference>=15){
+      spikeCounter = spikeCounter+1;
     }
   }
   return spikeCounter;
 };
+
 const UpperBracket = (user) =>{
  // indAverageHb
   return null;
