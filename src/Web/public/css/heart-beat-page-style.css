@@ -1,0 +1,72 @@
+/*Specifies how the page will look like; colors, margins, size...*/
+body {
+  background: linear-gradient(to bottom, rgb(169, 0, 121), rgb(245, 2, 156));
+  background-size: cover;
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+}
+
+.header {
+  /*this is the BPM letters*/
+  display: flex;
+  justify-self: center;
+  color: rgb(0, 0, 0);
+  text-align: center;
+  font-family: "Audiowide", sans-serif;
+  font-size: xx-large;
+}
+.header h1 {
+  margin: 0 auto;
+}
+
+.user-container {
+  display: flex;
+  padding: 20px;
+}
+
+.user-box {
+  flex: 1;
+  border: 2px solid #ffffff;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  margin: 20px 10px;
+  box-sizing: border-box;
+  height: 550px;
+  display: flex;
+  flex-direction: column;
+}
+
+.headerUserName {
+  color: rgb(0, 0, 0);
+  text-align: center;
+  font-size: xx-large;
+  font-family: "Audiowide", sans-serif;
+}
+
+.next-button-picture {
+  width: 50px;
+  height: 50px;
+}
+
+.home-button-picture {
+  width: 50px;
+  height: 50px;
+}
+
+.button-container {
+  position: absolute;
+  display: flex;
+  width: 90%;
+  height: 60px;
+  justify-content: end;
+  margin-top: 50px;
+}
+
+.chart-container {
+  height: 100%;
+  width: 100%;
+}
+

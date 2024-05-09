@@ -9,8 +9,9 @@
         65
       ],
       "normal_heartbeat": "0",
-      "date_heartbeat_avg": null,
-      "date_heartbeat_peak": null
+      "date_heartbeat_avg": 66.66666666666667,
+      "date_heartbeat_peak": 75,
+      "date_spike_Counter": 1
     },
     {
       "username": "Dengan",
@@ -21,8 +22,9 @@
         81
       ],
       "normal_heartbeat": "0",
-      "date_heartbeat_avg": null,
-      "date_heartbeat_peak": null
+      "date_heartbeat_avg": 68.66666666666667,
+      "date_heartbeat_peak": 81,
+      "date_spike_Counter": 1
     }
   ],
   "test_data_for_graph": {

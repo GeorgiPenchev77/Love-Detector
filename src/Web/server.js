@@ -1,8 +1,8 @@
-const express = require('express');
+const express = require("express");
 const app = express();
 
-const { Server } = require('socket.io');
-const http = require('http');
+const { Server } = require("socket.io");
+const http = require("http");
 const server = http.createServer(app);
 const io = new Server(server);
 const mqtt = require('mqtt');
@@ -10,20 +10,17 @@ const fs = require('fs');
 
 const compCalc = require('./compatibility.js')
 
-app.use(express.static('public/html')); // Serve static files from the 'public' directory
-app.use(express.static('public/assets')); // serve questions from assets folder
-app.use(express.static('public/css'));
-app.use(express.static('public'));
+app.use(express.static("public/html")); // Serve static files from the 'public' directory
+app.use(express.static("public/assets")); // serve questions from assets folder
+app.use(express.static("public/css"));
+app.use(express.static("public"));
 
 // Start the server
 const PORT = process.env.PORT || 3000;
 
-
-
-
-const protocol = 'mqtt';
-const host = 'localhost';
-const port = '1883';
+const protocol = "mqtt";
+const host = "localhost";
+const port = "1883";
 const clientId = `mqtt_${Math.random().toString(16).slice(3)}`;
 
 const connectURL = `${protocol}://${host}:${port}`;
@@ -33,33 +30,35 @@ const client = mqtt.connect(connectURL, {
   clean: true,
   connectTimeout: 4000,
   reconnectPeriod: 1000,
-})
+});
 
-const topics = ['startbutton_click', 'individualMeasure_button', 'change_question'];
+const topics = [
+  "startbutton_click",
+  "individualMeasure_button",
+  "change_question",
+];
 
-client.on('connect', () => {
-  console.log('Connected');
+client.on("connect", () => {
+  console.log("Connected");
   client.subscribe(topics, () => {
-    console.log(`Subscribe to topics: '${topics.join(', ')}'`)
+    console.log(`Subscribe to topics: '${topics.join(", ")}'`);
   });
 });
 
-
 client.on("message", (topic, payload) => {
   if (topics[0] == topic) {
-    io.emit('switchpage', { nextPage: './questions.html' });
+    io.emit("switchpage", { nextPage: "./questions.html" });
+  } else if (topics[1] == topic) {
+    io.emit("measuringMessage");
+  } else {
+    if (topics[2] == topic) {
+      io.emit("next_question");
+    }
   }
-  else if(topics[1] == topic){
-    io.emit('measuringMessage'); 
-  }else 
-  if (topics[2] == topic) {
-    io.emit('next_question');
-  }
-
-  console.log('Received message:', topic, payload.toString());
+  console.log("Received message:", topic, payload.toString());
 });
 
-io.on('connection', (socket) => {
+io.on("connection", (socket) => {
   console.log("A user connected");
 });
 
@@ -105,5 +104,18 @@ app.post("/saveUserData", (req, res) => {
         console.log("User data saved successfully.");
         res.json({ message: "User data saved successfully." });
     });
+  });
+});
+
+app.get("/getUserData", (req, res) => {
+  // Read the existing JSON file
+  fs.readFile("heartbeatData.json", (err, data) => {
+    if (err) {
+        console.error("Failed to read JSON file:", err);
+        return res.status(500).json({ error: "Failed to read JSON file." });
+    }
+
+    let existingData = JSON.parse(data);
+    res.json(existingData);
   });
 });
