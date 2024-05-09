@@ -1,0 +1,37 @@
+.header {
+  color: rgb(0, 0, 0);
+  background-color: rgb(245, 2, 156);
+  font-size: xx-large;
+  text-align: center;
+  background-clip: text;
+  font-family: "Audiowide", sans-serif;
+}
+body {
+  background: linear-gradient(to bottom, rgb(169, 0, 121), rgb(245, 2, 156));
+  height: 100vh;
+}
+.info_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 60%;
+  margin: auto;
+  color: rgb(0, 0, 0);
+  font-family: "Audiowide", sans-serif;
+}
+
+.back-button {
+  display: block;
+  margin: 300px 50px;
+  padding: 15px 30px;
+  height: 70px;
+  background-color: rgb(196, 178, 191);
+  border-radius: 30px;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.back-button:hover {
+  background-color: rgb(255, 255, 255);
+  cursor: pointer;
+}
