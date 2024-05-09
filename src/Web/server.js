@@ -67,3 +67,43 @@ server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
   compCalc();
 });
+
+
+
+
+app.use(express.json());
+
+app.post("/saveUserData", (req, res) => {
+    const userData = req.body;
+
+
+    // Read the existing JSON file
+    fs.readFile("heartbeatData.json", (err, data) => {
+      if (err) {
+          console.error("Failed to read JSON file:", err);
+          return res.status(500).json({ error: "Failed to read JSON file." });
+      }
+
+      let existingData = JSON.parse(data);
+
+      //Update the username and pronouns for the newly entered users. 
+      existingData.users[0].username = userData.user1.username || "";
+      existingData.users[0].pronouns = userData.user1.pronouns || "";
+      existingData.users[1].username = userData.user2.username || "";
+      existingData.users[1].pronouns = userData.user2.pronouns || "";
+      
+      
+
+    const jsonData = JSON.stringify(existingData, null, 2);
+
+    //Save the updated info to the json file.
+    fs.writeFile("heartbeatData.json", jsonData, (err) => {
+        if (err) {
+            console.error("Failed to save user data:", err);
+            return res.status(500).json({ error: "Failed to save user data." });
+        }
+        console.log("User data saved successfully.");
+        res.json({ message: "User data saved successfully." });
+    });
+  });
+});

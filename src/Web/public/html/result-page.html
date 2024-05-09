@@ -1,10 +1,6 @@
 <!DOCTYPE html>
 <html>
 
-    <!-- 
-    Showcases how the page is structured, temporary paths to code, not updated from main
-    -->
-
     <head>
         <title> Results </title>
         <link rel="icon" href="./assets/images/Heart-Image.webp" type="image/x-icon">
@@ -13,16 +9,30 @@
 
     <body>
         <div class="heading-container">
-            <h1>Speed Date Results</h1>
-            <h3>Compatibility result:</h3>
+            <h1>Your compatibility result is..</h1>
         </div>
         <div class="result-container">
             <h2>Level X!</h2>
         </div>
-        <div class="button-container">
-            <button type="button" class="start-button" onclick="saveUserInfo()">
-                <img class="next-button-picture" src="./assets/images/Next-Button.png" alt="Continue"/>
-            </button>
+        <div class="users">
+            <div class="user-container">
+                <h3>User 1</h3>
+                <div class="input">
+                
+                </div>
+                <div class="input">
+                   
+                </div>
+            </div>
+            <div class="user-container">
+                <h3>User 2</h3>
+                <div class="input">
+                    
+                </div>
+                <div class="input">
+                   
+                </div>
+            </div>
         </div>
     </body>
 
@@ -31,6 +41,7 @@
     -->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
+
 
         google.charts.load('current', { 'packages': ['corechart'] });
         google.charts.setOnLoadCallback(drawChart);

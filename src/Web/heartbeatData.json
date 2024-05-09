@@ -1,7 +1,8 @@
 {
   "users": [
     {
-      "username": "user1",
+      "username": "kristina",
+      "pronouns": "she/her",
       "heartbeat_data": [
         75,
         60,
@@ -12,7 +13,8 @@
       "date_heartbeat_peak": null
     },
     {
-      "username": "user2",
+      "username": "Dengan",
+      "pronouns": "he/him",
       "heartbeat_data": [
         65,
         60,

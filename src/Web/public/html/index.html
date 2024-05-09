@@ -50,29 +50,52 @@
 <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 
 <script>
-    function saveUserInfo() {
-       
-        // Get the input values
-        var userName1 = document.getElementById("userName1").value;
-        var userPronouns1 = document.getElementById("userPronouns1").value;
-        var userName2 = document.getElementById("userName2").value;
-        var userPronouns2 = document.getElementById("userPronouns2").value;
 
-        //Ensure that name fields are filled in
-        if (!userName1 || !userName2) {
-            alert("please fill in all name fields");
-            return;
-        } else {
-            // Store the user info in session storage
-            sessionStorage.setItem("userName1", userName1);
-            sessionStorage.setItem("userPronouns1", userPronouns1);
-            sessionStorage.setItem("userName2", userName2);
-            sessionStorage.setItem("userPronouns2", userPronouns2);
+function saveUserInfo() {
+        
+        // Get user input values
+        var userData = {
+            user1: {
+                username: document.getElementById("userName1").value,
+                pronouns: document.getElementById("userPronouns1").value
+            },
+            user2: {
+                username: document.getElementById("userName2").value,
+                pronouns: document.getElementById("userPronouns2").value
+            }
+        };
 
-            // Redirect to the next page
+        // Convert the JavaScript object to JSON
+        var jsonData = JSON.stringify(userData, null, 2);
+
+        // Send JSON data to server
+        fetch("/saveUserData", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: jsonData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Failed to save user data.");
+            }
+            return response.json();
+        })
+
+        .then(data =>{
+            console.log("userdata saved successfully:", data);
             window.location.href = "./individual-heart-beat.html";
-        }
-    }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+
+    };
+
+
+
+  
 
     var socket = io();
     socket.on("message", (msg) => {

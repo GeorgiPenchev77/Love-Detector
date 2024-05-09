@@ -13,8 +13,9 @@ body {
   }
   
   h1 {
-    color: rgb(206, 149, 244);
-    font-size: 3.5rem;
+    color: rgb(85, 35, 118);
+    font-size: 3rem;
+    margin-bottom: 0;
   }
   
   .input {
@@ -26,24 +27,36 @@ body {
   
   .result-container {
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    height: 30px;
     padding: 3rem;
     border-radius: 30px;
-    margin: 3em;
+    margin: 2em;
     background-color: rgb(206, 149, 244);
     text-align: center;
   }
   
   h2 {
     margin: 10px;
-    margin-left: 0;
     justify-self: center;
+    font-size: 3rem;
   }
   
-  h3 {
-    text-align: center;
-    margin: 0;
-    line-height: 15px;
+  .user-container {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    padding-top: 10px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 30px;
+    margin: 3em;
+    background-color: rgb(206, 149, 244);
   }
+
+  h3 {
+    margin: 10px;
+    justify-self: center;
+    font-size: 1.5rem;
+  }
+  
   
   .next-button-picture {
     width: 50px;
@@ -54,6 +67,7 @@ body {
     display: flex;
     width: 90%;
     justify-content: end;
+
   }
   
   .users {
