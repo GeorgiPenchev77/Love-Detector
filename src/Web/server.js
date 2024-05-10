@@ -47,7 +47,7 @@ let user1normal;
 let user2normal;
 
 function calcNormalHeartrate(array){
-  let avg;
+  let avg = 0;
   for(let i=0; i<array.length; i++ ){
     avg += array[i];
   }
@@ -92,15 +92,17 @@ client.on("message", (topic, payload) => {
     io.emit('next_question');
   }
   else if (topics[3] == topic) {
+    io.emit('progress');
     const leftMeasure = parseInt(payload);
     leftArray.push(leftMeasure);
     if(leftArray.length===5){
       user1normal=calcNormalHeartrate(leftArray);
       writeToJSON(0,user1normal);
-      console.log("wrote successfully");
+      console.log(user1normal);
     }
   }
   else if (topics[4] == topic){
+    io.emit('progress');
     const rightMeasure = parseInt(payload);
     rightArray.push(rightMeasure);
     if(rightArray.length===5){
