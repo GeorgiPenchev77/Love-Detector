@@ -71,6 +71,14 @@ h2 {
   color: rgb(255, 255, 255);
 }
 
+.user-container {
+  margin: 0 10px; 
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  text-align: center; 
+}
+
 p {
   margin: 4px;
 }
