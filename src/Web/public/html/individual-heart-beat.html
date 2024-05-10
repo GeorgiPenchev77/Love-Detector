@@ -56,10 +56,13 @@
   </body>
 
   <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  
   <script>
-    var userId = 'user1';
+    const socket = io();
+    var userId = "user1";
     var started = false;
-    var avgHeartRate;
+    let user1IM;
+    let user2IM;
 
     socket.on('start', function(){
       startMeasuring();
@@ -72,9 +75,9 @@
     })
 
   //retrieve user info from server.   
-  async function getUserdata(){
+  async function getUserData(){
     
-    const response = await fetch("/getUserData", {
+    let response = await fetch("/getUserData", {
       method: "GET",
       headers: {
         "Content-Type": "application/json"
@@ -84,7 +87,7 @@
     if (!response.ok) {
         throw new Error("Failed to retrieve user data.");
     }
-    const userData = await response.json();
+    let userData = await response.json();
 
     
     console.log("User data:", userData);
@@ -97,38 +100,50 @@
     document.getElementById("displayUserPronouns1").textContent = userPronouns1;
     document.getElementById("displayUserName2").textContent = userName2;
     document.getElementById("displayUserPronouns2").textContent = userPronouns2;
-    document.getElementById(userId).classList.add('active');
+
+    user1IM = parseInt(userData.users[0].normal_heartbeat);
+    user2IM = parseInt(userData.users[1].normal_heartbeat);
+  }
+  
+ 
+  getUserData(); 
+  document.getElementById(userId).classList.add('active');
 
 
-    function changeUser(){
+  async function getUserById(){
+    await getUserData();
+    if(userId === "user1"){
+      return user1IM;
+    }
+    else if(userId === "user2"){
+      return user2IM;
+    }
+  }
+
+  async function changeUser(){
       document.getElementById(userId).classList.remove('active');
       userId='user2';
       started = false;
       document.getElementById(userId).classList.add('active');
     }
 
-    //show only container with user 1 first.
-    document.getElementById("user1").style.display = "block";
-    document.getElementById("user2").style.display = "none";
-    document.getElementById("nextUserButton").style.display = "none";
-  }
-  getUserdata(); 
-
     function goBack() {
       window.history.back();
     }
 
     function startMeasuring(){
+      
       if(document.getElementById(userId).classList.contains('active') && !started){
+        started = true;
+
         var currentContainer=document.getElementById(userId);
         var instructionContainer = currentContainer.querySelector('.instruction-container');
-        instructionContainer.innerHTML = "";
 
+        instructionContainer.innerHTML = "";
         var messageParagraph = document.createElement('p');
         messageParagraph.textContent = "Heartbeat measuring has been started.";
         messageParagraph.classList.add('message-text'); // Add a class for CSS to style the text
         instructionContainer.appendChild(messageParagraph);
-        started = true;
       }
     }
 

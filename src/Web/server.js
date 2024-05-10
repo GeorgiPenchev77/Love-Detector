@@ -72,8 +72,6 @@ server.listen(PORT, () => {
 });
 
 
-
-
 app.use(express.json());
 
 app.post("/saveUserData", (req, res) => {
