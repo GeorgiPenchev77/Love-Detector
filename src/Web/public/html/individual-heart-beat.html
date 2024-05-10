@@ -61,17 +61,22 @@
     const socket = io();
     var userId = "user1";
     var started = false;
-    let user1IM;
-    let user2IM;
+    var individualMeasurementsMax;
+    var progressCounter = 0;
 
-    socket.on('start', function(){
+    socket.on('start', () => {
       startMeasuring();
       console.log("start");
     });
 
-    socket.on('stop', function(){
-      stopMeasuring();
-      console.log("stop");
+    socket.on('stop', () => {
+      pauseMeasuring();
+      console.log("pause");
+    })
+
+    socket.on('progress', () => {
+      progressMeasuring();
+      console.log("progress");
     })
 
   //retrieve user info from server.   
@@ -88,8 +93,10 @@
         throw new Error("Failed to retrieve user data.");
     }
     let userData = await response.json();
+  }
 
-    
+  async function fillUserData(){
+    let userData = await getUserData();
     console.log("User data:", userData);
     let userName1 = userData.users[0].username;
     let userName2 = userData.users[1].username;
@@ -101,24 +108,11 @@
     document.getElementById("displayUserName2").textContent = userName2;
     document.getElementById("displayUserPronouns2").textContent = userPronouns2;
 
-    user1IM = parseInt(userData.users[0].normal_heartbeat);
-    user2IM = parseInt(userData.users[1].normal_heartbeat);
+    individualMeasurementsMax = userData.individual_measurements;
   }
-  
  
-  getUserData(); 
+  fillUserData(); 
   document.getElementById(userId).classList.add('active');
-
-
-  async function getUserById(){
-    await getUserData();
-    if(userId === "user1"){
-      return user1IM;
-    }
-    else if(userId === "user2"){
-      return user2IM;
-    }
-  }
 
   async function changeUser(){
       document.getElementById(userId).classList.remove('active');
@@ -140,14 +134,20 @@
         var instructionContainer = currentContainer.querySelector('.instruction-container');
 
         instructionContainer.innerHTML = "";
+        var progressPercent = document.createElement('p');
+        progressPercent.textContent = progressCounter * 20 + "%";
+        progressPercent.classList.add('progress');
+
         var messageParagraph = document.createElement('p');
-        messageParagraph.textContent = "Heartbeat measuring has been started.";
+        messageParagraph.textContent = "Heartbeat measuring has been started. Progress: ";
         messageParagraph.classList.add('message-text'); // Add a class for CSS to style the text
+
         instructionContainer.appendChild(messageParagraph);
+        instructionContainer.appendChild(progressPercent);
       }
     }
 
-      function stopMeasuring(){
+    function pauseMeasuring(){
       if(document.getElementById(userId).classList.contains('active') && started){
         var currentContainer=document.getElementById(userId);
         var instructionContainer = currentContainer.querySelector('.instruction-container');
@@ -157,10 +157,53 @@
         messageParagraph.textContent = "Heartbeat measuring is paused. Restart it to complete the test.";
         messageParagraph.classList.add('message-text'); // Add a class for CSS to style the text
         instructionContainer.appendChild(messageParagraph);
-        started = false;
+        resetMeasuring();
       }
     }
 
+    async function completeMeasuring(){
+      if(document.getElementById(userId).classList.contains('active') && started){
+        var currentContainer=document.getElementById(userId);
+        var instructionContainer = currentContainer.querySelector('.instruction-container');
+        instructionContainer.innerHTML = "";
+
+        var result = await getUserIM();
+
+        var messageParagraph = document.createElement('p');
+        messageParagraph.textContent = "Normal heartbeat" + result;
+        messageParagraph.classList.add('message-text'); // Add a class for CSS to style the text
+        instructionContainer.appendChild(messageParagraph);
+        resetMeasuring();
+      }
+    }
+
+    function resetMeasuring(){
+      progressCounter = 0;
+      started = false;
+    }
+
+    async function getUserIM(){
+      let userData = await getUserData();
+      if(userId === "user1"){
+        return userData.users[0].normal_heartbeat;
+      } else {
+        return userData.users[1].normal_heartbeat;
+      }
+    }
+
+    function progressMeasuring(){
+      progressCounter++;
+      if(progressCounter < individualMeasurementsMax){
+        updatePercent();
+      } else {
+        completeMeasuring();
+      }
+    }
+
+    function updatePercent(){
+      var percent = document.getElementsByClassName('progress');
+      perscent.innerHTML = progressCounter * 20 + "%";
+    }
 
 
   </script>
