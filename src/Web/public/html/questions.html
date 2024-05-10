@@ -20,22 +20,22 @@
         <h2>User 1</h2>
         <p>
           Name:
-          <span id="name1"></span>
+          <span id="displayUserName1"></span>
         </p>
         <p>
           Pronouns:
-          <span id="pronoun1"></span>
+          <span id="displayUserPronouns1"></span>
         </p>
       </div>
       <div class="user">
         <h2>User 2</h2>
         <p>
           Name:
-          <span id="name2"></span>
+          <span id="displayUserName2"></span>
         </p>
         <p>
           Pronouns:
-          <span id="pronoun2"></span>
+          <span id="displayUserPronouns2"></span>
         </p>
       </div>
     </div>
@@ -150,14 +150,37 @@
       }, 1000);
     }
 
-    var userName1 = sessionStorage.getItem("userName1");
-    var userPronouns1 = sessionStorage.getItem("userPronouns1");
-    var userName2 = sessionStorage.getItem("userName2");
-    var userPronouns2 = sessionStorage.getItem("userPronouns2");
-    document.getElementById("name1").textContent = userName1;
-    document.getElementById("name2").textContent = userName2;
-    document.getElementById("pronoun1").textContent = userPronouns1;
-    document.getElementById("pronoun2").textContent = userPronouns2;
+
+    async function getUserData() {
+      try {
+        const response = await fetch("/getUserData", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json"
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to retrieve user data.");
+        }
+
+        const userData = await response.json();
+
+        let userName1 = userData.users[0].username;
+        let userName2 = userData.users[1].username;
+        let userPronouns1 = userData.users[0].pronouns;
+        let userPronouns2 = userData.users[1].pronouns;
+
+        document.getElementById("displayUserName1").textContent = userName1;
+        document.getElementById("displayUserPronouns1").textContent = userPronouns1;
+        document.getElementById("displayUserName2").textContent = userName2;
+        document.getElementById("displayUserPronouns2").textContent = userPronouns2;
+      } catch (error) {
+        console.error("Error loading user data:", error);
+      }
+    }
+    
+    getUserData();
 
     let timerInterval; // Interval Object for timer
     const timer = document.getElementById("timer"); //! element of timer

@@ -66,7 +66,7 @@
   <script>
 
 
-    
+  //retrieve user info from server.   
   async function getUserdata(){
     
     const response = await fetch("/getUserData", {
@@ -80,6 +80,8 @@
         throw new Error("Failed to retrieve user data.");
     }
     const userData = await response.json();
+
+    
     console.log("User data:", userData);
     let userName1 = userData.users[0].username;
     let userName2 = userData.users[1].username;
