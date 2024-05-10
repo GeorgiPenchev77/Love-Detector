@@ -18,6 +18,8 @@ const compCalc = () => {
       user.date_spike_counter = calculateSpike(user);
       user.date_upper_bracket = calculateUpperBracket(user);
       user.composite_score = indCompositeScore(user);
+      user.calculateUpperBracket = calculateUpperBracket(user);
+      
     });
 
     data.test_data_for_graph.number_of_points = comparePointsNum;
@@ -33,20 +35,17 @@ const compCalc = () => {
     throw error;
 
   }
-  
-  
-
 };
 
 const regAvr = (user) => {
-  let testAverage = 120;
+  let testAverage = 60;
   return testAverage;
 };
 
 const regPeak = (user) => {
-  let testPeak = 120;
+  let testPeak = 65;
   return testPeak;
-}
+};
 
 const dateAvr = (user) => {
   const arrayHb = user.heartbeat_data;
@@ -57,7 +56,7 @@ const dateAvr = (user) => {
   const averageHb = sum / arrayHb.length;
 
   //return dateAvr hb of a user
-  return averageHb;
+  return averageHb.toFixed(2);
 };
 
 
@@ -72,7 +71,7 @@ const datePeak = (user) => {
   return peak ;
 };
 
-const calculateSpike = (user) => { // there is no spike in json file
+const calculateSpike = (user) => { 
   let spikeCounter=0;
   const arrayHb = user.heartbeat_data;
 
@@ -86,38 +85,47 @@ const calculateSpike = (user) => { // there is no spike in json file
 };
 
 const calculateUpperBracket = (user) =>{
-  const indAverageHb= 70;
-  const indPeak = 110;
+  const indAverageHb= regAvr(user);
+  const indPeak = regPeak(user);
   
-  IM= indAverageHb + ((indPeak- indAverageHb)/2);
-  return IM;
+  let upperBracket= indAverageHb + ((indPeak- indAverageHb)/2);
+  return upperBracket;
 };
 
-const hearRateVariability = (user) =>{
-  //how many spikes with in a measured time
-  //60 seconds / spikes+1    //have to avoid it being 0 in the denominator
-  // bellow 60 seconds / 1 spike +<1
-  const variability = 60 / 1+1;
-  return variability;
-}
+const counterUpperBracket = (user) =>{
+  const upperBracket = calculateUpperBracket(user);
+  let aboveUpperBracket = 0;
+  const arrayHb = user.heartbeat_data;
+  for (let i = 0; i < arrayHb.length; i++) {
+    if (arrayHb[i] > upperBracket) {
+      aboveUpperBracket++;
+    }
+  }
+  return aboveUpperBracket;
+};
 
-const indCompositeScore = (user) =>{
-  const w0 = 0.1;
-  const w1  =0;
+const indCompositeScore = (user) => {
+  const maxDiff = 60; // normal heartbeat is between 60-100 bpm, im accounting for a bit more
+  const TRHIndex = counterUpperBracket(user);
 
-  let compositeScore =  w0 * (hearRateVariability(user) * 
-    (datePeak(user) - (regPeak(user) ) + ( dateAvr(user) - regAvr(user))))+w1;
-  return compositeScore;
+  let normalizedAvgDiff = Math.abs(dateAvr(user) - regAvr(user)) / maxDiff;
+  let normalizedPeakDiff = Math.abs(datePeak(user) - regPeak(user)) / maxDiff;
+
+  let compositeScore = Math.abs( ((calculateSpike(user)/30) * (normalizedPeakDiff - normalizedAvgDiff))+ (TRHIndex/30))*10; //30 because amount of measurments
+
+  return compositeScore.toFixed(2);
 };
 
 const match = (users) => {
 
+  const user1 = users[0];//4,58
+  const user2 = users[1];//12,36
 
-  //return compatibility score
-  return null;
+  if (user1.composite_score>3.75 && user2.composite_score>3.75){
+    console.log("level 2");
+  }
+  else if (user1.composite_score>10.5 && user2.composite_score>10.5){
+    console.log("level 3");
+  }
+  else console.log("level 1");
 };
-
-
-
-
-module.exports = compCalc;
