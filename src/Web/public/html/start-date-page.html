@@ -52,8 +52,8 @@
 
   const socket = io();
 
-  socket.on('switchpage', function (data) {
-    window.location.href = data.nextPage;
+  socket.on('start', function () {
+    window.location.href = "./questions.html";
   });
 
   // Retrieve user info from session storage

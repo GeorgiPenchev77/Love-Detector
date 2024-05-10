@@ -57,6 +57,7 @@
     const socket = io();
     var userId = 'user1';
     var started = false;
+    var avgHeartRate;
 
     socket.on('start', function(){
       startMeasuring();
@@ -67,16 +68,6 @@
       stopMeasuring();
       console.log("stop");
     })
-
-    socket.on('heartRateLeft', function (data) {
-      heartRateLeftArray[index] = data.heartRateLeft;
-      indexLeft++;
-    });
-
-    socket.on('heartRateRight', function (data) {
-      heartRateRightArray[index] = data.heartRateRight;
-      indexRight++;
-    });
 
     // Retrieve user info from previous page
     var userName1 = sessionStorage.getItem("userName1");
