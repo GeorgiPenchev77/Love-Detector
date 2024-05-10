@@ -92,7 +92,7 @@
     if (!response.ok) {
         throw new Error("Failed to retrieve user data.");
     }
-    let userData = await response.json();
+    return await response.json();
   }
 
   async function fillUserData(){
@@ -139,7 +139,7 @@
         progressPercent.classList.add('progress');
 
         var messageParagraph = document.createElement('p');
-        messageParagraph.textContent = "Heartbeat measuring has been started. Progress: ";
+        messageParagraph.textContent = "Heartbeat measuring has been started. \nProgress: ";
         messageParagraph.classList.add('message-text'); // Add a class for CSS to style the text
 
         instructionContainer.appendChild(messageParagraph);
@@ -170,7 +170,7 @@
         var result = await getUserIM();
 
         var messageParagraph = document.createElement('p');
-        messageParagraph.textContent = "Normal heartbeat" + result;
+        messageParagraph.textContent = "Normal heartbeat: " + result;
         messageParagraph.classList.add('message-text'); // Add a class for CSS to style the text
         instructionContainer.appendChild(messageParagraph);
         resetMeasuring();
@@ -201,8 +201,9 @@
     }
 
     function updatePercent(){
-      var percent = document.getElementsByClassName('progress');
-      perscent.innerHTML = progressCounter * 20 + "%";
+      var percent = document.getElementsByClassName('progress')[0];
+      console.log(percent);
+      percent.innerHTML = progressCounter * 20 + "%";
     }
 
 
