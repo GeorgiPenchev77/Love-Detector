@@ -7,7 +7,7 @@
     "start": "nodemon server.js"
   },
   "nodemonConfig": {
-    "ignore": ["heartbeatData.json"]
+    "ignore": ["newHeartbeatData.json"]
   },
   "author": "",
   "license": "ISC",

@@ -96,7 +96,7 @@ app.post("/saveUserData", (req, res) => {
     const jsonData = JSON.stringify(existingData, null, 2);
 
     //Save the updated info to the json file.
-    fs.writeFile("heartbeatData.json", jsonData, (err) => {
+    fs.writeFile("newHeartbeatData.json", jsonData, (err) => {
         if (err) {
             console.error("Failed to save user data:", err);
             return res.status(500).json({ error: "Failed to save user data." });
@@ -109,7 +109,7 @@ app.post("/saveUserData", (req, res) => {
 
 app.get("/getUserData", (req, res) => {
   // Read the existing JSON file
-  fs.readFile("heartbeatData.json", (err, data) => {
+  fs.readFile("newHeartbeatData.json", (err, data) => {
     if (err) {
         console.error("Failed to read JSON file:", err);
         return res.status(500).json({ error: "Failed to read JSON file." });
