@@ -6,13 +6,16 @@
     <link rel="stylesheet" href="css/individual-heart-beat-style.css" >
     <link rel="preconnect" href="https://fonts.googleapis.com" >
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin >
-    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet" >
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
   </head>
 
   <body>
     <div class="heading-container">
-      <h1>Measure your individual heartbeat! </h1>
-        <h3>Each participant will now get their normal individual heartbeat measured. </h3>
+      <h1>Measure your individual heartbeat!</h1>
+      <h3>
+        Each participant will now get their normal individual heartbeat
+        measured.
+      </h3>
     </div>
     <div class="middle-container">
       <div class="users">
@@ -47,14 +50,13 @@
     <div class="navigationButton-container">
       <button type="button" class="back-button" onclick="goBack()">Back</button>
       <a class="next-button" href="./start-date-page.html">
-        <img src="/assets/images/Next-Button.png" alt="Continue" height="50" />
+        <img src="./assets/images/Next-Button.png" alt="Continue" height="50" />
       </a>
     </div>
   </body>
 
   <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
   <script>
-    const socket = io();
     var userId = 'user1';
     var started = false;
     var avgHeartRate;
@@ -69,13 +71,28 @@
       console.log("stop");
     })
 
-    // Retrieve user info from previous page
-    var userName1 = sessionStorage.getItem("userName1");
-    var userPronouns1 = sessionStorage.getItem("userPronouns1");
-    var userName2 = sessionStorage.getItem("userName2");
-    var userPronouns2 = sessionStorage.getItem("userPronouns2");
+  //retrieve user info from server.   
+  async function getUserdata(){
+    
+    const response = await fetch("/getUserData", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      },
+    }) 
 
-    // Display user info on the page
+    if (!response.ok) {
+        throw new Error("Failed to retrieve user data.");
+    }
+    const userData = await response.json();
+
+    
+    console.log("User data:", userData);
+    let userName1 = userData.users[0].username;
+    let userName2 = userData.users[1].username;
+    let userPronouns1 = userData.users[0].pronouns;
+    let userPronouns2 = userData.users[1].pronouns;
+
     document.getElementById("displayUserName1").textContent = userName1;
     document.getElementById("displayUserPronouns1").textContent = userPronouns1;
     document.getElementById("displayUserName2").textContent = userName2;
@@ -89,6 +106,13 @@
       started = false;
       document.getElementById(userId).classList.add('active');
     }
+
+    //show only container with user 1 first.
+    document.getElementById("user1").style.display = "block";
+    document.getElementById("user2").style.display = "none";
+    document.getElementById("nextUserButton").style.display = "none";
+  }
+  getUserdata(); 
 
     function goBack() {
       window.history.back();
