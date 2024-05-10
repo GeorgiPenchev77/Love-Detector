@@ -41,6 +41,46 @@ client.on("connect", () => {
   });
 });
 
+let leftArray = [];
+let rightArray = [];
+let user1normal;
+let user2normal;
+
+function calcNormalHeartrate(array){
+  let avg;
+  for(let i=0; i<array.length; i++ ){
+    avg += array[i];
+  }
+  return avg/array.length;
+}
+
+function writeToJSON(id, value){
+  fs.readFile("newHeartbeatData.json", (err, data) => {
+    if (err) {
+        console.error("Failed to read JSON file:", err);
+        return res.status(500).json({ error: "Failed to read JSON file." });
+    }
+
+    let existingData = JSON.parse(data);
+
+    //Update the username and pronouns for the newly entered users. 
+    existingData.users[id].normal_heartbeat = value || "";
+    
+  const jsonData = JSON.stringify(existingData, null, 2);
+
+  //Save the updated info to the json file.
+  fs.writeFile("newHeartbeatData.json", jsonData, (err) => {
+      if (err) {
+          console.error("Failed to save user data:", err);
+          return res.status(500).json({ error: "Failed to save user data." });
+      }
+      console.log("User data saved successfully.");
+  });
+});
+}
+
+
+
 client.on("message", (topic, payload) => {
   if (topics[0] == topic) {
     io.emit('start');
@@ -52,10 +92,22 @@ client.on("message", (topic, payload) => {
     io.emit('next_question');
   }
   else if (topics[3] == topic) {
-    io.emit('heartRateLeft');
+    const leftMeasure = parseInt(payload);
+    leftArray.push(leftMeasure);
+    if(leftArray.length===5){
+      user1normal=calcNormalHeartrate(leftArray);
+      writeToJSON(0,user1normal);
+      console.log("wrote successfully");
+    }
   }
   else if (topics[4] == topic){
-    io.emit('hearRateRight');
+    const rightMeasure = parseInt(payload);
+    rightArray.push(rightMeasure);
+    if(rightArray.length===5){
+      user2normal=calcNormalHeartrate(rightArray);
+      writeToJSON(1,user2normal);
+      console.log("wrote successfully");
+    }
   }
 
   console.log('Received message:', topic, payload.toString());
