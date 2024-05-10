@@ -5,6 +5,7 @@
         <title> Results </title>
         <link rel="icon" href="./assets/images/Heart-Image.webp" type="image/x-icon">
         <link rel="stylesheet" href="./css/result-page-style.css">
+        <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
     </head>
 
     <body>
@@ -14,23 +15,21 @@
         <div class="result-container">
             <h2>Level X!</h2>
         </div>
-        <div class="users">
-            <div class="user-container">
-                <h3>User 1</h3>
-                <div class="input">
-                
+        <div class="middle-container">
+            <div class="users">
+                <div class="user-container" id="user1">
+                    <h3><span id="displayUserName1"></span></h3>
+                        <p><span id="displayUserPronouns1"></span></p>
+                        <p>Normal Heartbeat pre-date: <span id="displayNormalHeartbeat1"></span></p>
+                        <p>Average BPM during date: <span id="displayDateHeartbeatAvg1"></span> </p>
+                        <p>Heartbeat peak during date: <span id="displayHeartbeatPeak1"></span> </p>
                 </div>
-                <div class="input">
-                   
-                </div>
-            </div>
-            <div class="user-container">
-                <h3>User 2</h3>
-                <div class="input">
-                    
-                </div>
-                <div class="input">
-                   
+                <div class="user-container" id="user2">
+                    <h3><span id="displayUserName2"></span></h3>
+                        <p> <span id="displayUserPronouns2"></span></p>
+                        <p>Normal Heartbeat pre-date: <span id="displayNormalHeartbeat2"></span> </p>
+                        <p>Average BPM during date: <span id="displayDateHeartbeatAvg2"></span> </p>
+                        <p>Heartbeat peak during date: <span id="displayHeartbeatPeak2"></span> </p>
                 </div>
             </div>
         </div>
@@ -104,6 +103,53 @@
         function redirectToPage(pageUrl) { /*Redirects to a subsequent page, is used below. To use it attack path to file*/
             window.location.href = pageUrl;
         }
+
+
+
+        async function getUserData() {
+      try {
+        const response = await fetch("/getUserData", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json"
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to retrieve user data.");
+        }
+
+        const userData = await response.json();
+
+        let userName1 = userData.users[0].username;
+        let userName2 = userData.users[1].username;
+        let userPronouns1 = userData.users[0].pronouns;
+        let userPronouns2 = userData.users[1].pronouns;
+        let userNormalHeartbeat1 = userData.users[0].normal_heartbeat;
+        let userNormalHeartbeat2 = userData.users[1].normal_heartbeat;
+        let userDateHeartbeatAvg1 = userData.users[0].date_heartbeat_avg;
+        let userDateHeartbeatAvg2 = userData.users[1].date_heartbeat_avg;
+        let userHeartBeatPeak1 = userData.users[0].date_heartbeat_peak;
+        let userHeartBeatPeak2 = userData.users[1].date_heartbeat_peak;
+
+        document.getElementById("displayUserName1").textContent = userName1;
+        document.getElementById("displayUserPronouns1").textContent = userPronouns1;
+        document.getElementById("displayNormalHeartbeat1").textContent = userNormalHeartbeat1;
+        document.getElementById("displayDateHeartbeatAvg1").textContent = userDateHeartbeatAvg1;
+        document.getElementById("displayHeartbeatPeak1").textContent = userHeartBeatPeak1;
+
+        document.getElementById("displayUserName2").textContent = userName2;
+        document.getElementById("displayUserPronouns2").textContent = userPronouns2;
+        document.getElementById("displayNormalHeartbeat2").textContent = userNormalHeartbeat2;
+        document.getElementById("displayDateHeartbeatAvg2").textContent = userDateHeartbeatAvg2;
+        document.getElementById("displayHeartbeatPeak2").textContent = userHeartBeatPeak2;
+
+      } catch (error) {
+        console.error("Error loading user data:", error);
+      }
+    }
+    
+    getUserData();
     </script>
 
 
