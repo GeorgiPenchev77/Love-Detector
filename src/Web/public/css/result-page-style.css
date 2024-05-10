@@ -26,25 +26,24 @@ body {
 
   .result-container {
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    height: 30px;
-    padding: 3rem;
+    height: 0px;
+    padding: 2rem;
     border-radius: 30px;
-    margin: 2em;
+    margin: 1em;
     background-color: rgba(0, 0, 0, 0.5);
     text-align: center;
     width: 500px;
-    height: 150px;
   }
 
   .middle-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 3rem;
+    margin-top: 0rem;
   }
     
     h2 {
-      margin: 10px;
+      margin: -30px;
       justify-self: center;
       font-size: 3rem;
     }
@@ -66,7 +65,7 @@ body {
     font-family: sans-serif;
     color: rgb(255, 255, 255);
     width: 300px;
-    height: 250px;;
+    height: 250px;
   }
 
   h3 {
@@ -106,7 +105,36 @@ body {
       height: 50px;
   }
 
-  .chart-container {
-      margin-top: 20px;
-      height: 90%;
-  }
+
+.chart-container {
+    margin-top: 20px;
+    height: 90%;
+}
+
+.graph-container {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  padding: 2rem;
+  border-radius: 30px;
+  margin: 0 3rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  font-family: sans-serif;
+  color: rgb(255, 255, 255);
+  width: 1000px;
+  height: 300px;
+}
+
+.headerGraph {
+  text-align: center;
+}
+
+.user-box {
+  flex: 1;
+  border: 2px solid #ffffff;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  box-sizing: border-box;
+  height: 550px;
+  display: flex;
+  flex-direction: column;
+}

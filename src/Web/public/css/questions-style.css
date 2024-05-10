@@ -1,17 +1,37 @@
-.header {
-  color: rgb(0, 0, 0);
+body {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto; 
+  background: linear-gradient(to bottom, rgb(169, 0, 121), rgb(245, 2, 156));
+  /* Fallback background color */
   font-family: "Audiowide", sans-serif;
-  font-size: xx-large;
-  text-align: center;
-  /* margin-top: 20px; */
-}
-.header h1 {
-  margin-top: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
 }
 
-body {
-  background: linear-gradient(to bottom, rgb(169, 0, 121), rgb(245, 2, 156));
-  height: 100vh;
+.heading-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 3rem;
+}
+
+h1 {
+  color: rgb(0, 0, 0);
+  font-size: 3.5rem;
+}
+
+h2 {
+  font-family: "Audiowide", sans-serif;
+}
+
+.middle-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .button-container {
@@ -57,14 +77,13 @@ body {
 }
 
 .user-container {
-  position: absolute;
   display: flex;
   flex-direction: column;
   width: 15%;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   padding: 1rem;
   border-radius: 30px;
-  margin: 0 3rem;
+  margin: 0 2rem;
   background-color: rgba(0, 0, 0, 0.5);
   font-family: sans-serif;
   color: rgb(255, 255, 255);
@@ -79,14 +98,13 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
-  height: 10rem;
+  height: 100%;
   width: 50%;
-  margin: auto;
-  padding: 60px 0;
+  margin-left: 2rem;
 }
 
 #question {
-  font-size: 42px;
+  font-size: 2.5rem;
   font-family: "Audiowide", sans-serif;
   color: rgb(0, 0, 0);
   text-align: center;

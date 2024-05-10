@@ -1,34 +1,48 @@
 {
   "users": [
     {
-      "username": "kristina",
+      "username": "Kristina",
       "pronouns": "she/her",
       "heartbeat_data": [
-        75,
-        60,
-        65
+        120,
+        110,
+        120,
+        80,
+        100,
+        130,
+        90,
+        110,
+        140,
+        120
       ],
       "normal_heartbeat": "0",
-      "date_heartbeat_avg": 66.66666666666667,
-      "date_heartbeat_peak": 75,
+      "date_heartbeat_avg": null,
+      "date_heartbeat_peak": null,
       "date_spike_Counter": 1
     },
     {
       "username": "Dengan",
       "pronouns": "he/him",
       "heartbeat_data": [
-        65,
         60,
-        81
+        60,
+        50,
+        60,
+        70,
+        60,
+        55,
+        66,
+        62,
+        63
       ],
       "normal_heartbeat": "0",
-      "date_heartbeat_avg": 68.66666666666667,
-      "date_heartbeat_peak": 81,
+      "date_heartbeat_avg": null,
+      "date_heartbeat_peak": null,
       "date_spike_Counter": 1
     }
   ],
   "test_data_for_graph": {
-    "time_seconds": null,
+    "time_seconds": 10,
     "number_of_points": 10
   },
   "match_result": null

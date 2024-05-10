@@ -20,7 +20,7 @@ const compCalc = () => {
     });
 
     data.test_data_for_graph.number_of_points = comparePointsNum;
-    data.test_data_for_graph.time_seconds = null;
+    //data.test_data_for_graph.time_seconds = null;
 
     data.match_result = match(data.users);
 
