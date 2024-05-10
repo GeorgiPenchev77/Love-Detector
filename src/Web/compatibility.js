@@ -10,12 +10,14 @@ const compCalc = () => {
   //generate .json using function below
   try{
     const dataJson = fs.readFileSync(RESULT_JSON);
-    data = JSON.parse(dataJson);
+    data = JSON.parse(dataJson) ;
 
     data.users.forEach(user => {
       user.date_heartbeat_avg = dateAvr(user);
       user.date_heartbeat_peak = datePeak(user);
-      user.date_spike_Counter = calculateSpike(user);
+      user.date_spike_counter = calculateSpike(user);
+      user.date_upper_bracket = calculateUpperBracket(user);
+      user.composite_score = indCompositeScore(user);
     });
 
     data.test_data_for_graph.number_of_points = comparePointsNum;
@@ -37,9 +39,14 @@ const compCalc = () => {
 };
 
 const regAvr = (user) => {
-  //return regAvr hb of a user
-  return null;
+  let testAverage = 120;
+  return testAverage;
 };
+
+const regPeak = (user) => {
+  let testPeak = 120;
+  return testPeak;
+}
 
 const dateAvr = (user) => {
   const arrayHb = user.heartbeat_data;
@@ -78,14 +85,29 @@ const calculateSpike = (user) => { // there is no spike in json file
   return spikeCounter;
 };
 
-const UpperBracket = (user) =>{
- // indAverageHb
-  return null;
+const calculateUpperBracket = (user) =>{
+  const indAverageHb= 70;
+  const indPeak = 110;
+  
+  IM= indAverageHb + ((indPeak- indAverageHb)/2);
+  return IM;
 };
 
-const indCompositeScore = (user) =>{
+const hearRateVariability = (user) =>{
+  //how many spikes with in a measured time
+  //60 seconds / spikes+1    //have to avoid it being 0 in the denominator
+  // bellow 60 seconds / 1 spike +<1
+  const variability = 60 / 1+1;
+  return variability;
+}
 
-  return null;
+const indCompositeScore = (user) =>{
+  const w0 = 0.1;
+  const w1  =0;
+
+  let compositeScore =  w0 * (hearRateVariability(user) * 
+    (datePeak(user) - (regPeak(user) ) + ( dateAvr(user) - regAvr(user))))+w1;
+  return compositeScore;
 };
 
 const match = (users) => {
