@@ -3,7 +3,6 @@ body {
   height: 100%;
   overflow-y: auto; 
   background: linear-gradient(to bottom, rgb(169, 0, 121), rgb(245, 2, 156));
-  /* Fallback background color */
   font-family: "Audiowide", sans-serif;
   display: flex;
   flex-direction: column;
@@ -32,6 +31,7 @@ h2 {
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-right: 25rem;
 }
 
 .button-container {
@@ -79,7 +79,7 @@ h2 {
 .user-container {
   display: flex;
   flex-direction: column;
-  width: 15%;
+  width: 30%;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   padding: 1rem;
   border-radius: 30px;
@@ -90,7 +90,7 @@ h2 {
 }
 
 .user {
-  text-align: center; /* Center align the text */
+  text-align: center; 
 }
 
 #question-container {
@@ -99,8 +99,8 @@ h2 {
   align-items: center;
   text-align: center;
   height: 100%;
-  width: 50%;
-  margin-left: 2rem;
+  margin-left: 5.5rem;
+  width:35rem;
 }
 
 #question {
@@ -111,6 +111,7 @@ h2 {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
 }
 
 .question-button {
@@ -128,7 +129,7 @@ h2 {
 .timer_container {
   position: relative;
   display: flex;
-  justify-content: center; /* Center the timer horizontally */
+  justify-content: center; 
   align-items: center;
 }
 
