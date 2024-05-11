@@ -15,7 +15,7 @@
         140,
         120
       ],
-      "normal_heartbeat": "0",
+      "normal_heartbeat": "55",
       "date_heartbeat_avg": null,
       "date_heartbeat_peak": null,
       "date_spike_Counter": 1
@@ -35,7 +35,7 @@
         62,
         63
       ],
-      "normal_heartbeat": "0",
+      "normal_heartbeat": "66",
       "date_heartbeat_avg": null,
       "date_heartbeat_peak": null,
       "date_spike_Counter": 1
@@ -45,5 +45,6 @@
     "time_seconds": 10,
     "number_of_points": 10
   },
-  "match_result": null
+  "match_result": null,
+  "individual_measurements": 5
 }

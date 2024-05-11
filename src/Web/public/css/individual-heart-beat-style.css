@@ -89,15 +89,15 @@ p {
   justify-content: space-between;
 }
 
-#nextUserButton {
-  background-color: rgb(169, 0, 121);
-  border: none;
-
+.nextUserButton-container{
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  border-radius: 15px;
+  padding: 2rem;
+  border-radius: 30px;
+  margin: 1rem;
+  background-color: rgba(0, 0, 0, 0.5);
 }
-#nextUserButton:hover {
-  background-color: rgb(125, 10, 93);
+
+.nextUserButton-container:hover {
   cursor: pointer;
 }
 
@@ -125,4 +125,8 @@ p {
 .next-button:hover {
   background-color: rgb(141, 141, 141);
   cursor: pointer;
+}
+.active {
+  background-color: red;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
