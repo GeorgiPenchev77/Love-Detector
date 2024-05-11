@@ -43,8 +43,8 @@ client.on("connect", () => {
 
 let leftArray = [];
 let rightArray = [];
+let user0normal;
 let user1normal;
-let user2normal;
 
 function calcNormalHeartrate(array){
   let avg = 0;
@@ -88,27 +88,31 @@ client.on("message", (topic, payload) => {
   else if(topics[1] == topic){
     io.emit('stop');
   }
-  else if (topics[2] == topic) {
+  else if (topics[2] == topic){
     io.emit('next_question');
   }
-  else if (topics[3] == topic) {
-    io.emit('progress');
+  else if (topics[3] == topic){
     const leftMeasure = parseInt(payload);
-    leftArray.push(leftMeasure);
+
+    if(leftArray.length<=4){
+      leftArray.push(leftMeasure);
+      io.emit('progress');
+    }
     if(leftArray.length===5){
-      user1normal=calcNormalHeartrate(leftArray);
-      writeToJSON(0,user1normal);
-      console.log(user1normal);
+      user0normal=calcNormalHeartrate(leftArray);
+      writeToJSON(0,user0normal);
     }
   }
   else if (topics[4] == topic){
-    io.emit('progress');
     const rightMeasure = parseInt(payload);
-    rightArray.push(rightMeasure);
+
+    if(rightArray.length<=4){
+      rightArray.push(rightMeasure);
+      io.emit('progress');
+    }
     if(rightArray.length===5){
-      user2normal=calcNormalHeartrate(rightArray);
-      writeToJSON(1,user2normal);
-      console.log("wrote successfully");
+      user1normal=calcNormalHeartrate(rightArray);
+      writeToJSON(1,user1normal);
     }
   }
 
