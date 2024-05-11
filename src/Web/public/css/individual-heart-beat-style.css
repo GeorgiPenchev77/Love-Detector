@@ -5,7 +5,7 @@ body {
   background: linear-gradient(to bottom, rgb(169, 0, 121), rgb(245, 2, 156));
   /* Fallback background color */
   font-family: "Audiowide", sans-serif;
-  height: 100vh;
+ 
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -37,12 +37,18 @@ h2 {
   font-family: "Audiowide", sans-serif;
 }
 
+.middle-container {
+  justify-content: center;
+  display: flex;
+}
+
 .users {
   display: flex;
   text-align: center;
   justify-content: center;
   padding-top: 2rem;
-  flex-wrap: wrap;
+  width: 80%;
+  flex-direction: row;
 }
 
 .user-container {
@@ -58,13 +64,6 @@ h2 {
   font-size: 24px;
   text-align: center;
   margin-top: 50px;
-}
-
-.nextUserButton-container {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  background-color: rgb(247, 0, 209);
 }
 
 .instructions-container {
@@ -83,31 +82,40 @@ p {
 
 .navigationButton-container {
   display: flex;
-  width: 80%;
+  width: 90%;
   margin-bottom: 50px;
   margin-top: 30px;
   justify-content: space-between;
 }
 
 #nextUserButton {
-  background-color: rgb(169, 0, 121);
+  background-color:white;
   border: none;
+  font-family: "Audiowide", sans-serif;
+}
 
+.nextUserButton-container{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+#nextUserButton{
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   border-radius: 15px;
 }
 #nextUserButton:hover {
-  background-color: rgb(125, 10, 93);
+  background-color:rgb(141, 141, 141);
   cursor: pointer;
 }
 
 .back-button {
-  padding: 15px 30px;
+  padding: 5px 10px;
   background-color: rgb(255, 255, 255);
   border-radius: 30px;
   border: none;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  margin-top: 10px;
+  font-family: "Audiowide", sans-serif;
 }
 .back-button:hover {
   background-color: rgb(141, 141, 141);
@@ -117,12 +125,16 @@ p {
   background-color: rgb(255, 255, 255);
   border-radius: 30px;
   border: none;
-  padding: 10px 20px;
+  padding: 5px 10px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   cursor: pointer;
-  margin-top: 10px;
+  font-family: "Audiowide", sans-serif;
 }
 .next-button:hover {
   background-color: rgb(141, 141, 141);
   cursor: pointer;
+}
+.active {
+  background: linear-gradient(to bottom, rgb(169, 42, 133), rgb(250, 113, 200));
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
