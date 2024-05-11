@@ -8,9 +8,9 @@ extern TFT_eSPI tft;
 #define STANDARD_HORIZONTAL_VIEW 3 // Terminal text allignment mode
 
 //Terminal button macros
-#define START_DATE BUTTON_3               // Left button
+#define START BUTTON_3               // Left button
 #define NEXT_QUESTION BUTTON_2            // Middle button
-#define HELP BUTTON_1                     // Right button
+#define STOP BUTTON_1   // Right button
 /* -------------------------------------------------------------------------- */
 
 /* ------------------------------ Wio Printing ------------------------------ */

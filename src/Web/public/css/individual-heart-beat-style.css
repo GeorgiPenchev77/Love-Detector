@@ -1,6 +1,7 @@
 body {
   width: 100%;
   height: 100%;
+  overflow-y: auto; 
   background: linear-gradient(to bottom, rgb(169, 0, 121), rgb(245, 2, 156));
   /* Fallback background color */
   font-family: "Audiowide", sans-serif;
@@ -33,7 +34,7 @@ h2 {
   margin-bottom: 0;
   margin-top: 0;
   color: rgb(255, 255, 255);
-  font-family: sans-serif;
+  font-family: "Audiowide", sans-serif;
 }
 
 .users {
@@ -66,8 +67,8 @@ h2 {
   background-color: rgb(247, 0, 209);
 }
 
-.instruction-container {
-  padding-top: 10px;
+.instructions-container {
+  padding-top: 20px;
 }
 
 p {
@@ -76,22 +77,27 @@ p {
   font-family: sans-serif;
 }
 
+.pronoun-p {
+  font-family: "Audiowide", sans-serif;
+}
+
 .navigationButton-container {
   display: flex;
   width: 80%;
-  margin: 40px;
+  margin-bottom: 50px;
+  margin-top: 30px;
   justify-content: space-between;
 }
 
-#nextUserButton {
-  background-color: rgb(169, 0, 121);
-  border: none;
-
+.nextUserButton-container{
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  border-radius: 15px;
+  padding: 2rem;
+  border-radius: 30px;
+  margin: 1rem;
+  background-color: rgba(0, 0, 0, 0.5);
 }
-#nextUserButton:hover {
-  background-color: rgb(125, 10, 93);
+
+.nextUserButton-container:hover {
   cursor: pointer;
 }
 
@@ -119,4 +125,8 @@ p {
 .next-button:hover {
   background-color: rgb(141, 141, 141);
   cursor: pointer;
+}
+.active {
+  background-color: red;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }

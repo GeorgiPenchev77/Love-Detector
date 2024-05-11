@@ -31,10 +31,14 @@ const char pass[] = SECRET_PASS;  // your network password (use for WPA, or use 
 const char broker[] = SECRET_IP;
 int        port     = 1883;
 
-const char topic_start[] = "startbutton_click";
+const char topic_start[] = "start_button_click";
+const char topic_stop[] = "stop_button_click";
 const char topic_nextQ[] = "change_question";
+const char topic_heartRateLeft[] = "heart_rate_left";
+const char topic_heartRateRight[] = "heart_rate_right";
 
 const char payload_start[]  = "Start button has been clicked";
+const char payload_stop[] = "Stop button has been clicked";
 const char payload_nextQ[]  = "Change to the next question";
 
 //set interval for sending messages (milliseconds)
@@ -75,6 +79,8 @@ void setupMQTT(){
 
     delay(5000);
   }
+  
+  //mqttClient.setKeepAliveInterval(60); // Set the keep-alive interval to 60 seconds
   printNewMessage("You're connected to the MQTT broker!");
 
   delay(2000);
@@ -85,7 +91,6 @@ void maintainMQTTConnection(){
   //by periodically pinging the broker
   mqttClient.poll();
 }
-
 
 bool MQTTpublishCheck(){
   // method to check if there has passed enough time since the last 
@@ -98,7 +103,6 @@ bool MQTTpublishCheck(){
     return false;
   }
 }
-
 
 void MQTTpublish(String topic, String payload){
     mqttClient.beginMessage(topic);
