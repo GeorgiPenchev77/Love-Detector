@@ -37,17 +37,18 @@ const compCalc = () => {
   }
 };
 
-const regAvr = (user) => {
+const regAvr = (user) => {//placeholder function to calculate average of test before date
+  let testPeak = 65;
   let testAverage = 60;
   return testAverage;
 };
 
-const regPeak = (user) => {
+const regPeak = (user) => { //placeholder function to record peak of test before date
   let testPeak = 65;
   return testPeak;
 };
 
-const dateAvr = (user) => {
+const dateAvr = (user) => { // calculates average value between all elements in array 
   const arrayHb = user.heartbeat_data;
   let sum = 0;
   for (let i = 0; i < arrayHb.length; i++) {
@@ -60,7 +61,7 @@ const dateAvr = (user) => {
 };
 
 
-const datePeak = (user) => {
+const datePeak = (user) => { // saves the highest elements in array
   let peak = 0;
   const arrayHb = user.heartbeat_data;
   for (let i=0; i< arrayHb.length; i++){
@@ -71,7 +72,7 @@ const datePeak = (user) => {
   return peak ;
 };
 
-const calculateSpike = (user) => { 
+const calculateSpike = (user) => { // calculates how many times there is a difference of 15 or greater between elements in array
   let spikeCounter=0;
   const arrayHb = user.heartbeat_data;
 
@@ -84,7 +85,7 @@ const calculateSpike = (user) => {
   return spikeCounter;
 };
 
-const calculateUpperBracket = (user) =>{
+const calculateUpperBracket = (user) =>{//calculates where the upperBracket should be to facilitate later calculations
   const indAverageHb= regAvr(user);
   const indPeak = regPeak(user);
   
@@ -92,7 +93,7 @@ const calculateUpperBracket = (user) =>{
   return upperBracket;
 };
 
-const counterUpperBracket = (user) =>{
+const counterUpperBracket = (user) =>{ // counts how many elements in the array are above the upperBracket
   const upperBracket = calculateUpperBracket(user);
   let aboveUpperBracket = 0;
   const arrayHb = user.heartbeat_data;
@@ -104,7 +105,7 @@ const counterUpperBracket = (user) =>{
   return aboveUpperBracket;
 };
 
-const indCompositeScore = (user) => {
+const indCompositeScore = (user) => { //takes all functions and calculates a score roughly between 0-15 (needs more testing)
   const maxDiff = 60; // normal heartbeat is between 60-100 bpm, im accounting for a bit more
   const TRHIndex = counterUpperBracket(user);
 
@@ -116,16 +117,31 @@ const indCompositeScore = (user) => {
   return compositeScore.toFixed(2);
 };
 
-const match = (users) => {
+const match = (users) => {  // calculates whether or not both values are above a threshhold and if they are far apart,
+  let level =0;             // this sees is they are match
+  const user1 = users[0];   // current value 4,58
+  const user2 = users[1];   // current value 12,36
+  const diffCompScore = user1 - user2;
+  
+  const limitLevel3= 15*0.75;
+  const limitLevel2 = 15*0.25;
+  const diffLevel3 = 3;
+  const diffLevel2 = 5;
 
-  const user1 = users[0];//4,58
-  const user2 = users[1];//12,36
+  if (user1.composite_score > limitLevel3 && user2.composite_score > limitLevel3 || diffCompScore <= diffLevel3 && user1.composite_score > limitLevel3  // 3 cases where it can be level 3
+    ||diffCompScore <= diffLevel3 && user2.composite_score > limitLevel3){                                              // all above threshhold, 
+    level = 3;                                                                                          //or one with small difference
+  }
+  else if (user1.composite_score > limitLevel2 && user2.composite_score > limitLevel2 || diffCompScore <= diffLevel2 && user1.composite_score > limitLevel2 
+    || diffCompScore <= diffLevel2 && user2.composite_score > limitLevel2){
+    level = 2;
+  }
+  else (level = 1);
 
-  if (user1.composite_score>3.75 && user2.composite_score>3.75){
-    console.log("level 2");
-  }
-  else if (user1.composite_score>10.5 && user2.composite_score>10.5){
-    console.log("level 3");
-  }
-  else console.log("level 1");
+  return level;
 };
+
+
+
+
+module.exports = compCalc;
