@@ -46,9 +46,6 @@
     <button type="button" class="back-button" onclick="goBack()">
       <img src="./assets/images/left-arrow.png" alt="Back" height="35" ><img/>
     </button>
-    <button type="button" class="next-button" onclick = "goNext()">
-      <img src="./assets/images/right-arrow.png" alt="Continue" height="35" />
-    </button>
   </div>
 </body>
 
@@ -59,7 +56,7 @@
   const socket = io();
 
   socket.on('start', function () {
-    window.location.href = "./questions.html";
+    goNext();
   });
 
   //Retrieve user info from server

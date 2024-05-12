@@ -10,10 +10,12 @@
 
     <body>
         <div class="heading-container">
-            <h1>Your compatibility result is..</h1>
+            <h1>Your compatibility result is...</h1>
         </div>
         <div class="result-container">
-            <h2>Level X!</h2>
+            <div id="level"></div>
+            <div id= "resultMessage"></div>
+        </div>
         </div>
         <div class="middle-container">
             <div class="users">
@@ -37,10 +39,14 @@
             <div class="headerGraph">
                 <h3>Heartbeat Graph</h3>
             </div>
-            <div class="chart-container" id="chart_div1">
-            </div>
+                <div class="chart-container" id="chart_div1"></div>
         </div>
-    
+
+        <div class="navigationButton-container">
+            <a class="home-button" href="./index.html">
+                <img src="./assets/images/Home-Button.png" alt="Continue" height="35" />
+            </a>
+        </div>
     </body>
 
     <!-- 
@@ -154,6 +160,39 @@
             document.getElementById("displayDateHeartbeatAvg2").textContent = userDateHeartbeatAvg2;
             document.getElementById("displayHeartbeatPeak2").textContent = userHeartBeatPeak2;
         
+            displayMatchResult(userData);
+        }
+
+       
+        async function displayMatchResult(userData) {
+
+            const matchResult = userData.match_result; 
+            const resultContainer = document.querySelector('.result-container');
+            const resultMessage = document.getElementById('resultMessage');
+            const levelMessage = document.getElementById('level');
+            let message = '';
+            let level = '';
+
+            switch(matchResult){
+                case 1:
+                    message = 'Maybe not the best match...';
+                    level = 'Level 1';
+                    break;
+                case 2:
+                    message = 'There is potential for a nice connection here!';
+                    level = 'Level 2!';
+                    break;
+                case 3:
+                    message = 'A high chance of compatibility detected!';
+                    level = 'Level 3!!';
+                    break;
+                default:
+                    message = 'Unable to calculate compatibility level';
+                    level = 'Level 0:';
+            }  
+
+            resultMessage.textContent = message; 
+            levelMessage.textContent = level;
         }
 
     </script>
