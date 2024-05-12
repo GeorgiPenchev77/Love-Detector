@@ -60,26 +60,28 @@ void drawHeader(){
   tft.drawString(text, getCenter(text,3), 14);
 }
 
-void drawCustomString(String string, int textSize, int x, int y) {
+void drawCustomString(String text, int textSize, int x, int y) {
     int pixelWidth = getPixelWidth(textSize);   
     int pixelHeight = getPixelHeight(textSize); 
-    int maxWidth = TFT_WIDTH - 10; // Adjust this margin as necessary
+    int maxWidth = TFT_WIDTH - 20; // Adjust this margin as necessary
+    int verticalPosition = y;
+    char newWord = ' ';
 
     // Split the string into words
     String currentWord;
     String outputString;
     int currWidth = 0;
-    for (char c : string) {
-        if (c == ' ') {
+    for (char & c : text) {
+        if (c == newWord) {
             int wordWidth = currentWord.length() * pixelWidth;
-            if (currWidth + wordWidth > maxWidth) {
-                tft.drawString(outputString, x, y);
-                y += pixelHeight;
+            if (currWidth + wordWidth >= maxWidth) {
+                tft.drawString(outputString, x, verticalPosition);
+                verticalPosition += pixelHeight;
                 outputString = "";
                 currWidth = 0;
             }
             outputString += currentWord;
-            outputString += ' ';
+            outputString += newWord;
             currWidth += wordWidth;
             currentWord = "";
         } else {
@@ -88,13 +90,13 @@ void drawCustomString(String string, int textSize, int x, int y) {
     }
     // Draw the remaining part of the string
     int remainingWidth = currentWord.length() * pixelWidth;
-    if (currWidth + remainingWidth > maxWidth) {
-        tft.drawString(outputString, x, y);
-        y += pixelHeight;
+    if (currWidth + remainingWidth >= maxWidth) {
+        tft.drawString(outputString, x, verticalPosition);
+        verticalPosition += pixelHeight;
         outputString = "";
         currWidth = 0;
     }
     outputString += currentWord;
-    tft.drawString(outputString, x, y);
+    tft.drawString(outputString, x, verticalPosition);
 }
 /* -------------------------------------------------------------------------- */
