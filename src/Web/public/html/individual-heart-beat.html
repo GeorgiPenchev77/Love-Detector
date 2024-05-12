@@ -42,19 +42,18 @@
               <p>Step 3: Press the Left button on the terminal to start the individual measurement. You can pause it using the Right Button.</p>
             </div>
         </div>
-        <div class="nextUserButton-container">
-          <button id="nextUserButton" onclick="changeUser()">Next User</button>
-        </div>
       </div>
     </div>
     <div class="navigationButton-container">
-      <button type="button" class="back-button" onclick="goBack()">Back</button>
+      <button type="button" class="back-button" onclick="goBack()">
+        <img src="./assets/images/left-arrow.png" alt="Back" height="35" ><img/>
+      </button>
+      <button id="nextUserButton" onclick="changeUser()">Measure user 2</button>
       <a class="next-button" href="./start-date-page.html">
-        <img src="./assets/images/Next-Button.png" alt="Continue" height="50" />
+        <img src="./assets/images/right-arrow.png" alt="Continue" height="35" />
       </a>
     </div>
   </body>
-
   <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
   
   <script>
@@ -119,6 +118,7 @@
       userId='user2';
       started = false;
       document.getElementById(userId).classList.add('active');
+      document.getElementById("nextUserButton").style.display = "none";
     }
 
     function goBack() {
@@ -209,3 +209,4 @@
 
   </script>
 </html>
+
