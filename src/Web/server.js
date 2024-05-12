@@ -5,10 +5,10 @@ const { Server } = require("socket.io");
 const http = require("http");
 const server = http.createServer(app);
 const io = new Server(server);
-const mqtt = require('mqtt');
-const fs = require('fs');
+const mqtt = require("mqtt");
+const fs = require("fs");
 
-const compCalc = require('./compatibility.js')
+const compCalc = require("./compatibility.js");
 
 app.use(express.static("public/html")); // Serve static files from the 'public' directory
 app.use(express.static("public/assets")); // serve questions from assets folder
@@ -32,7 +32,15 @@ const client = mqtt.connect(connectURL, {
   reconnectPeriod: 1000,
 });
 
-const topics = ['start_button_click', 'stop_button_click', 'change_question', 'heart_rate_left', 'heart_rate_right'];
+const topics = [
+  "start_button_click",
+  "stop_button_click",
+  "change_question",
+  "heart_rate_left",
+  "heart_rate_right",
+  "match_result",
+  "test",
+];
 
 client.on("connect", () => {
   console.log("Connected");
@@ -46,82 +54,89 @@ let rightArray = [];
 let user0normal;
 let user1normal;
 
-function calcNormalHeartrate(array){
+function calcNormalHeartrate(array) {
   let avg = 0;
-  for(let i=0; i<array.length; i++ ){
+  for (let i = 0; i < array.length; i++) {
     avg += array[i];
   }
-  return avg/array.length;
+  return avg / array.length;
 }
 
-function writeToJSON(id, value){
+function writeToJSON(id, value) {
   fs.readFile("newHeartbeatData.json", (err, data) => {
     if (err) {
-        console.error("Failed to read JSON file:", err);
-        return res.status(500).json({ error: "Failed to read JSON file." });
+      console.error("Failed to read JSON file:", err);
+      return res.status(500).json({ error: "Failed to read JSON file." });
     }
 
     let existingData = JSON.parse(data);
 
-    //Update the username and pronouns for the newly entered users. 
+    //Update the username and pronouns for the newly entered users.
     existingData.users[id].normal_heartbeat = value || "";
-    
-  const jsonData = JSON.stringify(existingData, null, 2);
 
-  //Save the updated info to the json file.
-  fs.writeFile("newHeartbeatData.json", jsonData, (err) => {
+    const jsonData = JSON.stringify(existingData, null, 2);
+
+    //Save the updated info to the json file.
+    fs.writeFile("newHeartbeatData.json", jsonData, (err) => {
       if (err) {
-          console.error("Failed to save user data:", err);
-          return res.status(500).json({ error: "Failed to save user data." });
+        console.error("Failed to save user data:", err);
+        return res.status(500).json({ error: "Failed to save user data." });
       }
       console.log("User data saved successfully.");
+    });
   });
-});
 }
-
-
 
 client.on("message", (topic, payload) => {
   if (topics[0] == topic) {
-    io.emit('start');
-  }
-  else if(topics[1] == topic){
-    io.emit('stop');
-  }
-  else if (topics[2] == topic){
-    io.emit('next_question');
-  }
-  else if (topics[3] == topic){
+    io.emit("start");
+  } else if (topics[1] == topic) {
+    io.emit("stop");
+  } else if (topics[2] == topic) {
+    io.emit("next_question");
+  } else if (topics[3] == topic) {
     const leftMeasure = parseInt(payload);
 
-    if(leftArray.length<=4){
+    if (leftArray.length <= 4) {
       leftArray.push(leftMeasure);
-      io.emit('progress');
+      io.emit("progress");
     }
-    if(leftArray.length===5){
-      user0normal=calcNormalHeartrate(leftArray);
-      writeToJSON(0,user0normal);
+    if (leftArray.length === 5) {
+      user0normal = calcNormalHeartrate(leftArray);
+      writeToJSON(0, user0normal);
     }
-  }
-  else if (topics[4] == topic){
+  } else if (topics[4] == topic) {
     const rightMeasure = parseInt(payload);
 
-    if(rightArray.length<=4){
+    if (rightArray.length <= 4) {
       rightArray.push(rightMeasure);
-      io.emit('progress');
+      io.emit("progress");
     }
-    if(rightArray.length===5){
-      user1normal=calcNormalHeartrate(rightArray);
-      writeToJSON(1,user1normal);
+    if (rightArray.length === 5) {
+      user1normal = calcNormalHeartrate(rightArray);
+      writeToJSON(1, user1normal);
     }
   }
 
-  console.log('Received message:', topic, payload.toString());
+  console.log("Received message:", topic, payload.toString());
 });
 
-
-io.on('connection', (socket) => {
+io.on("connection", (socket) => {
   console.log("A user connected");
+});
+
+app.post("/led", () => {
+  fs.readFile("newHeartbeatData.json", (err, data) => {
+    if (err) {
+      console.error("Failed to read:", err);
+      return res.status(500).json({ error: "Failed to read." });
+    }
+
+    let newData = JSON.parse(data);
+
+    let result = newData.match_result + "";
+    client.publish(topics[5], result);
+  });
 });
 
 server.listen(PORT, () => {
@@ -129,40 +144,36 @@ server.listen(PORT, () => {
   compCalc();
 });
 
-
 app.use(express.json());
 
 app.post("/saveUserData", (req, res) => {
-    const userData = req.body;
+  const userData = req.body;
 
+  // Read the existing JSON file
+  fs.readFile("heartbeatData.json", (err, data) => {
+    if (err) {
+      console.error("Failed to read JSON file:", err);
+      return res.status(500).json({ error: "Failed to read JSON file." });
+    }
 
-    // Read the existing JSON file
-    fs.readFile("heartbeatData.json", (err, data) => {
-      if (err) {
-          console.error("Failed to read JSON file:", err);
-          return res.status(500).json({ error: "Failed to read JSON file." });
-      }
+    let existingData = JSON.parse(data);
 
-      let existingData = JSON.parse(data);
-
-      //Update the username and pronouns for the newly entered users. 
-      existingData.users[0].username = userData.user1.username || "";
-      existingData.users[0].pronouns = userData.user1.pronouns || "";
-      existingData.users[1].username = userData.user2.username || "";
-      existingData.users[1].pronouns = userData.user2.pronouns || "";
-      
-      
+    //Update the username and pronouns for the newly entered users.
+    existingData.users[0].username = userData.user1.username || "";
+    existingData.users[0].pronouns = userData.user1.pronouns || "";
+    existingData.users[1].username = userData.user2.username || "";
+    existingData.users[1].pronouns = userData.user2.pronouns || "";
 
     const jsonData = JSON.stringify(existingData, null, 2);
 
     //Save the updated info to the json file.
     fs.writeFile("newHeartbeatData.json", jsonData, (err) => {
-        if (err) {
-            console.error("Failed to save user data:", err);
-            return res.status(500).json({ error: "Failed to save user data." });
-        }
-        console.log("User data saved successfully.");
-        res.json({ message: "User data saved successfully." });
+      if (err) {
+        console.error("Failed to save user data:", err);
+        return res.status(500).json({ error: "Failed to save user data." });
+      }
+      console.log("User data saved successfully.");
+      res.json({ message: "User data saved successfully." });
     });
   });
 });
@@ -171,8 +182,8 @@ app.get("/getUserData", (req, res) => {
   // Read the existing JSON file
   fs.readFile("newHeartbeatData.json", (err, data) => {
     if (err) {
-        console.error("Failed to read JSON file:", err);
-        return res.status(500).json({ error: "Failed to read JSON file." });
+      console.error("Failed to read JSON file:", err);
+      return res.status(500).json({ error: "Failed to read JSON file." });
     }
 
     let existingData = JSON.parse(data);

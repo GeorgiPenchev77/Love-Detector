@@ -8,7 +8,10 @@
       href="./assets/images/Heart-Image.webp"
       type="image/x-icon"
     />
-    <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap"
+      rel="stylesheet"
+    />
   </head>
 
   <body>
@@ -77,7 +80,7 @@
               />
             </g>
           </svg></button
-        ><a class="next-button" href="./result-page.html">
+        ><a class="next-button" onclick="postLights()">
           <img
             class="next-button-picture"
             src="./assets/images/Next-Button.png"
@@ -96,6 +99,7 @@
     let randomIndex; // index to ensure that the question is different than the previous one
     let questions = [];
     let question;
+
     function goBack() {
       window.history.back();
     }
@@ -114,7 +118,6 @@
     }
 
     fetchQuestions();
-
     const socket = io();
     socket.on("next_question", function () {
       changeQuestion();
@@ -137,6 +140,14 @@
       countdown();
       question = randomize();
       document.getElementById("question").textContent = question;
+      fetch("/led", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).catch((error) => {
+        console.error("Error:", error);
+      });
     }
 
     // Function that counts down the timer, with 1 second interval.
@@ -152,13 +163,12 @@
       }, 1000);
     }
 
-
     async function getUserData() {
       try {
         const response = await fetch("/getUserData", {
           method: "GET",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
         });
 
@@ -174,14 +184,16 @@
         let userPronouns2 = userData.users[1].pronouns;
 
         document.getElementById("displayUserName1").textContent = userName1;
-        document.getElementById("displayUserPronouns1").textContent = userPronouns1;
+        document.getElementById("displayUserPronouns1").textContent =
+          userPronouns1;
         document.getElementById("displayUserName2").textContent = userName2;
-        document.getElementById("displayUserPronouns2").textContent = userPronouns2;
+        document.getElementById("displayUserPronouns2").textContent =
+          userPronouns2;
       } catch (error) {
         console.error("Error loading user data:", error);
       }
     }
-    
+
     getUserData();
 
     let timerInterval; // Interval Object for timer
