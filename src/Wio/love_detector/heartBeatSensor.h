@@ -24,11 +24,11 @@ class HBSensor{
     static const int MAX_HEARTPULSE_DUTY = 2000;  
     static const int TOTAL = 1200000;    // const used to calculate heart-rate
     static const int MEASURE_LIMIT = 20; //the limit of sensor measurements
-    unsigned int  heartRate;
+
     unsigned long sub;
     unsigned long temp[MEASURE_LIMIT+1];
     unsigned char counter;     
-    volatile bool dataEffect = true;    // Store whether data is valid or not
+    volatile bool dataEffect = false;    // Store whether data is valid or not
     volatile bool isUpdated = false;
     byte SENSOR;
 
@@ -37,7 +37,7 @@ class HBSensor{
       reset();
     }
 
-    void setIsUpdated(){
+    void resetIsUpdated(){
       isUpdated=false;
     }
 
@@ -91,14 +91,13 @@ class HBSensor{
           printNewMessage(ERROR_MESSAGE1);
         }
 
-        if (counter == MEASURE_LIMIT && dataEffect) {
-          counter = 0;
-          sum();
-        } else if (counter != MEASURE_LIMIT && dataEffect) {
-          counter++;
-        } else {
+        if (counter == MEASURE_LIMIT) {
           counter = 0;
           dataEffect = true;
+          sum();
+        } else if (counter != MEASURE_LIMIT) {
+          counter++;
+          resetIsUpdated();
         }
 
       }
@@ -111,7 +110,7 @@ class HBSensor{
     //calculates the heart rate over 20 readings from the sensor and prints it to the screen
     void sum() {
       if (dataEffect) { // only calculate if the variable showing whether the data is valid is true.
-        heartRate = TOTAL / (temp[20] - temp[0]);
+        heartRate = TOTAL / (temp[(MEASURE_LIMIT+counter) % (MEASURE_LIMIT+1)] - temp[counter]);
         // Print results in serial monitor screen to reduce terminal screen overloading. Results will be shown in UI anyways.
         Serial.println(RESULT_MESSAGE1+String(heartRate)); 
         isUpdated = true;
@@ -119,7 +118,20 @@ class HBSensor{
       dataEffect = true;
     }
 
+    int getCurrentHeartrate(){
+      if(isUpdated){
+        resetIsUpdated();
+        return heartRate;
+      }
+      if(dataEffect){
+        sum();
+      }
+      return heartRate;
+    }
+
  private:
+    unsigned int  heartRate;
+    
     void reset(){
       sub = 0;
       counter = 0;
@@ -127,7 +139,6 @@ class HBSensor{
       for (unsigned char i = 0; i < MEASURE_LIMIT; i++) {
         temp[i] = 0;
       }
-      temp[MEASURE_LIMIT-1] = millis();
     } 
 
     static HBSensor* instances [2];

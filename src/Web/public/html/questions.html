@@ -77,10 +77,11 @@
                     c18.584-11.975,34.707-27.145,47.731-44.706l39.139,38.952V235.742z"
               />
             </g>
-          </svg></button
-        ><a class="next-button" href="./result-page.html">
+          </svg></button>
+        <button type="button" class="next-button" onclick="goToResult()">
           <img src="./assets/images/right-arrow.png" alt="Continue" height="35" />
-        </a>
+        </button>
+
       </div>
     </div>
   </body>
@@ -92,6 +93,10 @@
     let randomIndex; // index to ensure that the question is different than the previous one
     let questions = [];
     let question;
+
+    const socket = io();
+    socket.emit('dateStarted')
+
     function goBack() {
       window.history.back();
     }
@@ -110,8 +115,6 @@
     }
 
     fetchQuestions();
-
-    const socket = io();
     socket.on("next_question", function () {
       changeQuestion();
     });
@@ -140,6 +143,7 @@
       let timeLeft = 90;
       timer.textContent = timeLeft;
       timerInterval = setInterval(() => {
+        dateTime++;
         if (timeLeft > 0) {
           timer.textContent = --timeLeft;
         } else {
@@ -181,7 +185,14 @@
     getUserData();
 
     let timerInterval; // Interval Object for timer
+    let dateTime = 0;
     const timer = document.getElementById("timer"); //! element of timer
     changeQuestion(); // Execute
+
+    function goToResult(){
+      socket.emit('generateResult', dateTime)
+      window.location.href="./result-page.html"
+    }
+
   </script>
 </html>

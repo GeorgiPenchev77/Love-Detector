@@ -4,7 +4,7 @@ const numberOfUsers = 2;
 
 const comparePointsNum = 10;
 
-const RESULT_JSON = "./heartbeatData.json"
+const RESULT_JSON = "./newHeartbeatData.json"
 const NEW_RESULT_JSON = "./newHeartbeatData.json"
 
 const compCalc = () => {
@@ -44,16 +44,16 @@ const regAvr = (user) => {
 
 const dateAvr = (user) => {
   const arrayHb = user.heartbeat_data;
-  let sum = 0;
-  for (let i = 0; i < arrayHb.length; i++) {
-    sum = arrayHb[i] + sum;
-  }
-  const averageHb = sum / arrayHb.length;
-
-  //return dateAvr hb of a user
-  return averageHb;
+  return calcAvarage(arrayHb);
 };
 
+const calcAvarage = (array) => {
+  let avg = 0;
+  for(let i=0; i<array.length; i++ ){
+    avg += array[i];
+  }
+  return avg/array.length;
+}
 
 const datePeak = (user) => {
   let peak = 0;
@@ -99,4 +99,4 @@ const match = (users) => {
 
 
 
-module.exports = compCalc;
+module.exports = {compCalc, calcNormalHeartrate: calcAvarage};

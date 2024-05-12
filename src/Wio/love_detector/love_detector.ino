@@ -86,13 +86,11 @@ void loop() {
     }
 
     if(leftSensor.isUpdated){
-      leftSensor.setIsUpdated();
-      MQTTpublish(topic_heartRateLeft, String(leftSensor.heartRate));
+      MQTTpublish(topic_heartRateLeft, String(leftSensor.getCurrentHeartrate()));
     }
 
     if(rightSensor.isUpdated){
-      rightSensor.setIsUpdated();
-      MQTTpublish(topic_heartRateRight, String(rightSensor.heartRate));
+      MQTTpublish(topic_heartRateRight, String(rightSensor.getCurrentHeartrate()));
     }
 
   }

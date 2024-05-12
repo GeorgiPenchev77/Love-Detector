@@ -8,7 +8,7 @@ const io = new Server(server);
 const mqtt = require('mqtt');
 const fs = require('fs');
 
-const compCalc = require('./compatibility.js')
+const {compCalc, calcNormalHeartrate } = require('./compatibility.js')
 
 app.use(express.static("public/html")); // Serve static files from the 'public' directory
 app.use(express.static("public/assets")); // serve questions from assets folder
@@ -32,6 +32,7 @@ const client = mqtt.connect(connectURL, {
   reconnectPeriod: 1000,
 });
 
+//todo: change this
 const topics = ['start_button_click', 'stop_button_click', 'change_question', 'heart_rate_left', 'heart_rate_right'];
 
 client.on("connect", () => {
@@ -43,18 +44,12 @@ client.on("connect", () => {
 
 let leftArray = [];
 let rightArray = [];
-let user0normal;
-let user1normal;
 
-function calcNormalHeartrate(array){
-  let avg = 0;
-  for(let i=0; i<array.length; i++ ){
-    avg += array[i];
-  }
-  return avg/array.length;
-}
+let isDateStarted = false;
+let isLeftIMStarted = false;
+let isRightIMStarted = false;
 
-function writeToJSON(id, value){
+function writeToJSON(id, value, valueType){
   fs.readFile("newHeartbeatData.json", (err, data) => {
     if (err) {
         console.error("Failed to read JSON file:", err);
@@ -63,8 +58,16 @@ function writeToJSON(id, value){
 
     let existingData = JSON.parse(data);
 
-    //Update the username and pronouns for the newly entered users. 
-    existingData.users[id].normal_heartbeat = value || "";
+    if(valueType == "normal_heartbeat"){
+      existingData.users[id].normal_heartbeat = value || "";
+    } else if(valueType == "heartbeat_data"){
+      existingData.users[0].heartbeat_data = leftArray;
+      existingData.users[1].heartbeat_data = rightArray;
+      existingData.test_data_for_graph.time_seconds = value;
+      leftArray = [];
+      rightArray = [];
+    }
+    
     
   const jsonData = JSON.stringify(existingData, null, 2);
 
@@ -92,37 +95,62 @@ client.on("message", (topic, payload) => {
     io.emit('next_question');
   }
   else if (topics[3] == topic){
-    const leftMeasure = parseInt(payload);
-
-    if(leftArray.length<=4){
-      leftArray.push(leftMeasure);
-      io.emit('progress');
-    }
-    if(leftArray.length===5){
-      user0normal=calcNormalHeartrate(leftArray);
-      writeToJSON(0,user0normal);
-    }
+    processHeartbeat(0, parseInt(payload))
   }
   else if (topics[4] == topic){
-    const rightMeasure = parseInt(payload);
-
-    if(rightArray.length<=4){
-      rightArray.push(rightMeasure);
-      io.emit('progress');
-    }
-    if(rightArray.length===5){
-      user1normal=calcNormalHeartrate(rightArray);
-      writeToJSON(1,user1normal);
-    }
+    processHeartbeat(1, parseInt(payload))
   }
 
   console.log('Received message:', topic, payload.toString());
 });
 
+function processHeartbeat(id, measure){
+
+  let hbArray;
+  if(id == 0){
+    hbArray = leftArray;
+  } else if (id == 1){
+    hbArray = rightArray;
+  }
+
+  if(isDateStarted){
+    hbArray.push(measure);
+  } else {
+
+    if(hbArray.length<=4){
+      hbArray.push(measure);
+      io.emit('progress');
+    }
+    if(hbArray.length===5){
+      let user0normal=calcNormalHeartrate(hbArray);
+      writeToJSON(id,user0normal, "normal_heartbeat");
+      hbArray.length = 0;
+    }
+  }
+}
+
+
 
 io.on('connection', (socket) => {
+  socket.on('dateStarted', () => {
+    socket.join("date-room");
+    isDateStarted = true;
+    console.log('Date started');
+  })
+  socket.on('generateResult', (time) => {
+    writeToJSON(null, time, "heartbeat_data");
+    compCalc();
+    console.log("dateEnded");
+  })
+  socket.on('disconnecting', () => {
+    if(socket.rooms.has('dateRoom')){
+      isDateStarted = false;
+    }
+  })
   console.log("A user connected");
 });
+
+
 
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
@@ -179,3 +207,17 @@ app.get("/getUserData", (req, res) => {
     res.json(existingData);
   });
 });
+
+
+/*current state:
+ - individual heartbeat: the data from one user interferes with the measure of the other.
+    Possible solution: track if the data incomign in processHeartbeat() is for the correct user.
+        Also, check if 2 heartbeats are sent at the same time on the wio side
+        
+ - date heartbeat: unknown. Possibly working, but in the middle of debugging the bug mention earlier was found
+    During the last test the saving saved was completely incorrect(but it was changed after and not yet tested)
+
+  Good luck champion. 
+
+
+*/

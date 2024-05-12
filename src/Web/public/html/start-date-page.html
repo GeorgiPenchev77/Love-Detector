@@ -46,9 +46,9 @@
     <button type="button" class="back-button" onclick="goBack()">
       <img src="./assets/images/left-arrow.png" alt="Back" height="35" ><img/>
     </button>
-    <a class="next-button" href="./questions.html">
+    <button type="button" class="next-button" onclick = "goNext()">
       <img src="./assets/images/right-arrow.png" alt="Continue" height="35" />
-    </a>
+    </button>
   </div>
 </body>
 
@@ -93,6 +93,10 @@
 
   function goBack() {
     window.history.back();
+  }
+  
+  function goNext(){
+    window.location.href = "./questions.html";
   }
 </script>
 
