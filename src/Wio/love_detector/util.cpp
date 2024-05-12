@@ -2,9 +2,38 @@
 
 TFT_eSPI tft;
 
-/* ------------------------------ Wio printing ------------------------------ */                                                                                                                 
+/* ------------------------------ Wio printing ------------------------------ */     
+
+void setupWioOutput(){
+  tft.begin();
+  tft.setRotation(STANDARD_HORIZONTAL_VIEW);  //Set up commands to display messages on the Wio screen
+  drawHeader();
+  Serial.begin(9600);
+}
+
+int getPixelWidth(int textSize){
+  if(textSize == 2) {
+    return CHAR_WIDTH_2;
+  } 
+  else if(textSize == 3) {
+    return CHAR_WIDTH_3;
+  }
+}
+
+int getPixelHeight(int textSize){
+  if(textSize == 2) {
+    return CHAR_HEIGHT_2;
+  } 
+  else if(textSize == 3) {
+    return CHAR_HEIGHT_3;
+  }
+}
+
+void clearScreen(){
+   tft.fillRect(0,50,320,TFT_HEIGHT - 50, TFT_PINK);
+}
+
 void printMessage(String string){
-  clearScreen();
   tft.setTextColor(TFT_BLACK);
   tft.setTextSize(2);
   drawCustomString(string, 2, 10, 60);
@@ -12,16 +41,14 @@ void printMessage(String string){
 
 void printNewMessage(String string) {
   clearScreen();
-  tft.setTextColor(TFT_BLACK);
-  tft.setTextSize(2);
-  drawCustomString(string, 2, 10, 60);
+  printMessage(string);
 }
 
-void setupWioOutput(){
-  tft.begin();
-  tft.setRotation(STANDARD_HORIZONTAL_VIEW);  //Set up commands to display messages on the Wio screen
-  drawHeader();
-  Serial.begin(9600);
+int getCenter(char* text, int textSize) {  
+  int pixelWidth = getPixelWidth(textSize);           
+  int textWidth = strlen(text) * pixelWidth;         // get text pixel size by multiplying (number of characters in text) x (number of pixels per character)
+  int xPosition = (TFT_WIDTH - textWidth) / 2;       // calculate x starting position by (width of screen) - (text pixel size) / 2
+  return xPosition;
 }
 
 void drawHeader(){
@@ -33,50 +60,41 @@ void drawHeader(){
   tft.drawString(text, getCenter(text,3), 14);
 }
 
-int getCenter(char* text, int textSize) {  
-  int pixelWidth;              
-  if(textSize == 2) {
-    pixelWidth = CHAR_WIDTH_2;
-  } else if(textSize == 3) {
-    pixelWidth = CHAR_WIDTH_3;
-  }
-  int textWidth = strlen(text) * pixelWidth;         // get text pixel size by multiplying (number of characters in text) x (number of pixels per character)
-  int xPosition = (TFT_WIDTH - textWidth) / 2;       // calculate x starting position by (width of screen) - (text pixel size) / 2
-  return xPosition;
-}
+void drawCustomString(String string, int textSize, int x, int y) {
+    int pixelWidth = getPixelWidth(textSize);   
+    int pixelHeight = getPixelHeight(textSize); 
+    int maxWidth = TFT_WIDTH - 10; // Adjust this margin as necessary
 
-void clearScreen(){
-   tft.fillRect(0,50,320,TFT_HEIGHT - 50, TFT_PINK);
-}
-
-void drawCustomString(String string, int textSize, int x, int y){
-   int pixelWidth;              
-   char* parted;
-   char* text = &string[0];
-   int counter;
-   int currPosition = 0;
-   String partedString;
-
-  if(textSize == 2) {
-    pixelWidth = CHAR_WIDTH_2;
-  } else if(textSize == 3) {
-    pixelWidth = CHAR_WIDTH_3;
-  }
-  int textWidth = strlen(text) * pixelWidth;
-  int splitIndex = (TFT_WIDTH - 10) / pixelWidth;
-
-  if(textWidth > (TFT_WIDTH-10)){
-    while(splitIndex <= textWidth){
-      partedString = string.substring(currPosition, splitIndex);
-      parted = &partedString[0];
-      currPosition = splitIndex;
-      splitIndex += splitIndex;
-      tft.drawString(parted, x, y);
-      y += 30;
+    // Split the string into words
+    String currentWord;
+    String outputString;
+    int currWidth = 0;
+    for (char c : string) {
+        if (c == ' ') {
+            int wordWidth = currentWord.length() * pixelWidth;
+            if (currWidth + wordWidth > maxWidth) {
+                tft.drawString(outputString, x, y);
+                y += pixelHeight;
+                outputString = "";
+                currWidth = 0;
+            }
+            outputString += currentWord;
+            outputString += ' ';
+            currWidth += wordWidth;
+            currentWord = "";
+        } else {
+            currentWord += c;
+        }
     }
-  }
-  else{
-      tft.drawString(text, x, y);
-  }
+    // Draw the remaining part of the string
+    int remainingWidth = currentWord.length() * pixelWidth;
+    if (currWidth + remainingWidth > maxWidth) {
+        tft.drawString(outputString, x, y);
+        y += pixelHeight;
+        outputString = "";
+        currWidth = 0;
+    }
+    outputString += currentWord;
+    tft.drawString(outputString, x, y);
 }
 /* -------------------------------------------------------------------------- */

@@ -20,23 +20,25 @@ extern TFT_eSPI tft;
 #define CHAR_HEIGHT_2 14                           // define pixel height of one character (size 2)
 #define CHAR_WIDTH_2 12                            // define pixel width of one character (size 2)
 #define CHAR_HEIGHT_3 24                           // define pixel height of one character (size 3)
-#define CHAR_WIDTH_3 18 
+#define CHAR_WIDTH_3 18                            // define pixel height of one character (size 3)
 /* -------------------------------------------------------------------------- */
 
 /* ------------------------------ Wio Printing ------------------------------ */
 extern void setupWioOutput();
 
-extern void drawHeader();
-
-extern void printMessage(String string);
-
-extern void printNewMessage(String string);
-
-extern int getCenter(char* text, int textSize);
+extern int getPixelWidth(int textSize);
 
 extern void clearScreen();
 
-extern void drawCustomString(String string, int textSize, int x, int y);
+extern void printMessage(String text);
+
+extern void printNewMessage(String text);
+
+extern int getCenter(char* text, int textSize);
+
+extern void drawHeader();
+
+extern void drawCustomString(String text, int textSize, int x, int y);
 /* -------------------------------------------------------------------------- */
 
 /* ------------------------------ Wio messages ------------------------------ */
