@@ -6,18 +6,17 @@
 extern TFT_eSPI tft;
 
 /* ------------------------------Wio Macros --------------------------------- */
-#define STANDARD_HORIZONTAL_VIEW 3        // Terminal text allignment mode
+
+#define STANDARD_HORIZONTAL_VIEW 3                 // Terminal text allignment mode
 
 //Terminal button macros
-#define START BUTTON_3                    // Left button
-#define NEXT_QUESTION BUTTON_2            // Middle button
-#define STOP BUTTON_1                     // Right button
-
-#define PINK 169,0,121
-#define PURPLE  85,26,139
+#define START BUTTON_3                             // Left button
+#define NEXT_QUESTION BUTTON_2                     // Middle button
+#define STOP BUTTON_1                              // Right button
 
 #define TFT_HEIGHT 240                             // define LCD screen pixel height
 #define TFT_WIDTH 320                              // define LCD screen pixel width
+#define HEADER_HEIGHT 50                           // define height of Header banner
 #define CHAR_HEIGHT_2 14                           // define pixel height of one character (size 2)
 #define CHAR_WIDTH_2 12                            // define pixel width of one character (size 2)
 #define CHAR_HEIGHT_3 24                           // define pixel height of one character (size 3)
@@ -32,6 +31,7 @@ extern TFT_eSPI tft;
 #define RESULT_MESSAGE    "Heart rate is: "
 
 /* ------------------------------ Wio Printing ------------------------------ */
+
 extern void setupWioOutput();
 
 extern int getPixelWidth(int textSize);
@@ -44,7 +44,6 @@ extern int getCenter(char* text, int textSize);
 
 extern void drawHeader();
 
-//extern void drawCustomString(String text, int textSize, int x, int y);
 /* -------------------------------------------------------------------------- */
 
 #endif

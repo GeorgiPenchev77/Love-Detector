@@ -8,7 +8,6 @@ void setupWioOutput(){
   tft.begin();
   tft.setRotation(STANDARD_HORIZONTAL_VIEW);  //Set up commands to display messages on the Wio screen
   drawHeader();
-  tft.setFreeFont(FF22);
   Serial.begin(9600);
 }
 
@@ -21,80 +20,33 @@ int getPixelWidth(int textSize){
   }
 }
 
-int getPixelHeight(int textSize){
-  if(textSize == 2) {
-    return CHAR_HEIGHT_2;
-  } 
-  else if(textSize == 3) {
-    return CHAR_HEIGHT_3;
-  }
+void clearScreen(){ // clear part of screen used for messages
+   tft.fillRect(0, HEADER_HEIGHT, TFT_WIDTH, TFT_HEIGHT - HEADER_HEIGHT, TFT_PINK); 
 }
 
-void clearScreen(){
-   tft.fillRect(0,50,320,TFT_HEIGHT - 50, TFT_PINK);
-}
-
-void printNewMessage(String text) {
+void printNewMessage(String text){
+  clearScreen();
   tft.setTextColor(TFT_BLACK);
-  tft.setTextSize(2);
-  tft.setCursor(10,60);
+  tft.setFreeFont(FF41);
+  tft.setTextSize(1);
+  tft.setCursor(0,60);
   tft.println(text);
 }
 
-int getCenter(char* text, int textSize) {  
+int getCenter(char* text, int textSize){  // calculates the position of where "centered" text should be, based on text size
   int pixelWidth = getPixelWidth(textSize);           
-  int textWidth = strlen(text) * pixelWidth;         // get text pixel size by multiplying (number of characters in text) x (number of pixels per character)
-  int xPosition = (TFT_WIDTH - textWidth) / 2;       // calculate x starting position by (width of screen) - (text pixel size) / 2
+  int textWidth = strlen(text) * pixelWidth;         
+  int xPosition = (TFT_WIDTH - textWidth) / 2;       
   return xPosition;
 }
 
-void drawHeader(){
+void drawHeader(){ // function to draw the "Love Detector" slogan on the top of the screen
   tft.fillScreen(TFT_PINK);
-  tft.fillRect(0, 0, 320, 50, TFT_PURPLE);
+  tft.fillRect(0, 0, TFT_WIDTH, HEADER_HEIGHT, TFT_PURPLE);
   tft.setTextColor(TFT_WHITE);
   tft.setTextSize(3);
   char* text = "Love Detector";
-  tft.drawString(text, getCenter(text,3), 14);
+  tft.drawString(text, getCenter(text,3), 15);
 }
 
-/*void drawCustomString(String text, int textSize, int x, int y) {
-    int pixelWidth = getPixelWidth(textSize);   
-    int pixelHeight = getPixelHeight(textSize); 
-    int maxWidth = TFT_WIDTH - 20; // Adjust this margin as necessary
-    int verticalPosition = y;
-    char newWord = ' ';
-
-    // Split the string into words
-    String currentWord;
-    String outputString;
-    int currWidth = 0;
-    for (char & c : text) {
-        if (c == newWord) {
-            int wordWidth = currentWord.length() * pixelWidth;
-            if (currWidth + wordWidth >= maxWidth) {
-                tft.drawString(outputString, x, verticalPosition);
-                verticalPosition += pixelHeight;
-                outputString = "";
-                currWidth = 0;
-            }
-            outputString += currentWord;
-            outputString += newWord;
-            currWidth += wordWidth;
-            currentWord = "";
-        } else {
-            currentWord += c;
-        }
-    }
-    // Draw the remaining part of the string
-    int remainingWidth = currentWord.length() * pixelWidth;
-    if (currWidth + remainingWidth >= maxWidth) {
-        tft.drawString(outputString, x, verticalPosition);
-        verticalPosition += pixelHeight;
-        outputString = "";
-        currWidth = 0;
-    }
-    outputString += currentWord;
-    tft.drawString(outputString, x, verticalPosition);
-}
-*/
 /* -------------------------------------------------------------------------- */
