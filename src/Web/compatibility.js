@@ -5,6 +5,7 @@ const numberOfUsers = 2;
 const comparePointsNum = 10;
 
 const RESULT_JSON = "./heartbeatData.json"
+const NEW_RESULT_JSON = "./newHeartbeatData.json"
 
 const compCalc = () => {
   //generate .json using function below
@@ -23,11 +24,11 @@ const compCalc = () => {
     });
 
     data.test_data_for_graph.number_of_points = comparePointsNum;
-    data.test_data_for_graph.time_seconds = null;
+    //data.test_data_for_graph.time_seconds = null;
 
     data.match_result = match(data.users);
 
-    fs.writeFileSync(RESULT_JSON, JSON.stringify(data, null, 2));
+    fs.writeFileSync(NEW_RESULT_JSON, JSON.stringify(data, null, 2));
     console.log("File updated");
   } catch (error) {
 

@@ -1,52 +1,23 @@
 {
   "users": [
     {
-      "username": "user1",
+      "username": "Kristina",
+      "pronouns": "she/her",
       "heartbeat_data": [
+        75,
         60,
-        61,
-        62,
-        63,
-        64,
-        65,
-        64,
-        63,
-        62,
-        61,
-        60,
-        61,
-        62,
-        63,
-        64,
-        65,
-        64,
-        63,
-        62,
-        61,
-        60,
-        61,
-        62,
-        63,
-        64,
-        65,
-        64,
-        63,
-        62,
-        61
+        65
       ],
       "normal_heartbeat": "0",
-      "date_heartbeat_avg": "62.50",
-      "date_heartbeat_peak": 65,
-      "date_spike_counter": 0,
-      "date_upper_bracket": 62.5,
-      "composite_score": "4.58",
-      "variability": 30,
-      "calculateUpperBracket": 62.5
+      "date_heartbeat_avg": null,
+      "date_heartbeat_peak": null
     },
     {
-      "username": "user2",
+      "username": "Dengan",
+      "pronouns": "he/him",
       "heartbeat_data": [
         60,
+<<<<<<< HEAD
         75,
         90,
         105,
@@ -85,10 +56,33 @@
       "composite_score": "12.36",
       "variability": 30,
       "calculateUpperBracket": 62.5
+=======
+        60,
+        50,
+        60,
+        70,
+        60,
+        55,
+        66,
+        62,
+        63
+      ],
+      "normal_heartbeat": "66",
+      "date_heartbeat_avg": null,
+      "date_heartbeat_peak": null,
+      "date_spike_Counter": 1
+>>>>>>> 98128baa6e6ca03777587d257305bd9a0901621b
     }
   ],
   "test_data_for_graph": {
-    "time_seconds": null,
+    "time_seconds": 10,
     "number_of_points": 10
+<<<<<<< HEAD
   }
 }
+=======
+  },
+  "match_result": null,
+  "individual_measurements": 5
+}
+>>>>>>> 98128baa6e6ca03777587d257305bd9a0901621b

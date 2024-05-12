@@ -1,67 +1,82 @@
 body {
   width: 100%;
   height: 100%;
-  background-color: rgb(255, 255, 255);
+  overflow-y: auto; 
+  background: linear-gradient(to bottom, rgb(169, 0, 121), rgb(245, 2, 156));
   /* Fallback background color */
-  font-family: "Nunito Sans", sans-serif;
+  font-family: "Audiowide", sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
 }
 
 .heading-container {
   display: flex;
   justify-content: center;
+ 
 }
 
 h1 {
-  color: rgb(206, 149, 244);
+  color: rgb(0, 0, 0);
   font-size: 3.5rem;
 }
 
 .middle-container {
   display: flex;
   flex-direction: row;
+  margin-right: 10rem;
 }
 
 h2 {
   margin-bottom: 1rem;
-  margin-top: 0;
+  font-family: "Audiowide", sans-serif;
 }
 
 .next-button-picture {
   width: 50px;
-  height: 50px;
+  height: 100%;
 }
 
 .button-container {
   display: flex;
   width: 90%;
+  margin-bottom: 50px;
+  margin-top: 30px;
+
   justify-content: space-between;
 }
 
 .back-button {
-  margin-top: 20px;
-  margin-left: 3rem;
-  padding: 15px 30px;
-  background-color: rgb(206, 149, 244);
-  border-radius: 20px;
+  padding: 5px 10px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 30px;
   border: none;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
-
-.users {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 20%;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  padding: 2rem;
-  border-radius: 30px;
-  margin: 3rem;
-  margin-top: 0;
-  background-color: rgb(206, 149, 244);
+.back-button:hover {
+  background-color: rgb(141, 141, 141);
+  cursor: pointer;
 }
 
-p {
-  margin: 4px;
+.user-container {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  height: 60%;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  padding: 1rem;
+  border-radius: 30px;
+  margin: 2rem 3rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  font-family: sans-serif;
+  color: rgb(255, 255, 255);
+}
+
+.user {
+  text-align: center; 
 }
 
 .instructions-container {
@@ -69,6 +84,7 @@ p {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-left: 4rem;
 }
 
 .instruction {
@@ -77,15 +93,16 @@ p {
 }
 
 .next-button {
-  background-color: rgb(206, 149, 244);
+  display: block;
+  background-color: rgb(255, 255, 255);
   border-radius: 30px;
   border: none;
-  padding: 10px 20px;
+  padding: 5px 10px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   cursor: pointer;
 }
 
 .next-button:hover {
-  background-color: rgb(206, 100, 244);
+  background-color: rgb(141, 141, 141);
   cursor: pointer;
 }

@@ -7,16 +7,13 @@ volatile bool previousState = false; // store the previous state of the START_DA
 volatile bool isStarted = false;     // store whether the test has been started or not (this is the via S)
 bool startButtonClicked = false;
 bool nextQuestionClicked = false;
-bool individualMeasurementClicked = false;
+bool stopButtonClicked = false;
 
 //function to read every button press to start/stop the test
-void startSpeedDate() {
-    isStarted = !isStarted;
-
+void startMeasuring() {
+    isStarted = true;
     // MQTT flag
-    if (isStarted){
-      startButtonClicked = true;
-    }
+    startButtonClicked = true;
 }
 
 void changeQuestion(){
@@ -24,17 +21,18 @@ void changeQuestion(){
   nextQuestionClicked = true;
 }
 
-void startIndividualMeasurement(){
+void stopMeasuring(){
+  isStarted = false;
   //MQTT flag
-  individualMeasurementClicked = true;
+  stopButtonClicked = true;
 }
 
 
 void setup() {
   // initialization of buttons as an input devices
-  pinMode(START_DATE, INPUT);    
+  pinMode(START, INPUT);    
   pinMode(NEXT_QUESTION, INPUT);
-  pinMode(INDIVIDUAL_MEASUREMENT, INPUT);
+  pinMode(STOP, INPUT);
 
 
   setupWioOutput();            
@@ -46,9 +44,9 @@ void setup() {
   // interrupts attachment
   leftSensor.setup();
   rightSensor.setup();
-  attachInterrupt(START_DATE, startSpeedDate, FALLING);
+  attachInterrupt(START, startMeasuring, FALLING);
   attachInterrupt(NEXT_QUESTION, changeQuestion, FALLING);
-  attachInterrupt(INDIVIDUAL_MEASUREMENT, startIndividualMeasurement, FALLING);
+  attachInterrupt(STOP, stopMeasuring, FALLING);
 
 }
 
@@ -75,28 +73,26 @@ void loop() {
       MQTTpublish(topic_start, payload_start);
     }
 
+    if(stopButtonClicked){
+      stopButtonClicked = false;
+
+      MQTTpublish(topic_stop, payload_stop);
+    }
+
     if(nextQuestionClicked){
       nextQuestionClicked = false;
 
       MQTTpublish(topic_nextQ, payload_nextQ);
     }
 
-    if(individualMeasurementClicked){
-      individualMeasurementClicked = false;
-
-      MQTTpublish(topic_individualM, payload_individualM);
-    }
-
     if(leftSensor.isUpdated){
       leftSensor.setIsUpdated();
       MQTTpublish(topic_heartRateLeft, String(leftSensor.heartRate));
-      Serial.println("Left Success");
     }
 
     if(rightSensor.isUpdated){
       rightSensor.setIsUpdated();
       MQTTpublish(topic_heartRateRight, String(rightSensor.heartRate));
-      Serial.println("Right Success");
     }
 
   }
