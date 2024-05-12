@@ -25,6 +25,11 @@ body {
   }
 
   .result-container {
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    flex-direction: column;
+    background: linear-gradient(to bottom, rgb(169, 42, 133), rgb(250, 113, 200));
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     height: 0px;
     padding: 2rem;
@@ -32,11 +37,15 @@ body {
     margin: 1em;
     background-color: rgba(0, 0, 0, 0.5);
     text-align: center;
-    width: 500px;
-    height: 100px;
+    width: 50rem;
+    height: 7rem;
   }
 
-  #resultMessage.result-container {
+  #resultMessage {
+    font-size: 2rem;
+    color: white;
+  }
+  #level {
     font-size: 2rem;
     color: white;
   }
@@ -60,6 +69,7 @@ body {
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    margin: 1rem;
   }
 
   .user-container {
@@ -74,8 +84,8 @@ body {
     background-color: rgba(0, 0, 0, 0.5);
     font-family: sans-serif;
     color: rgb(255, 255, 255);
-    width: 300px;
-    height: 250px;
+    width: 20rem;
+    height: 10rem;
   }
 
   h3 {
@@ -123,20 +133,25 @@ body {
   }
 
   .chart-container {
-      margin-top: 20px;
-      height: 90%;
+    width: 50rem; 
+    height: 17rem; 
+    margin-top: 20px;
   }
 
   .graph-container {
+    flex-direction: column;
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     padding: 2rem;
     border-radius: 30px;
-    margin: 0 3rem;
+    margin: 2rem 3rem;
     background-color: rgba(0, 0, 0, 0.5);
     font-family: sans-serif;
     color: rgb(255, 255, 255);
-    width: 1000px;
-    height: 300px;
+    width: 50rem;
+    height: 22rem;
   }
 
   .headerGraph {
