@@ -19,9 +19,9 @@
         love match
       </h1>
     </div>
-    <div>
-      <button class="back-button" onclick="goBack()">Back</button>
-    </div>
+    <button type="button" class="back-button" onclick="goBack()">
+      <img src="./assets/images/left-arrow.png" alt="Back" height="35" ><img/>
+    </button>
     <!--<div
       class="background"
       style="background-image: url('assets/images/Love-Detector-Logo.png')"
@@ -29,7 +29,7 @@
   </body>
   <script>
     function goBack() {
-      window.history.back();
-    }
+  window.location.href = "./start-date-page.html";
+}
   </script>
 </html>
