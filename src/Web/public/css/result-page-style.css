@@ -33,6 +33,12 @@ body {
     background-color: rgba(0, 0, 0, 0.5);
     text-align: center;
     width: 500px;
+    height: 100px;
+  }
+
+  #resultMessage.result-container {
+    font-size: 2rem;
+    color: white;
   }
 
   .middle-container {
@@ -42,11 +48,11 @@ body {
     margin-top: 0rem;
   }
     
-    h2 {
-      margin: -30px;
-      justify-self: center;
-      font-size: 3rem;
-    }
+  h2 {
+    margin: -30px;
+    justify-self: center;
+    font-size: 3rem;
+  }
     
 
   .users {
@@ -57,6 +63,10 @@ body {
   }
 
   .user-container {
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     padding: 2rem;
     border-radius: 30px;
@@ -72,6 +82,13 @@ body {
     margin: 10px;
     justify-self: center;
     font-size: 1.5rem;
+    font-family: "Audiowide", sans-serif;
+  }
+
+  p {
+    margin: 10px;
+    color: rgb(255, 255, 255);
+    font-family: sans-serif;
   }
   
   
@@ -105,36 +122,44 @@ body {
       height: 50px;
   }
 
+  .chart-container {
+      margin-top: 20px;
+      height: 90%;
+  }
 
-.chart-container {
-    margin-top: 20px;
-    height: 90%;
-}
+  .graph-container {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    padding: 2rem;
+    border-radius: 30px;
+    margin: 0 3rem;
+    background-color: rgba(0, 0, 0, 0.5);
+    font-family: sans-serif;
+    color: rgb(255, 255, 255);
+    width: 1000px;
+    height: 300px;
+  }
 
-.graph-container {
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  padding: 2rem;
-  border-radius: 30px;
-  margin: 0 3rem;
-  background-color: rgba(0, 0, 0, 0.5);
-  font-family: sans-serif;
-  color: rgb(255, 255, 255);
-  width: 1000px;
-  height: 300px;
-}
+  .headerGraph {
+    text-align: center;
+  }
 
-.headerGraph {
-  text-align: center;
-}
+  .navigationButton-container {
+    display: flex;
+    justify-content: flex-end;
+    width: 90%;
+    margin-bottom: 50px;
+    margin-top: 30px;
+  }
 
-.user-box {
-  flex: 1;
-  border: 2px solid #ffffff;
-  padding: 10px;
-  background-color: rgba(255, 255, 255, 0.5);
-  border-radius: 10px;
-  box-sizing: border-box;
-  height: 550px;
-  display: flex;
-  flex-direction: column;
-}
+  .home-button {
+    padding: 5px 10px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 30px;
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    font-family: "Audiowide", sans-serif;
+  }
+  .home-button:hover {
+    background-color: rgb(141, 141, 141);
+    cursor: pointer;
+  }

@@ -4,7 +4,7 @@ const numberOfUsers = 2;
 
 const comparePointsNum = 10;
 
-const RESULT_JSON = "./heartbeatData.json"
+const RESULT_JSON = "./newHeartbeatData.json"
 const NEW_RESULT_JSON = "./newHeartbeatData.json"
 
 const compCalc = () => {
@@ -137,12 +137,11 @@ const match = (users) => {  // calculates whether or not both values are above a
     || diffCompScore <= diffLevel2 && user2.composite_score > limitLevel2){
     level = 2;
   }
-  else (level = 1);
+  else{
+    level = 1;
+  }
 
   return level;
 };
-
-
-
 
 module.exports = compCalc;
