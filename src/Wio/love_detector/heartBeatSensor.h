@@ -88,7 +88,7 @@ class HBSensor{
 
         if (sub > MAX_HEARTPULSE_DUTY) { //check whether the time between the now and the last tick was greater than 2 seconds, if so reset the test as it would be invalid
           reset();
-          printNewMessage(ERROR_MESSAGE1);
+          printNewMessage(ERROR_MESSAGE);
         }
 
         if (counter == MEASURE_LIMIT && dataEffect) {
@@ -113,7 +113,7 @@ class HBSensor{
       if (dataEffect) { // only calculate if the variable showing whether the data is valid is true.
         heartRate = TOTAL / (temp[20] - temp[0]);
         // Print results in serial monitor screen to reduce terminal screen overloading. Results will be shown in UI anyways.
-        Serial.println(RESULT_MESSAGE1+String(heartRate)); 
+        Serial.println(RESULT_MESSAGE+String(heartRate)); 
         isUpdated = true;
       }
       dataEffect = true;

@@ -2,6 +2,7 @@
 #define UTIL_H
 
 #include <TFT_eSPI.h>
+#include "Free_Fonts.h"
 extern TFT_eSPI tft;
 
 /* ------------------------------Wio Macros --------------------------------- */
@@ -28,7 +29,7 @@ extern TFT_eSPI tft;
 #define LOADING_MESSAGE    "Heart rate measuring has begun. Press the right button to pause it."
 #define RESET_MESSAGE      "Heart rate measuring has been paused. Press the left button to start it."
 #define ERROR_MESSAGE      "A problem has occured and the test needs to restarted. This will happen automatically."
-#define RESULT_MESSAGE1    "Heart rate is: "
+#define RESULT_MESSAGE    "Heart rate is: "
 
 /* ------------------------------ Wio Printing ------------------------------ */
 extern void setupWioOutput();
@@ -37,15 +38,13 @@ extern int getPixelWidth(int textSize);
 
 extern void clearScreen();
 
-extern void printMessage(String text);
-
 extern void printNewMessage(String text);
 
 extern int getCenter(char* text, int textSize);
 
 extern void drawHeader();
 
-extern void drawCustomString(String text, int textSize, int x, int y);
+//extern void drawCustomString(String text, int textSize, int x, int y);
 /* -------------------------------------------------------------------------- */
 
 #endif

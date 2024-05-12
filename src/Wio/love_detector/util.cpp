@@ -8,6 +8,7 @@ void setupWioOutput(){
   tft.begin();
   tft.setRotation(STANDARD_HORIZONTAL_VIEW);  //Set up commands to display messages on the Wio screen
   drawHeader();
+  tft.setFreeFont(FF22);
   Serial.begin(9600);
 }
 
@@ -33,15 +34,11 @@ void clearScreen(){
    tft.fillRect(0,50,320,TFT_HEIGHT - 50, TFT_PINK);
 }
 
-void printMessage(String string){
+void printNewMessage(String text) {
   tft.setTextColor(TFT_BLACK);
   tft.setTextSize(2);
-  drawCustomString(string, 2, 10, 60);
-}
-
-void printNewMessage(String string) {
-  clearScreen();
-  printMessage(string);
+  tft.setCursor(10,60);
+  tft.println(text);
 }
 
 int getCenter(char* text, int textSize) {  
@@ -60,7 +57,7 @@ void drawHeader(){
   tft.drawString(text, getCenter(text,3), 14);
 }
 
-void drawCustomString(String text, int textSize, int x, int y) {
+/*void drawCustomString(String text, int textSize, int x, int y) {
     int pixelWidth = getPixelWidth(textSize);   
     int pixelHeight = getPixelHeight(textSize); 
     int maxWidth = TFT_WIDTH - 20; // Adjust this margin as necessary
@@ -99,4 +96,5 @@ void drawCustomString(String text, int textSize, int x, int y) {
     outputString += currentWord;
     tft.drawString(outputString, x, verticalPosition);
 }
+*/
 /* -------------------------------------------------------------------------- */
