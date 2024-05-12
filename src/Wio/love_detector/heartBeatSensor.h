@@ -22,21 +22,23 @@ class HBSensor{
     // maximum delay between sensor logs in ms
     // i.e. if there are no new logs for >2 seconds it will trigger an error
     static const int MAX_HEARTPULSE_DUTY = 2000;  
-
     static const int TOTAL = 1200000;    // const used to calculate heart-rate
     static const int MEASURE_LIMIT = 20; //the limit of sensor measurements
-
+    unsigned int  heartRate;
     unsigned long sub;
     unsigned long temp[MEASURE_LIMIT+1];
-    unsigned char counter;
-    unsigned int  heartRate = 0;        
+    unsigned char counter;     
     volatile bool dataEffect = true;    // Store whether data is valid or not
+    volatile bool isUpdated = false;
     byte SENSOR;
-    
 
     HBSensor(byte whichSENSOR){
       SENSOR = whichSENSOR;
       reset();
+    }
+
+    void setIsUpdated(){
+      isUpdated=false;
     }
 
     void setup(){
@@ -112,9 +114,11 @@ class HBSensor{
         heartRate = TOTAL / (temp[20] - temp[0]);
         // Print results in serial monitor screen to reduce terminal screen overloading. Results will be shown in UI anyways.
         Serial.println(RESULT_MESSAGE1+String(heartRate)); 
+        isUpdated = true;
       }
       dataEffect = true;
     }
+
  private:
     void reset(){
       sub = 0;

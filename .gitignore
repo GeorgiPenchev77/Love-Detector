@@ -45,4 +45,6 @@ build/
 ### Ignore all node modules directories ###
 node_modules
 
+### Heartbeat data ###
+/src/Web/newHeartbeatData.json
 

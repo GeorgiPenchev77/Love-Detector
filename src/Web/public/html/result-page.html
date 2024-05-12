@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title> Results </title>
+        <link rel="icon" href="./assets/images/Heart-Image.webp" type="image/x-icon">
+        <link rel="stylesheet" href="./css/result-page-style.css">
+        <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+    </head>
+
+    <body>
+        <div class="heading-container">
+            <h1>Your compatibility result is..</h1>
+        </div>
+        <div class="result-container">
+            <h2>Level X!</h2>
+        </div>
+        <div class="middle-container">
+            <div class="users">
+                <div class="user-container" id="user1">
+                    <h3><span id="displayUserName1"></span></h3>
+                        <p><span id="displayUserPronouns1"></span></p>
+                        <p>Normal Heartbeat pre-date: <span id="displayNormalHeartbeat1"></span></p>
+                        <p>Average BPM during date: <span id="displayDateHeartbeatAvg1"></span> </p>
+                        <p>Heartbeat peak during date: <span id="displayHeartbeatPeak1"></span> </p>
+                </div>
+                <div class="user-container" id="user2">
+                    <h3><span id="displayUserName2"></span></h3>
+                        <p> <span id="displayUserPronouns2"></span></p>
+                        <p>Normal Heartbeat pre-date: <span id="displayNormalHeartbeat2"></span> </p>
+                        <p>Average BPM during date: <span id="displayDateHeartbeatAvg2"></span> </p>
+                        <p>Heartbeat peak during date: <span id="displayHeartbeatPeak2"></span> </p>
+                </div>
+            </div>
+        </div>
+        <div class="graph-container">
+            <div class="headerGraph">
+                <h3>Heartbeat Graph</h3>
+            </div>
+            <div class="chart-container" id="chart_div1">
+            </div>
+        </div>
+    
+    </body>
+
+    <!-- 
+    Uses script from googlecharts, original code is in Gitlab: ChartsGoogle.html
+    -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">        
+        fillUserData();
+        //drawChart();
+
+
+        async function drawChart(userData) {
+
+            const numberOfPoints = userData.test_data_for_graph.number_of_points;
+            const testTime = userData.test_data_for_graph.time_seconds;
+
+
+
+            var data1 = google.visualization.arrayToDataTable([ //Designates values for chart
+                // ['Minute:', 'User1_BPM', 'User2_BPM'],
+                // ['1',           120,          60],
+                // ['2',           110,          60],
+                // ['3',           120,          50],
+                // ['4',           80,           60],
+                // ['5',           100,          70],
+                // ['6',           130,          60],
+                // ['7',           90,           55],
+                // ['8',           110,          66],
+                // ['9',           140,          62],
+                // ['10',          120,          63]
+            ]);
+            data1.addColumn('number', 'Seconds');
+            data1.addColumn('number', 'User1_BPM');
+            data1.addColumn('number', 'User2_BPM');
+
+            for (let i = 0; i <= numberOfPoints; i++){
+                data1.addRow();
+                let time = testTime / numberOfPoints * i;
+                data1.setCell(i, 0, time);
+                if(i == 0){
+                    data1.setCell(i, 1, userData.users[0].normal_heartbeat);
+                    data1.setCell(i, 2, userData.users[1].normal_heartbeat);
+                }
+                else{
+                    data1.setCell(i, 1, userData.users[0].heartbeat_data[i-1]);
+                    data1.setCell(i, 2, userData.users[1].heartbeat_data[i-1]);
+                }
+                
+            }
+
+            console.log(data1)
+
+            /*Designates technical aspects of graph; how the curve looks like, colors, size...*/
+            var options1 = {
+                curveType: 'function',
+                legend: { position: 'bottom' },
+                colors: ['orange', 'cyan'],
+                backgroundColor: '#FFFFFF',
+                chartArea: { width: '80%', height: '70%' }, // Adjust chart area
+                vAxis: { format: '#', ticks: [40, 60, 80, 100, 120, 140] }
+            };
+
+            var chart1 = new google.visualization.LineChart(document.getElementById('chart_div1'));
+            chart1.draw(data1, options1); /*Creates the line for the chart, with the properties specified before*/
+        }
+
+        async function getUserData() {
+            try {
+                const response = await fetch("/getUserData", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error("Failed to retrieve user data.");
+                }
+
+                return await response.json();
+            } catch (error) {
+                console.error("Error loading user data:", error);
+            }
+        }
+        async function fillUserData(){
+            const userData = await getUserData();
+
+            google.charts.load('current', { 'packages': ['corechart'] })
+                .then(_ => drawChart(userData));
+
+            let userName1 = userData.users[0].username;
+            let userName2 = userData.users[1].username;
+            let userPronouns1 = userData.users[0].pronouns;
+            let userPronouns2 = userData.users[1].pronouns;
+            let userNormalHeartbeat1 = userData.users[0].normal_heartbeat;
+            let userNormalHeartbeat2 = userData.users[1].normal_heartbeat;
+            let userDateHeartbeatAvg1 = userData.users[0].date_heartbeat_avg;
+            let userDateHeartbeatAvg2 = userData.users[1].date_heartbeat_avg;
+            let userHeartBeatPeak1 = userData.users[0].date_heartbeat_peak;
+            let userHeartBeatPeak2 = userData.users[1].date_heartbeat_peak;
+
+            document.getElementById("displayUserName1").textContent = userName1;
+            document.getElementById("displayUserPronouns1").textContent = userPronouns1;
+            document.getElementById("displayNormalHeartbeat1").textContent = userNormalHeartbeat1;
+            document.getElementById("displayDateHeartbeatAvg1").textContent = userDateHeartbeatAvg1;
+            document.getElementById("displayHeartbeatPeak1").textContent = userHeartBeatPeak1;
+
+            document.getElementById("displayUserName2").textContent = userName2;
+            document.getElementById("displayUserPronouns2").textContent = userPronouns2;
+            document.getElementById("displayNormalHeartbeat2").textContent = userNormalHeartbeat2;
+            document.getElementById("displayDateHeartbeatAvg2").textContent = userDateHeartbeatAvg2;
+            document.getElementById("displayHeartbeatPeak2").textContent = userHeartBeatPeak2;
+        
+        }
+
+    </script>
+
+
+</html>
