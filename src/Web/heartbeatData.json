@@ -17,7 +17,6 @@
       "pronouns": "he/him",
       "heartbeat_data": [
         60,
-<<<<<<< HEAD
         75,
         90,
         105,
@@ -56,33 +55,10 @@
       "composite_score": "12.36",
       "variability": 30,
       "calculateUpperBracket": 62.5
-=======
-        60,
-        50,
-        60,
-        70,
-        60,
-        55,
-        66,
-        62,
-        63
-      ],
-      "normal_heartbeat": "66",
-      "date_heartbeat_avg": null,
-      "date_heartbeat_peak": null,
-      "date_spike_Counter": 1
->>>>>>> 98128baa6e6ca03777587d257305bd9a0901621b
     }
   ],
   "test_data_for_graph": {
     "time_seconds": 10,
     "number_of_points": 10
-<<<<<<< HEAD
   }
 }
-=======
-  },
-  "match_result": null,
-  "individual_measurements": 5
-}
->>>>>>> 98128baa6e6ca03777587d257305bd9a0901621b
