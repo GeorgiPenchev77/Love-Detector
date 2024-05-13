@@ -24,11 +24,11 @@ extern TFT_eSPI tft;
 
 /* ------------------------------ Wio messages ------------------------------ */
 
-#define START_MESSAGE      "Welcome! Follow the instructions in our app to get started! We hope you have a wonderful time!"
-#define LOADING_MESSAGE    "Heart rate measuring has begun. Press the right button to pause it."
-#define RESET_MESSAGE      "Heart rate measuring has been paused. Press the left button to start it."
-#define ERROR_MESSAGE      "A problem has occured and the test needs to restarted. This will happen automatically."
-#define RESULT_MESSAGE    "Heart rate is: "
+#define START_MESSAGE       "Welcome! Follow the instructions in our app to get started! We hope you have a wonderful time!"
+#define LOADING_MESSAGE     "Heart rate measuring has begun. Press the right button to pause it."
+#define RESET_MESSAGE       "Heart rate measuring has been paused. Press the left button to start it."
+#define ERROR_MESSAGE       "A problem has occured and the test needs to restarted. This will happen automatically."
+#define RESULT_MESSAGE      "Heart rate is: "
 
 /* ------------------------------ Wio Printing ------------------------------ */
 

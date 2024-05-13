@@ -5,10 +5,12 @@ TFT_eSPI tft;
 /* ------------------------------ Wio printing ------------------------------ */     
 
 void setupWioOutput(){
+  Serial.begin(9600);
   tft.begin();
   tft.setRotation(STANDARD_HORIZONTAL_VIEW);  //Set up commands to display messages on the Wio screen
   drawHeader();
-  Serial.begin(9600);
+  tft.setFreeFont(FSSBO12);
+  tft.setTextSize(1);
 }
 
 int getPixelWidth(int textSize){
@@ -27,9 +29,7 @@ void clearScreen(){ // clear part of screen used for messages
 void printNewMessage(String text){
   clearScreen();
   tft.setTextColor(TFT_BLACK);
-  tft.setFreeFont(FF41);
-  tft.setTextSize(1);
-  tft.setCursor(0,60);
+  tft.setCursor(0,75);
   tft.println(text);
 }
 
@@ -43,10 +43,11 @@ int getCenter(char* text, int textSize){  // calculates the position of where "c
 void drawHeader(){ // function to draw the "Love Detector" slogan on the top of the screen
   tft.fillScreen(TFT_PINK);
   tft.fillRect(0, 0, TFT_WIDTH, HEADER_HEIGHT, TFT_PURPLE);
+  tft.setFreeFont(FSSBO9);
+  tft.setTextSize(2);
   tft.setTextColor(TFT_WHITE);
-  tft.setTextSize(3);
   char* text = "Love Detector";
-  tft.drawString(text, getCenter(text,3), 15);
+  tft.drawString(text, getCenter(text,3), 5);
 }
 
 /* -------------------------------------------------------------------------- */
