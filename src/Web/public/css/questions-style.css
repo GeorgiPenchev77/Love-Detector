@@ -15,7 +15,6 @@ html, body {
 .heading-container {
   display: flex;
   justify-content: center;
-  margin-bottom: 3rem;
 }
 
 h1 {
@@ -31,31 +30,27 @@ h2 {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-right: 25rem;
+  margin-right: 23rem;
 }
 
 .button-container {
   display: flex;
   width: 80%;
-  margin: 80px auto 0 auto;
+  margin: 4rem 1rem;
   justify-content: space-between;
   height: 7rem;
   align-items: center;
-}
-.button-container2 {
-  display: flex;
-  gap: 1rem;
 }
 
 .back-button {
   display: block;
   padding: 5px 10px;
-  margin-right: 80px;
   background-color: rgb(255, 255, 255);
   border-radius: 30px;
   border: none;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
+
 .next-button {
   background-color: rgb(255, 255, 255);
   border-radius: 30px;
@@ -70,6 +65,7 @@ h2 {
   background-color: rgb(141, 141, 141);
   cursor: pointer;
 }
+
 .back-button:hover {
   background-color: rgb(141, 141, 141);
   cursor: pointer;
@@ -78,7 +74,7 @@ h2 {
 .user-container {
   display: flex;
   flex-direction: column;
-  width: 30%;
+  width: 25%;
   height: 90%;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   padding: 1rem;
@@ -93,7 +89,7 @@ h2 {
   text-align: center; 
 }
 
-#question-container {
+.question-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -114,7 +110,7 @@ h2 {
   width: 100%;
 }
 
-.question-button {
+.new-question-button {
   background-color: rgb(255, 255, 255);
   border-radius: 30px;
   border: none;
@@ -122,11 +118,13 @@ h2 {
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   position: relative;
 }
-.question-button:hover {
+
+.new-question-button:hover {
   background-color: rgb(141, 141, 141);
   cursor: pointer;
 }
-.timer_container {
+
+.timer-container {
   position: relative;
   display: flex;
   justify-content: center; 

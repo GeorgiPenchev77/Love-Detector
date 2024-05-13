@@ -3,7 +3,6 @@ html, body {
   overflow-y: auto; 
   background: linear-gradient(to bottom, rgb(169, 0, 121), rgb(245, 2, 156));
   font-family: "Audiowide", sans-serif;
-  
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -31,7 +30,6 @@ html, body {
     flex-direction: column;
     background: linear-gradient(to bottom, rgb(169, 42, 133), rgb(250, 113, 200));
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    
     padding: 2rem;
     border-radius: 30px;
     margin: 2rem;
@@ -62,8 +60,7 @@ html, body {
     justify-self: center;
     font-size: 3rem;
   }
-    
-
+  
   .users {
     display: flex;
     flex-direction: row;
@@ -101,7 +98,6 @@ html, body {
     font-family: sans-serif;
   }
   
-  
   .next-button-picture {
     width: 50px;
     height: 50px;
@@ -111,7 +107,6 @@ html, body {
     display: flex;
     width: 90%;
     justify-content: end;
-
   }
   
   .start-button {
@@ -153,11 +148,11 @@ html, body {
     width: 65%;
   }
 
-  .headerGraph {
+  .header-graph {
     text-align: center;
   }
 
-  .navigationButton-container {
+  .navigation-button-container {
     display: flex;
     justify-content: flex-end;
     width: 90%;

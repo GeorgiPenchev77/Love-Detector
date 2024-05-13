@@ -56,6 +56,7 @@
 
   <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
   <script>
+    
     const socket = io();
     var userId = "user1";
     var started = false;
@@ -93,7 +94,7 @@
       return await response.json();
     }
 
-    //Takes the retrieved user data and displays it on the screen
+    //Display retrieved user data on the UI
     async function fillUserData(){
       let userData = await getUserData();
       console.log("User data:", userData);
@@ -114,7 +115,7 @@
     fillUserData(); 
     document.getElementById(userId).classList.add('active');
 
-    //Switches to the second user after user 1 individual measuring is done
+    //Switch to the second user after user 1 individual measuring is done
     async function changeUser(){
       document.getElementById(userId).classList.remove('active');
       userId='user2';
@@ -131,7 +132,7 @@
       window.location.href = "./start-date-page.html";
     }
 
-    /*Switches the content of each user container when they start the individual measuring on terminal
+    /*Switch the content of each user container when they start the individual measuring on terminal
     to display the progress of the measuring*/ 
     function startMeasuring(){
       if(document.getElementById(userId).classList.contains('active') && !started){
@@ -169,7 +170,7 @@
       }
     }
 
-    //Displays the final individual measurement result when the individual measuring test is complete. 
+    //Display the final individual measurement result when the individual measuring test is complete. 
     async function completeMeasuring(){
       if(document.getElementById(userId).classList.contains('active') && started){
         var currentContainer=document.getElementById(userId);

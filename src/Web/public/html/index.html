@@ -50,9 +50,9 @@
 
   <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
   <script>
-    //Saves the input values from the users and sends it to the server 
+    
+    //Save the input values from the users and send it to the server 
     function saveUserInfo() {
-        
       var userData = {
         user1: {
             username: document.getElementById("userName1").value,
@@ -96,7 +96,7 @@
       });
     };
 
-    //Logs a message when a user connects to the webapp 
+    //Log a message when a user connects to the webapp 
     var socket = io();
     socket.on("message", (msg) => {
       console.log(msg);

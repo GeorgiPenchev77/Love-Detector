@@ -50,7 +50,7 @@
 
   <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
   <script>
-
+    
     //Retrieve user data from JSON via server
     async function getUserData() {
       const response = await fetch("/getUserData", {
@@ -66,7 +66,7 @@
       return await response.json();
     }
 
-     //Takes the retrieved user data and displays it on the screen
+     //Take the retrieved user data and display it on the screen
      async function fillUserData(){
       let userData = await getUserData();
       console.log("User data:", userData);
