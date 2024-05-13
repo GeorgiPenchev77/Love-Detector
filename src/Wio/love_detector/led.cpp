@@ -90,15 +90,15 @@ void crazyMode() { // for ultimate love match
 
 void light(int level) {
   uint32_t color;
-  if (level <= 25) {
+  if (level == 1) {
     for (int i = 0; i < level; i++) {
       noMatchMode(color);
     }
-  } else if (level > 25 && level <= 75) {
+  } else if (level==2) {
     for (int i = 0; i < level; i++) {
       normalMode(color);
    }
-  } else {
+  } else if (level==3){
     for (int i = 0; i < level; i++) {
       crazyMode();
    }

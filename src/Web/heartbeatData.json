@@ -60,5 +60,7 @@
   "test_data_for_graph": {
     "time_seconds": 10,
     "number_of_points": 10
-  }
+  },
+  "match_result": null,
+  "individual_measurements": 5
 }

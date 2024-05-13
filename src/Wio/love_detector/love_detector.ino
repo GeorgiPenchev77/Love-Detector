@@ -55,6 +55,13 @@ void setup() {
  
 void loop() {
 
+
+  int messageSize = mqttClient.parseMessage();
+  if(messageSize){
+    Serial.print("A message received");
+    onMqttMessage(messageSize);
+  }
+
   // change message based on whether test is started or not
   if (isStarted != previousState) { 
     if (isStarted) {

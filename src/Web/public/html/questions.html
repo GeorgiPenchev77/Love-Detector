@@ -8,7 +8,10 @@
       href="./assets/images/Heart-Image.webp"
       type="image/x-icon"
     />
-    <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap"
+      rel="stylesheet"
+    />
   </head>
 
   <body>
@@ -16,38 +19,42 @@
       <h1>Questions</h1>
     </div>
     <div class="middle-container">
-    <div class="user-container">
-      <div class="user">
-        <h2>User 1</h2>
-        <p>
-          Name:
-          <span id="displayUserName1"></span>
-        </p>
-        <p>
-          Pronouns:
-          <span id="displayUserPronouns1"></span>
-        </p>
+      <div class="user-container">
+        <div class="user">
+          <h2>User 1</h2>
+          <p>
+            Name:
+            <span id="displayUserName1"></span>
+          </p>
+          <p>
+            Pronouns:
+            <span id="displayUserPronouns1"></span>
+          </p>
+        </div>
+        <div class="user">
+          <h2>User 2</h2>
+          <p>
+            Name:
+            <span id="displayUserName2"></span>
+          </p>
+          <p>
+            Pronouns:
+            <span id="displayUserPronouns2"></span>
+          </p>
+        </div>
       </div>
-      <div class="user">
-        <h2>User 2</h2>
-        <p>
-          Name:
-          <span id="displayUserName2"></span>
-        </p>
-        <p>
-          Pronouns:
-          <span id="displayUserPronouns2"></span>
-        </p>
+      <div id="question-container">
+        <h2 id="question"></h2>
       </div>
-    </div>
-    <div id="question-container">
-      <h2 id="question"></h2>
-    </div>
     </div>
 
     <div class="button-container">
       <button type="button" class="back-button" onclick="goBack()">
-        <img src="./assets/images/left-arrow.png" alt="Back" height="35" ><img/>
+        <img
+          src="./assets/images/left-arrow.png"
+          alt="Back"
+          height="35"
+        /><img />
       </button>
       <div class="timer_container">
         <div id="timer"></div>
@@ -81,7 +88,6 @@
         <button type="button" class="next-button" onclick="goToResult()">
           <img src="./assets/images/right-arrow.png" alt="Continue" height="35" />
         </button>
-
       </div>
     </div>
   </body>
@@ -136,6 +142,14 @@
       countdown();
       question = randomize();
       document.getElementById("question").textContent = question;
+      fetch("/led", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).catch((error) => {
+        console.error("Error:", error);
+      });
     }
 
     // Function that counts down the timer, with 1 second interval.
@@ -152,13 +166,12 @@
       }, 1000);
     }
 
-
     async function getUserData() {
       try {
         const response = await fetch("/getUserData", {
           method: "GET",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
         });
 
@@ -174,14 +187,16 @@
         let userPronouns2 = userData.users[1].pronouns;
 
         document.getElementById("displayUserName1").textContent = userName1;
-        document.getElementById("displayUserPronouns1").textContent = userPronouns1;
+        document.getElementById("displayUserPronouns1").textContent =
+          userPronouns1;
         document.getElementById("displayUserName2").textContent = userName2;
-        document.getElementById("displayUserPronouns2").textContent = userPronouns2;
+        document.getElementById("displayUserPronouns2").textContent =
+          userPronouns2;
       } catch (error) {
         console.error("Error loading user data:", error);
       }
     }
-    
+
     getUserData();
 
     let timerInterval; // Interval Object for timer
@@ -190,7 +205,7 @@
     changeQuestion(); // Execute
 
     function goToResult(){
-      socket.emit('generateResult', dateTime)
+      socket.emit('endDate')
       window.location.href="./result-page.html"
     }
 

@@ -4,6 +4,7 @@
 
 #include "rpcWiFi.h"
 #include <ArduinoMqttClient.h>
+#include "led.h"
 
 WiFiClient wifiClient;
 MqttClient mqttClient(wifiClient);
@@ -36,7 +37,9 @@ const char topic_stop[] = "stop_button_click";
 const char topic_nextQ[] = "change_question";
 const char topic_heartRateLeft[] = "heart_rate_left";
 const char topic_heartRateRight[] = "heart_rate_right";
+const char topic_matchResult[] = "match_result";
 
+const char test[] = "test";
 const char payload_start[]  = "Start button has been clicked";
 const char payload_stop[] = "Stop button has been clicked";
 const char payload_nextQ[]  = "Change to the next question";
@@ -46,7 +49,8 @@ const long interval = 1000;
 unsigned long previousMillis = 0;
 
 
-
+extern void onMqttMessage(int messageSize);
+extern void MQTTsubscribe(String topic);
 
 void setupWifi(){
   WiFi.mode(WIFI_STA);
@@ -83,6 +87,11 @@ void setupMQTT(){
   //mqttClient.setKeepAliveInterval(60); // Set the keep-alive interval to 60 seconds
   printNewMessage("You're connected to the MQTT broker!");
 
+  mqttClient.onMessage(onMqttMessage);
+  mqttClient.subscribe(test);
+  MQTTsubscribe(topic_matchResult);
+
+  Serial.println("Serial is ready.");
   delay(2000);
 }
 
@@ -109,6 +118,30 @@ void MQTTpublish(String topic, String payload){
     mqttClient.print(payload);
     mqttClient.endMessage();
 }
+
+void MQTTsubscribe(String topic){
+  Serial.println("Subscribing to topick: ");
+  Serial.println(topic);
+  
+  mqttClient.subscribe(topic);
+}
+
+void onMqttMessage(int messageSize){
+  Serial.println("Received message");
+  String newTopic = mqttClient.messageTopic();
+  char* topic = &newTopic[0];
+  Serial.println(topic);
+  Serial.println(newTopic);
+  Serial.println(topic_matchResult);
+  Serial.println(strcmp(topic, topic_matchResult));
+
+  if(!strcmp(topic, topic_matchResult)){
+    int result = mqttClient.read() - (int) '0';
+    Serial.println(result);
+    light(result);
+  }
+}
+
 
 
 #endif
