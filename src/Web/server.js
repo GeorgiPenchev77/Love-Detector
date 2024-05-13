@@ -6,11 +6,9 @@ const http = require("http");
 const server = http.createServer(app);
 const io = new Server(server);
 
-
-
-const {compCalc, calcNormalHeartrate } = require('./modules/compatibility.js');
-const {MQTTclient, topics} = require('./modules/mqtt.js');
-const util = require('./modules/util.js')
+const { compCalc, calcNormalHeartrate } = require("./modules/compatibility.js");
+const { MQTTclient, topics } = require("./modules/mqtt.js");
+const util = require("./modules/util.js");
 
 app.use(express.static("public/html")); // Serve static files from the 'public' directory
 app.use(express.static("public/assets")); // serve questions from assets folder
@@ -36,70 +34,62 @@ const hbRequests = 10; // number of heartbeat scans during the date
 
 MQTTclient.on("message", (topic, payload) => {
   if (topics[0] == topic) {
-    io.emit('start');
-  }
-  else if(topics[1] == topic){
-    io.emit('stop');
-  }
-  else if (topics[2] == topic){
-    io.emit('next_question');
-  }
-  else if (topics[3] == topic){
-    processHeartbeat(0, parseInt(payload))
-  }
-  else if (topics[4] == topic){
-    processHeartbeat(1, parseInt(payload))
+    io.emit("start");
+  } else if (topics[1] == topic) {
+    io.emit("stop");
+  } else if (topics[2] == topic) {
+    io.emit("next_question");
+  } else if (topics[3] == topic) {
+    processHeartbeat(0, parseInt(payload));
+  } else if (topics[4] == topic) {
+    processHeartbeat(1, parseInt(payload));
   }
 
   console.log("Received message:", topic, payload.toString());
 });
 
-function processHeartbeat(id, measure){
+function processHeartbeat(id, measure) {
   let hbArray;
-  if(id == 0){
+  if (id == 0) {
     hbArray = leftArray;
-  } else if (id == 1){
+  } else if (id == 1) {
     hbArray = rightArray;
   }
 
-  if(isDateStarted){
+  if (isDateStarted) {
     hbArray.push(measure);
   } else {
-
-    if(hbArray.length<=4){
+    if (hbArray.length <= 4) {
       hbArray.push(measure);
-      io.emit('progress');
+      io.emit("progress");
     }
-    if(hbArray.length===5){
-      let user0normal=calcNormalHeartrate(hbArray);
+    if (hbArray.length === 5) {
+      let user0normal = calcNormalHeartrate(hbArray);
       saveIndividualMeasurement(id, user0normal);
       hbArray.length = 0;
     }
   }
 }
 
-
-
-
-io.on('connection', (socket) => {
-  socket.on('dateStarted', () => {
+io.on("connection", (socket) => {
+  socket.on("dateStarted", () => {
     socket.join("date-room");
     isDateStarted = true;
-    console.log('Date started');
-  })
-  socket.on('endDate', () => {
+    console.log("Date started");
+  });
+  socket.on("endDate", () => {
     endDate();
-  })
-  socket.on('disconnecting', () => {
-    if(socket.rooms.has('dateRoom')){
+  });
+  socket.on("disconnecting", () => {
+    if (socket.rooms.has("dateRoom")) {
       isDateStarted = false;
       clearInterval(dateTimer);
     }
-  })
+  });
   console.log("A user connected");
 });
 
-function endDate(){
+function endDate() {
   saveDateMeasurements();
   compCalc();
   activateLED();
@@ -109,7 +99,7 @@ function endDate(){
 function saveIndividualMeasurement(id, heartbeat) {
   util.updateJSON(UPDATE_FILE, (existingData) => {
     existingData.users[id].normal_heartbeat = heartbeat;
-  })
+  });
 }
 
 function saveDateMeasurements() {
@@ -121,12 +111,12 @@ function saveDateMeasurements() {
   rightArray = [];
 }
 
-function activateLED () {
-  util.readFile(UPDATE_FILE, (data) => {
+function activateLED() {
+  util.readJSON(UPDATE_FILE, (data) => {
     let result = data.match_result + "";
     MQTTclient.publish(topics[5], result);
-  })
-};
+  });
+}
 
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
@@ -139,7 +129,7 @@ app.post("/saveUserData", (req, res) => {
 
   // Read the existing JSON file
 
-  util.readJSON(TEMPLATE_FILE, (existingData) =>{
+  util.readJSON(TEMPLATE_FILE, (existingData) => {
     //Update the username and pronouns for the newly entered users.
     existingData.users[0].username = userData.user1.username || "";
     existingData.users[0].pronouns = userData.user1.pronouns || "";
