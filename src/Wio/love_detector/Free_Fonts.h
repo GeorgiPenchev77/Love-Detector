@@ -1,43 +1,8 @@
-// Attach this header file to your sketch to use the GFX Free Fonts. You can write
-// sketches without it, but it makes referencing them easier.
-
-// This calls up ALL the fonts but they only get loaded if you actually
-// use them in your sketch.
-//
-// No changes are needed to this header file unless new fonts are added to the
-// library "Fonts/GFXFF" folder.
-//
-// To save a lot of typing long names, each font can easily be referenced in the
-// sketch in three ways, either with:
-//
-//    1. Font file name with the & in front such as &FreeSansBoldOblique24pt7b
-//       an example being:
-//
-//       tft.setFreeFont(&FreeSansBoldOblique24pt7b);
-//
-//    2. FF# where # is a number determined by looking at the list below
-//       an example being:
-//
-//       tft.setFreeFont(FF32);
-//
-//    3. An abbreviation of the file name. Look at the list below to see
-//       the abbreviations used, for example:
-//
-//       tft.setFreeFont(FSSBO24)
-//
-//       Where the letters mean:
-//       F = Free font
-//       M = Mono
-//      SS = Sans Serif (double S to distinguish is form serif fonts)
-//       S = Serif
-//       B = Bold
-//       O = Oblique (letter O not zero)
-//       I = Italic
-//       # =  point size, either 9, 12, 18 or 24
-//
-//  Setting the font to NULL will select the GLCD font:
-//
-//      tft.setFreeFont(NULL); // Set font to GLCD
+/* --------------------------------------------------------------------------- */
+// This custom fonts file is not the team's work and is taken from:
+// https://wiki.seeedstudio.com/Wio-Terminal-LCD-Fonts/
+// This file is free to use and does not contain any copyright.
+/* --------------------------------------------------------------------------- */
 
 #define LOAD_GFXFF
 

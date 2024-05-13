@@ -1,11 +1,11 @@
 #ifndef UTIL_H
-#define UTIL_H
+#define UTIL_H                                    //header guard
 
-#include <TFT_eSPI.h>
-#include "Free_Fonts.h"
-extern TFT_eSPI tft;
+#include "TFT_eSPI.h"                             // import screen library  
+#include "Free_Fonts.h"                           // import custom fonts file.
+extern TFT_eSPI tft;                              // screen reference
 
-/* ------------------------------Wio Macros --------------------------------- */
+/* ------------------------------ Wio Macros --------------------------------- */
 
 #define STANDARD_HORIZONTAL_VIEW 3                 // Terminal text allignment mode
 
@@ -22,7 +22,7 @@ extern TFT_eSPI tft;
 #define CHAR_HEIGHT_3 24                           // define pixel height of one character (size 3)
 #define CHAR_WIDTH_3 18                            // define pixel height of one character (size 3)
 
-/* ------------------------------ Wio messages ------------------------------ */
+/* ------------------------------ Custom messages ----------------------------- */
 
 #define START_MESSAGE       "Welcome! Follow the instructions in our app to get started! We hope you have a wonderful time!"
 #define LOADING_MESSAGE     "Heart rate measuring has begun. Press the right button to pause it."
@@ -30,20 +30,26 @@ extern TFT_eSPI tft;
 #define ERROR_MESSAGE       "A problem has occured and the test needs to restarted. This will happen automatically."
 #define RESULT_MESSAGE      "Heart rate is: "
 
-/* ------------------------------ Wio Printing ------------------------------ */
+/* ------------------------ Wio Utility and Printing -------------------------- */
 
+//function to set up the screen of the Wio Terminal and display initial state
 extern void setupWioOutput();
 
+//function to get pixel width of one letter based on different text sizes
 extern int getPixelWidth(int textSize);
 
+//function to clear screen to initial state(i.e. no messages, only header)
 extern void clearScreen();
 
+//function to print a new message on the screen
 extern void printNewMessage(String text);
 
+//function to get the horizontal position of where "centered" logo should be
 extern int getCenter(char* text, int textSize);
 
+//function to draw "header" with logo
 extern void drawHeader();
 
-/* -------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------- */
 
-#endif
+#endif                                                  // end header guard
