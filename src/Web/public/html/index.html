@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <title> The Love Detector </title>
     <link rel="icon" href="./assets/images/Heart-Image.webp" type="image/x-icon">
     <link rel="stylesheet" href="./css/index-style.css">
@@ -9,105 +8,98 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="info"><h4><a href="./information-page.html">Information</a></h4></div>
     <div class="heading-container">
-        <h1>Welcome to Love Detector!</h1>
-        <h3>The Love Detector allows for a fun speed dating experience. <br></br> Answer these fun questions and see how
-            your heartbeat corresponds to your partner!</h3>
+      <h1>Welcome to Love Detector!</h1>
+      <h3>The Love Detector allows for a fun speed dating experience. <br></br> Answer these fun questions and see how
+          your heartbeat corresponds to your partner!</h3>
     </div>
     <div class="users">
-        <div class="user-container">
-            <h2>User 1</h2>
-            <div class="input">
-                <label>Please enter your name:</label>
-                <input type="text" id="userName1" />
-            </div>
-            <div class="input">
-                <label>Please enter your pronouns:</label>
-                <input type="text" id="userPronouns1" />
-            </div>
+      <div class="user-container">
+        <h2>User 1</h2>
+        <div class="input">
+          <label>Please enter your name:</label>
+          <input type="text" id="userName1" />
         </div>
-        <div class="user-container">
-            <h2>User 2</h2>
-            <div class="input">
-                <label>Please enter your name:</label>
-                <input type="text" id="userName2" />
-            </div>
-            <div class="input">
-                <label>Please enter your pronouns:</label>
-                <input type="text" id="userPronouns2" />
-            </div>
+        <div class="input">
+          <label>Please enter your pronouns:</label>
+          <input type="text" id="userPronouns1" />
         </div>
+      </div>
+      <div class="user-container">
+        <h2>User 2</h2>
+        <div class="input">
+          <label>Please enter your name:</label>
+          <input type="text" id="userName2" />
+        </div>
+        <div class="input">
+          <label>Please enter your pronouns:</label>
+          <input type="text" id="userPronouns2" />
+        </div>
+      </div>
     </div>
     <div class="button-container">
-        <button type="button" class="next-button" onclick="saveUserInfo()">
-            <img class="next-button-picture" src="./assets/images/right-arrow.png" alt="Continue"/>
-        </button>
+      <button type="button" class="next-button" onclick="saveUserInfo()">
+        <img class="next-button-picture" src="./assets/images/right-arrow.png" alt="Continue"/>
+      </button>
     </div>
-</body>
+  </body>
 
-<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
-
-<script>
-
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <script>
+    //Saves the input values from the users and sends it to the server 
     function saveUserInfo() {
         
-        // Get user input values
-        var userData = {
-            user1: {
-                username: document.getElementById("userName1").value,
-                pronouns: document.getElementById("userPronouns1").value
-            },
-            user2: {
-                username: document.getElementById("userName2").value,
-                pronouns: document.getElementById("userPronouns2").value
-            }
-        };
-
-        if (!userData.user1.username || !userData.user2.username) {
-            alert("please fill in all name fields");
-            return;
+      var userData = {
+        user1: {
+            username: document.getElementById("userName1").value,
+            pronouns: document.getElementById("userPronouns1").value
+        },
+        user2: {
+            username: document.getElementById("userName2").value,
+            pronouns: document.getElementById("userPronouns2").value
         }
+      };
 
-            // Convert the JavaScript object to JSON
-            var jsonData = JSON.stringify(userData, null, 2);
+      if (!userData.user1.username || !userData.user2.username) {
+        alert("please fill in all name fields");
+        return;
+      }
 
-            // Send JSON data to server
-            fetch("/saveUserData", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: jsonData
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("Failed to save user data.");
-                }
-                return response.json();
-            })
+      var jsonData = JSON.stringify(userData, null, 2);
 
-            .then(data =>{
-                console.log("userdata saved successfully:", data);
-                window.location.href = "./individual-heart-beat.html";
-            })
-            .catch(error => {
-                console.error("Error:", error);
-            });
+      // Send JSON data to server
+      fetch("/saveUserData", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: jsonData
+      })
 
-        };
+      .then(response => {
+        if (!response.ok) {
+            throw new Error("Failed to save user data.");
+        }
+        return response.json();
+      })
 
+      .then(data =>{
+        console.log("userdata saved successfully:", data);
+        window.location.href = "./individual-heart-beat.html";
+      })
+      .catch(error => {
+        console.error("Error:", error);
+      });
+    };
 
-    
-
+    //Logs a message when a user connects to the webapp 
     var socket = io();
     socket.on("message", (msg) => {
-        console.log(msg);
+      console.log(msg);
     });
-
-</script>
-
+  </script>
 </html>

@@ -1,4 +1,11 @@
-.header {
+html, body {
+  background: linear-gradient(to bottom, rgb(169, 0, 121), rgb(245, 2, 156));
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  overflow-y: auto; 
+}
+.heading_container {
   color: rgb(0, 0, 0);
   background-color: rgb(245, 2, 156);
   font-size: xx-large;
@@ -6,19 +13,7 @@
   background-clip: text;
   font-family: "Audiowide", sans-serif;
 }
-body {
-  width: 100%;
-  min-height: 100vh;
-  overflow-y: auto; 
-  background: linear-gradient(to bottom, rgb(169, 0, 121), rgb(245, 2, 156));
-  /* Fallback background color */
-  font-family: "Audiowide", sans-serif;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
+
 .info_container {
   display: flex;
   justify-content: center;
@@ -30,13 +25,21 @@ body {
   font-family: "Audiowide", sans-serif;
 }
 
+.button-container{
+  display: flex;
+  width: 100%;
+  align-items: center;
+
+}
 .back-button {
+  display: flex;
   padding: 5px 10px;
   background-color: rgb(255, 255, 255);
   border-radius: 30px;
   border: none;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   font-family: "Audiowide", sans-serif;
+  margin: 0 2rem;
 }
 .back-button:hover {
   background-color: rgb(255, 255, 255);

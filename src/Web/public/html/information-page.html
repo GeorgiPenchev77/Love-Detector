@@ -2,15 +2,15 @@
 <html>
   <head>
     <title>Info</title>
-    <link rel="stylesheet" href="./css/informationpagestyle.css" />
-    <link
-      rel="icon"
-      href="./assets/images/Heart-Image.webp"
-      type="image/x-icon"
-    />
+    <link rel="stylesheet" href="./css/informationpage-style.css" />
+    <link rel="icon" href="./assets/images/Heart-Image.webp" type="image/x-icon"/>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
   </head>
   <body>
-    <div class="header">
+    <div class="heading_container">
       <h1>Information</h1>
     </div>
     <div class="info_container">
@@ -19,17 +19,15 @@
         love match
       </h1>
     </div>
-    <button type="button" class="back-button" onclick="goBack()">
-      <img src="./assets/images/left-arrow.png" alt="Back" height="35" ><img/>
-    </button>
-    <!--<div
-      class="background"
-      style="background-image: url('assets/images/Love-Detector-Logo.png')"
-    ></div>-->
+    <div class="button-container">
+      <button type="button" class="back-button" onclick="goBack()">
+        <img src="./assets/images/left-arrow.png" alt="Back" height="35" ><img/>
+      </button>
+    </div>
   </body>
   <script>
     function goBack() {
-  window.location.href = "./start-date-page.html";
+  window.location.href = "./index.html";
 }
   </script>
 </html>
