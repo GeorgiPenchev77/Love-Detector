@@ -1,49 +1,55 @@
 #ifndef UTIL_H
-#define UTIL_H
+#define UTIL_H                                    //header guard
 
-#include <TFT_eSPI.h>
-extern TFT_eSPI tft;
+#include "TFT_eSPI.h"                             // import screen library  
+#include "Free_Fonts.h"                           // import custom fonts file.
+extern TFT_eSPI tft;                              // screen reference
 
-/* ------------------------------Wio Macros --------------------------------- */
-#define STANDARD_HORIZONTAL_VIEW 3 // Terminal text allignment mode
+/* ------------------------------ Wio Macros --------------------------------- */
+
+#define STANDARD_HORIZONTAL_VIEW 3                 // Terminal text allignment mode
 
 //Terminal button macros
-#define START BUTTON_3               // Left button
-#define NEXT_QUESTION BUTTON_2            // Middle button
-#define STOP BUTTON_1   // Right button
-/* -------------------------------------------------------------------------- */
+#define START BUTTON_3                             // Left button
+#define NEXT_QUESTION BUTTON_2                     // Middle button
+#define STOP BUTTON_1                              // Right button
 
-/* ------------------------------ Wio Printing ------------------------------ */
+#define TFT_HEIGHT 240                             // define LCD screen pixel height
+#define TFT_WIDTH 320                              // define LCD screen pixel width
+#define HEADER_HEIGHT 50                           // define height of Header banner
+#define CHAR_HEIGHT_2 14                           // define pixel height of one character (size 2)
+#define CHAR_WIDTH_2 12                            // define pixel width of one character (size 2)
+#define CHAR_HEIGHT_3 24                           // define pixel height of one character (size 3)
+#define CHAR_WIDTH_3 18                            // define pixel height of one character (size 3)
+
+/* ------------------------------ Custom messages ----------------------------- */
+
+#define START_MESSAGE       "Welcome! Follow the instructions in our app to get started! We hope you have a wonderful time!"
+#define LOADING_MESSAGE     "Heart rate measuring has begun. Press the right button to pause it."
+#define RESET_MESSAGE       "Heart rate measuring has been paused. Press the left button to start it."
+#define ERROR_MESSAGE       "A problem has occured and the test needs to restarted. This will happen automatically."
+#define RESULT_MESSAGE      "Heart rate is: "
+
+/* ------------------------ Wio Utility and Printing -------------------------- */
+
+//function to set up the screen of the Wio Terminal and display initial state
 extern void setupWioOutput();
 
-extern void printMessage(String string);
+//function to get pixel width of one letter based on different text sizes
+extern int getPixelWidth(int textSize);
 
-extern void printNewMessage(String string);
-/* -------------------------------------------------------------------------- */
+//function to clear screen to initial state(i.e. no messages, only header)
+extern void clearScreen();
 
-/* ------------------------------ Wio messages ------------------------------ */
-#define START_MESSAGE   "Hello and Welcome to The Love Detector.\nPress the \
-left button to begin. While in test, press the left\
-button to stop the test or the middle button to\
-change to the next question. Press the right button for help."
-                              
+//function to print a new message on the screen
+extern void printNewMessage(String text);
 
-#define RESULT_MESSAGE1 "Heart rate of left user is: "
-#define RESULT_MESSAGE2 "Heart rate of right user is: "
-#define LOADING_MESSAGE "Heart rate test has begun.\n You will be notified \
-when it is complete or if there is an issue."
+//function to get the horizontal position of where "centered" logo should be
+extern int getCenter(char* text, int textSize);
 
-#define ERROR_MESSAGE1  "Heart rate of left user measure error, test will \
-restart automatically.\n Make sure the sensor is \
-attached securely!"
+//function to draw "header" with logo
+extern void drawHeader();
 
-#define ERROR_MESSAGE2  "Heart rate of right user measure error, test will \
-restart automatically.\n Make sure the sensor is \
-attached securely!"
+/* ---------------------------------------------------------------------------- */
 
-#define RESET_MESSAGE   "Test has been stopped.\n Press button again to reset the test."
-/* -------------------------------------------------------------------------- */
-
-
-
-#endif
+#endif                                                  // end header guard
