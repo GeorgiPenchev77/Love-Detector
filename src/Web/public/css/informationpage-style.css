@@ -47,7 +47,7 @@ body {
   border: none;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   font-family: "Audiowide", sans-serif;
-  margin: 0 2rem;
+  margin: 0 7.5%;
 }
 .back-button:hover {
   background-color: rgb(255, 255, 255);
