@@ -92,11 +92,6 @@ class HBSensor{
 
       if (isActive) {
 
-        //In IM mode: check if the sufficient number of measures has been reached
-        if(isIMStarted && IMCounter >= IMCounterMAX){
-          deactivateSensor(SENSOR);
-        }
-
         temp[counter] = millis(); //start counting time between sensor ticks
 
         if(counter != 0){
@@ -148,6 +143,13 @@ class HBSensor{
 
     static int getIMHeartrate(){
       IMCounter++;
+      Serial.printf("Get IM request. Requests done: %d\n", IMCounter);
+      //In IM mode: check if the sufficient number of measures has been reached
+      if(isIMStarted && IMCounter >= IMCounterMAX){
+        IMCounter = 0;
+        deactivateSensor(currentIMUser);
+      }
+
       instances[currentIMUser] -> resetIsUpdated();
       return  instances[currentIMUser] -> heartRate;
     }
@@ -167,12 +169,14 @@ class HBSensor{
       interval = newInterval;
       isDateStarted = true;
       timer = millis();
+      activateSensor(LEFT);
+      activateSensor(RIGHT);
     }
 
     static void stopDate(){
       isDateStarted = false;
-      instances[LEFT]->reset();
-      instances[RIGHT]->reset();
+      deactivateSensor(LEFT);
+      deactivateSensor(RIGHT);
     }
 
     static void activateSensor(const byte SENSOR){
@@ -186,7 +190,6 @@ class HBSensor{
     }
 
     static void deactivateSensor(const byte SENSOR){
-
       instances[SENSOR] -> isActive = false;
       instances[SENSOR] -> reset();
       Serial.printf("Sensor %x deactivated.\n", SENSOR);
@@ -196,9 +199,8 @@ class HBSensor{
     //to be called only on MQTT message
     static void startIM(int measurementsRequired){
       IMCounterMAX = measurementsRequired;
-      IMCounter = 0;
       isIMStarted = true;
-      Serial.println("IM started.");
+      Serial.printf("IM started. CounterMax = %d\n", IMCounterMAX);
     }
 
     //turn off IM mode
@@ -217,7 +219,7 @@ class HBSensor{
           currentIMUser = LEFT;
           break;
       }
-      Serial.println("IM user switched.");
+      Serial.printf("IM user switched to %d.\n", currentIMUser);
     }
 
     static void processStartClick(){
@@ -231,7 +233,6 @@ class HBSensor{
     unsigned int  heartRate;
 
     void reset(){
-      IMCounter = 0;
       sub = 0;
       counter = 0;
       dataEffect = false;
