@@ -89,7 +89,6 @@
                 }
                 return response.json();
             })
-
             .then(data =>{
                 console.log("userdata saved successfully:", data);
                 window.location.href = "./individual-heart-beat.html";
@@ -99,9 +98,6 @@
             });
 
         };
-
-
-    
 
     var socket = io();
     socket.on("message", (msg) => {

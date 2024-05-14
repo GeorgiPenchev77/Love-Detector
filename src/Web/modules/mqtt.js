@@ -24,7 +24,10 @@ const topics = [
   "match_result",        //5
   "date_started",        //6
   "heart_rate_both",     //7
-  "date_stopped"         //8
+  "date_stopped",        //8
+  "im_started",          //9
+  "im_stopped",          //10
+  "im_user_switched"     //11
 ];
 
 client.on("connect", () => {

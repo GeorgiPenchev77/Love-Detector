@@ -49,7 +49,7 @@
         <img src="./assets/images/left-arrow.png" alt="Back" height="35" ><img/>
       </button>
       <button id="nextUserButton" onclick="changeUser()">Measure user 2</button>
-      <a class="next-button" href="./start-date-page.html">
+      <a class="next-button" onclick="goToStartDatePage()">
         <img src="./assets/images/right-arrow.png" alt="Continue" height="35" />
       </a>
     </div>
@@ -58,6 +58,7 @@
   
   <script>
     const socket = io();
+    socket.emit('startIM');
     var userId = "user1";
     var started = false;
     var individualMeasurementsMax;
@@ -114,6 +115,7 @@
   document.getElementById(userId).classList.add('active');
 
   async function changeUser(){
+      socket.emit('changeCurrentUser');
       document.getElementById(userId).classList.remove('active');
       userId='user2';
       started = false;
@@ -122,6 +124,7 @@
     }
 
     function goBack() {
+      socket.emit('stopIM');
       window.history.back();
     }
 
@@ -204,6 +207,11 @@
       var percent = document.getElementsByClassName('progress')[0];
       console.log(percent);
       percent.innerHTML = progressCounter * 20 + "%";
+    }
+
+    function goToStartDatePage(){
+      socket.emit('endIM')
+      window.location.href="./start-date-page.html"
     }
 
 

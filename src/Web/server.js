@@ -25,12 +25,14 @@ let leftArray = [];
 let rightArray = [];
 
 let isDateStarted = false;
+let isIMStarted = false;
 let isLeftIMStarted = false;
 let isRightIMStarted = false;
 
 let dateTimer; //variable for interval
 const DATE_DURATION = 180000; // = 3 min. Duration of the date
 const hbRequests = 10; // number of heartbeat scans during the date
+const imHbRequests = 5; //number of heartbeat scans for individual measurement
 
 MQTTclient.on("message", (topic, payload) => {
   if (topics[0] == topic) {
@@ -44,7 +46,7 @@ MQTTclient.on("message", (topic, payload) => {
   } else if (topics[4] == topic) {
     processHeartbeat(1, parseInt(payload));
   } else if (topics[7] == topic) {
-    processBothHeartbeats(payload);
+    processBothHeartbeats(toString(payload));
   }
 
   console.log("Received message:", topic, payload.toString());
@@ -81,7 +83,7 @@ function processBothHeartbeats(payload){
 
   console.log("Both HBs received: left: " + leftHB + ", right: " + rightHB);
 
-  if(leftArray.length() == hbRequests){
+  if(leftArray.length == hbRequests){
     goToResult();
   }
 
@@ -93,8 +95,23 @@ function goToResult(){
 }
 
 io.on("connection", (socket) => {
+  
+  socket.on("startIM", () => {
+    isIMStarted = true;
+    MQTTclient.publish(topics[9], parseInt(imHbRequests) + "");
+    console.log("IM started");
+  });
+  socket.on('changeCurrentUser', () => {
+    MQTTclient.publish(topics[11], "1");
+    console.log("User Changed");
+  });
+  socket.on('endIM', () => {
+    isIMStarted = false;
+    MQTTclient.publish(topics[10], "1");
+    console.log("IM ended");
+  });
   socket.on("dateStarted", () => {
-    socket.join("date-room");
+    socket.join("dateRoom");
     isDateStarted = true;
     MQTTclient.publish(topics[6], parseInt(DATE_DURATION / hbRequests) + "");
     console.log("Date started");
@@ -109,6 +126,7 @@ io.on("connection", (socket) => {
       MQTTclient.publish(topics[8], "1");
     }
   });
+  
   console.log("A user connected");
 });
 
