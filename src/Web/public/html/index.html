@@ -53,6 +53,11 @@
 
 <script>
 
+    const socket = io();
+    socket.on("message", (msg) => {
+    console.log(msg);
+    });
+
     function saveUserInfo() {
         
         // Get user input values
@@ -68,7 +73,7 @@
         };
 
         if (!userData.user1.username || !userData.user2.username) {
-            alert("please fill in all name fields");
+            alert("Please fill in all name fields.");
             return;
         }
 
@@ -98,11 +103,6 @@
             });
 
         };
-
-    var socket = io();
-    socket.on("message", (msg) => {
-        console.log(msg);
-    });
 
 </script>
 

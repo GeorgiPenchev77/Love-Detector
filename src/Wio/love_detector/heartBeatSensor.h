@@ -106,7 +106,7 @@ class HBSensor{
           } else if (SENSOR == RIGHT){
             printNewMessage(ERROR_MESSAGE2);
           }
-            
+          return;
         }
 
         if (counter == MEASURE_LIMIT) {
@@ -181,7 +181,7 @@ class HBSensor{
 
     static void activateSensor(const byte SENSOR){
       if(instances[SENSOR] -> isActive == true){
-        deactivateSensor(SENSOR);
+        //deactivateSensor(SENSOR);
         return;
       }
       instances[SENSOR] -> reset();
@@ -219,6 +219,7 @@ class HBSensor{
           currentIMUser = LEFT;
           break;
       }
+      IMCounter = 0;
       Serial.printf("IM user switched to %d.\n", currentIMUser);
     }
 
@@ -226,6 +227,12 @@ class HBSensor{
       if(isIMStarted){
         activateSensor(currentIMUser);
         //activating an active sensor will lead to deactivating that sensor
+      }
+    }
+
+    static void processStopClick(){
+      if(isIMStarted){
+        deactivateSensor(currentIMUser);
       }
     }
 

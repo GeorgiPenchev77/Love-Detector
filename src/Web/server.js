@@ -126,7 +126,11 @@ io.on("connection", (socket) => {
       MQTTclient.publish(topics[8], "1");
     }
   });
-  
+  socket.on("resetIM", ()=>{
+    leftArray = [];
+    rightArray = [];
+  });
+
   console.log("A user connected");
 });
 

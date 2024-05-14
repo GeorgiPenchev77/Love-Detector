@@ -89,7 +89,7 @@ void loop() {
 
     if (stopButtonClicked) {
       stopButtonClicked = false;
-
+      HBSensor::processStopClick();
       MQTTpublish(topic_stop, payload_stop);
     }
 

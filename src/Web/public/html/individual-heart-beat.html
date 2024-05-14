@@ -48,7 +48,7 @@
       <button type="button" class="back-button" onclick="goBack()">
         <img src="./assets/images/left-arrow.png" alt="Back" height="35" ><img/>
       </button>
-      <button id="nextUserButton" onclick="changeUser()">Measure user 2</button>
+      <button id="nextUserButton" onclick="changeUser()">Switch User</button>
       <a class="next-button" onclick="goToStartDatePage()">
         <img src="./assets/images/right-arrow.png" alt="Continue" height="35" />
       </a>
@@ -63,6 +63,8 @@
     var started = false;
     var individualMeasurementsMax;
     var progressCounter = 0;
+    var previousProgressCounterLeft = 0;
+    var previousProgressCounterRight = 0;
 
     socket.on('start', () => {
       startMeasuring();
@@ -115,12 +117,26 @@
   document.getElementById(userId).classList.add('active');
 
   async function changeUser(){
+      if(started){
+        alert("Please pause the test first, before trying to switch users.");
+        return;
+      }
       socket.emit('changeCurrentUser');
       document.getElementById(userId).classList.remove('active');
-      userId='user2';
-      started = false;
+      swapUsers();
       document.getElementById(userId).classList.add('active');
-      document.getElementById("nextUserButton").style.display = "none";
+    }
+
+    function swapUsers(){
+      if(userId == "user1"){
+        progressCounter = 0;
+        userId = "user2";
+      }
+      else{
+        progressCounter = 0;
+        userId = "user1";
+      }
+      socket.emit('resetIM');
     }
 
     function goBack() {
@@ -152,6 +168,7 @@
 
     function pauseMeasuring(){
       if(document.getElementById(userId).classList.contains('active') && started){
+        started = false;
         var currentContainer=document.getElementById(userId);
         var instructionContainer = currentContainer.querySelector('.instruction-container');
         instructionContainer.innerHTML = "";
@@ -160,7 +177,6 @@
         messageParagraph.textContent = "Heartbeat measuring is paused. Restart it to complete the test.";
         messageParagraph.classList.add('message-text'); // Add a class for CSS to style the text
         instructionContainer.appendChild(messageParagraph);
-        resetMeasuring();
       }
     }
 
