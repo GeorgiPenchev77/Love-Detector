@@ -18,7 +18,7 @@
 - [Hardware and Software Diagrams](#hardware-and-software-diagrams)  
 - [Documentation](#documentation)
 - [License](#license)
-- [Team members](#team-members)
+- [Team Members and Contributions](#team-members)
 
 ## Project Description:
 ***The Love Detector*** is an all-in-one integrated system that provides a new and fun approach to the speed-date experience. 
@@ -114,7 +114,7 @@ You can navigate between the different pages, using the panel on the right side.
 ## License:
 The project is licensed under the MIT License. Refer to the [**LICENSE**](documents/License) file for more information.
 
-### Team members:
+### Team Members and Contributions:
 - Georgi Penchev (penchev@student.chalmers.se): Main contributions made in the Back-End with the Wio terminal, including taking the lead on computing the heartbeat sensors as well as assisting team members with other parts of hardware-related programming such as LED lights and communication from Wio terminal to broker.
 - Kristina Trampush (gustramkr@student.gu.se): Main contributions made in the Front-End, including taking the lead on development of the Web application, including communication between server and UI as well as UI design.
 - Pavlo Ovchynnykov (gusovchpa@student.gu.se): Main contributions made in MQTT connectivity as well as the Back-End with the Wio terminal, including continuously handling new connections between the different components of the system as well as computing the heartbeat sensors.  
