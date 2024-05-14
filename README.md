@@ -155,6 +155,6 @@ The project is licensed under the MIT License. Refer to the [**LICENSE**](docume
 - **Kristina Trampush** (gustramkr@student.gu.se): Main contributions made in the Front-End, including taking the lead on development of the Web application, including communication between server and UI as well as UI design.
 - **Pavlo Ovchynnykov** (gusovchpa@student.gu.se): Main contributions made in MQTT connectivity as well as the Back-End with the Wio terminal, including continuously handling new connections between the different components of the system as well as computing the heartbeat sensors.  
 - **René Ignacio González Pérez** (renei@student.chalmers.se): Main contributions made in the Web application with a special focus on computing the compatibility algorithm, as well as contributing to the UI design and computing of LED lights in the Wio terminal.
-- **Telina Hjärtberg** (telina.hjartberg@icloud.com): Main contributions made in the Web application with a focus on UI design, as well as computing the LED lights in the Wio terminal.
+- **Telina Hjärtberg** (telina.hjartberg@icloud.com): Main contributions made in the Web application with a focus on UI design, as well as computing the LED lights in the Wio terminal.      
 
 *Love Detector 2024*, **DIT113, University of Gothenburg | Chalmers University of Technology, Sweden**  
