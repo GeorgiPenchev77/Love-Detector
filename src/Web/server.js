@@ -43,6 +43,8 @@ MQTTclient.on("message", (topic, payload) => {
     processHeartbeat(0, parseInt(payload));
   } else if (topics[4] == topic) {
     processHeartbeat(1, parseInt(payload));
+  } else if (topics[7] == topic) {
+    processBothHeartbeats(payload);
   }
 
   console.log("Received message:", topic, payload.toString());
@@ -56,25 +58,45 @@ function processHeartbeat(id, measure) {
     hbArray = rightArray;
   }
 
-  if (isDateStarted) {
+  if (hbArray.length <= 4) {
     hbArray.push(measure);
-  } else {
-    if (hbArray.length <= 4) {
-      hbArray.push(measure);
-      io.emit("progress");
-    }
-    if (hbArray.length === 5) {
-      let user0normal = calcNormalHeartrate(hbArray);
-      saveIndividualMeasurement(id, user0normal);
-      hbArray.length = 0;
-    }
+    io.emit("progress");
   }
+  if (hbArray.length === 5) {
+    let user0normal = calcNormalHeartrate(hbArray);
+    saveIndividualMeasurement(id, user0normal);
+    hbArray.length = 0;
+  }
+}
+
+function processBothHeartbeats(payload){
+  if(!isDateStarted){
+    throw new Error("Both heartbeats received, but the date has not started");
+  }
+
+
+  let [leftHB, rightHB] = payload.split(' ').map((x) => {parseInt(x)});
+  leftArray.push(leftHB);
+  rightArray.push(rightHB);
+
+  console.log("Both HBs received: left: " + leftHB + ", right: " + rightHB);
+
+  if(leftArray.length() == hbRequests){
+    goToResult();
+  }
+
+}
+
+
+function goToResult(){
+  io.emit("endDate");
 }
 
 io.on("connection", (socket) => {
   socket.on("dateStarted", () => {
     socket.join("date-room");
     isDateStarted = true;
+    MQTTclient.publish(topics[6], parseInt(DATE_DURATION / hbRequests) + "");
     console.log("Date started");
   });
   socket.on("endDate", () => {
@@ -83,11 +105,18 @@ io.on("connection", (socket) => {
   socket.on("disconnecting", () => {
     if (socket.rooms.has("dateRoom")) {
       isDateStarted = false;
-      clearInterval(dateTimer);
+      resetHBdata();
+      MQTTclient.publish(topics[8], "1");
     }
   });
   console.log("A user connected");
 });
+
+function resetHBdata(){
+  leftArray = [];
+  rightArray = [];
+}
+
 
 function endDate() {
   saveDateMeasurements();
@@ -107,8 +136,7 @@ function saveDateMeasurements() {
     existingData.users[0].heartbeat_data = leftArray;
     existingData.users[1].heartbeat_data = rightArray;
   });
-  leftArray = [];
-  rightArray = [];
+  resetHBdata();
 }
 
 function activateLED() {

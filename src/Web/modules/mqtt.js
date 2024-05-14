@@ -16,13 +16,15 @@ const client = mqtt.connect(connectURL, {
 
 //todo: change this
 const topics = [
-  "start_button_click",
-  "stop_button_click",
-  "change_question",
-  "heart_rate_left",
-  "heart_rate_right",
-  "match_result",
-  "test",
+  "start_button_click",  //0
+  "stop_button_click",   //1
+  "change_question",     //2
+  "heart_rate_left",     //3
+  "heart_rate_right",    //4
+  "match_result",        //5
+  "date_started",        //6
+  "heart_rate_both",     //7
+  "date_stopped"         //8
 ];
 
 client.on("connect", () => {

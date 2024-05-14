@@ -121,9 +121,12 @@
     }
 
     fetchQuestions();
-    socket.on("next_question", function () {
+    socket.on("next_question", () => {
       changeQuestion();
     });
+    socket.on("endDate", () => {
+      goToResult();
+    })
 
     function randomize() {
       do {
