@@ -31,7 +31,15 @@ The purpose of our project, ***The Love Detector*** is to create a scientificall
 to achieve the best possible *deduction*. 
 
 ## Benefits:
-***The Love Detector*** offers significant benefits in enhancing connections during speed-dates. By utilizing scientifically driven analysis of physiological responses such as **BPM**, coupled with thought-provoking questions, ***The Love Detector*** provides a unique insight into the compatibility between people during these brief interactions. This technology-driven approach not only facilitates genuine and engaging conversations based on participants' shared interests but also introduces a novel way to uncover potential connections. As a result, ***The Love Detector*** helps foster **meaningful and authentic connections** during the fast-paced setting of speed-dates and our lives in general. 
+***The Love Detector*** offers several significant benefits that enhance the speed dating experience:
+
+  1. **Scientific Insight**: By utilizing scientifically driven analysis of physiological responses such as **BPM**, the Love Detector provides an objective measure of physical reactions participants have during interaction. 
+  
+  2. **Enhanced Conversations** By presenting thought-provoking questions, ***The Love Detector*** facilitates meaningful dialog where participants can discover common interests and thus form deeper connections.
+  
+  3. **Novelty and Fun** Including a technological aspect to the traditional speed dating format adds a new exciting twist to the concept, making the experience more enjoyable and memorable. 
+  
+  4. **Authentic Connections** By providing real-time feedback on physiological reactions, ***The Love Detector*** helps to capture **meaningful and authentic connections** that might otherwise go unnoticed in the fast-paced setting of speed-dates and our lives in general. 
 
 ## Dependencies: 
 The following section lists the dependencies and requirements for the project. These should be installed prior to the 
@@ -93,7 +101,7 @@ The following section presents a short guide on how to use our project:
   ### *Usage: Web Application*
   1. In your *Terminal* navigate to the *Web* folder (with path: love-detector/src/Web).
   2. Run *npm start* in the terminal.
-  3. Open your browser and enter the address *localhost:$$$$*. Replace *$$$$* with the port number in the terminal.
+  3. Open your browser and enter the address *localhost:[PORT]*. Replace *[PORT]* with the port number in the terminal.
   4. To stop the application, press *CTRL + C* in the terminal.    
 
 ---
