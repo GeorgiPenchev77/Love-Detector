@@ -22,10 +22,14 @@
 - [Team Members and Contributions](#team-members-and-contributions)
 
 ## Project Description:
-***The Love Detector*** is an all-in-one integrated system that provides a new and fun approach to the speed-date experience. 
-The system measures your heartbeat as you engage in conversation with your potential match and suggests whether there seems to be a spark. 
-Through the use of ***Heart Rate Sensors*** information is conveyed from the ***Wio Seeed Terminal*** to a ***Web-Based User Interface***. 
-After careful analyzation, results are calculated based on a pre-established [***Love Detection Algorithm***](https://git.chalmers.se/courses/dit113/2024/group-4/love-detector/-/wikis/Love-Detector-Algorithm).
+***The Love Detector*** is an all-in-one system that adds a fun twist to speed dating. It measures your heartbeat as you engage in conversations guided by questions displayed on the web app screen, suggesting whether there might be a spark with your potential match. Before the **"date"** starts, sensors are attached to the users' earlobes, and they are provided with a terminal and a computer with the web app open. Following instructions on both the terminal and webpage, users' heartbeats are initially measured individually to establish a baseline.
+
+Firstly, the user will follow the instructions on both the ***Wio Seeed Terminal*** and ***Web-Based User Interface***. Then, we measure the heartbeats of both users individually to establish a baseline for comparison, with the sensors attached to the users' earlobes. During the date, users’ heartbeats are continuously monitored while they read and discuss our thought-provoking questions. All of this new data is collected and saved in arrays inside Json files, our server then takes the data from this file and publishes it. This act makes it possible to send the data through our MQTT broker, where our terminal is subscribed to the relevant topics. This connection between: Server, broker, terminal, allows us to send information seamlessly and effectively. 
+
+After careful analysis using a pre-established [***Love Detection Algorithm***](https://git.chalmers.se/courses/dit113/2024/group-4/love-detector/-/wikis/Love-Detector-Algorithm), the results are calculated based on variations and spikes of heartbeat between each user, which provides us with a composite score. Both users composite scores are then compared based on how close they are to each other, resulting in a match rating from 1 to 3, indicating the potential strength of the connection: no match, decent match, or absolute match.
+
+The results are displayed on the UI, which has its own dedicated page where the user will be able to see a heartbeat graph and some general information about the date. On the terminal side of things LEDs will indicate the match level reached by the users. By the end of the date, user will gain a better understanding of how their connection is perceived by their hearts, helping them decide their next steps.
+
 
 ## Purpose:
 The purpose of our project, ***The Love Detector*** is to create a scientifically driven, analytical tool that assesses the likelyhood of a deeper connection or a so-called **"spark"** between two individuals during a speed-date. By combining continious *heartbeat detection*, a rotating *list of questions*, and a special *algorithm*, the project relies on the *physical reactions* our body exerts in moments of excitement, 
