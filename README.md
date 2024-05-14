@@ -6,19 +6,20 @@
 - [Project Description](#project-description)
 - [Purpose](#purpose)
 - [Benefits](#benefits)
-- [Dependencies](#dependecies)
+- [Dependencies](#dependencies)
 - [System Sensors](#system-sensors)
 - [Installation](#installation)
   1. [Installation: Wio Seeed Terminal](#installation-wio-seeed-terminal)
-  2. [Installation: Web-Based UI](#installation-web-based-ui)
+  2. [Installation: Web Application](#installation-web-application)
 - [Usage](#usage)
   1. [Usage: Wio Seeed Terminal](#usage-wio-seeed-terminal)
-  2. [Usage: Web-Based UI](#usage-web-based-ui)
+  2. [Usage: Web Application](#usage-web-application)
   3. [Demo and Examples](#demo-and-examples)
 - [Hardware and Software Diagrams](#hardware-and-software-diagrams)  
-- [Documentation](#documentation)
+- [Full Documentation](#full-documentation)
+- [CI Pipeline](#ci-pipeline)
 - [License](#license)
-- [Team Members and Contributions](#team-members)
+- [Team Members and Contributions](#team-members-and-contributions)
 
 ## Project Description:
 ***The Love Detector*** is an all-in-one integrated system that provides a new and fun approach to the speed-date experience. 
@@ -118,6 +119,24 @@ The following section contains the design diagram, that the team followed during
 ## Full Documentation:
 For the full documentation of the project, see our [Wiki](https://git.chalmers.se/courses/dit113/2024/group-4/love-detector/-/wikis/home).
 You can navigate between the different pages, using the panel on the right side.
+
+## CI pipeline: 
+In our project, we included Continious Integration (CI) which involves automatically building the system upon commiting new changes to ensure that the system always is in a functioning state. Our pipeline is written in .gitlab-ci.yml file located in the root of the project directory and includes both a arduino and a Web application build stage. Our current pipeline does not include testing nor continuous deployment which involves testing the build and automatically forwarding the code to a production after building and passing tests. However, this could be extended in the future by adding testing and deployment jobs to the already existing YAML file. Furthermore, our pipeline YAML file is executed by GitLab runners which are computers that pull the project, locate the CI pipeline file and execute the commands that are given. In our case, these commands include both running the actual build stages as well as a sepperate setup-build file we have for the arduino that includes installing Arduino CLI, needed libraries etc. The pipeline uses Ubuntu Docker Image which is a exacutable software package that can run your project in an isolated environment across various machines and platforms. The docker image is incuded at the top of the .gitlab-ci.yml file.  
+
+*Setup Environment:*
+  - Executes sepperate setup-build-env.sh script to install necessary tools and libraries for Arduino.
+
+<br>
+
+*Arduino Build Stage:*
+  - Compiles the Arduino code for the Wio Terminal.
+  - Sets up the Arduino CLI, imports secret configuration files, checks for installed libraries, compiles the code, and checks for connected boards.
+
+<br>
+
+*NPM Build Stage:* 
+  - Installs Node.js and NPM, updates package lists and installs dependencies.
+
 
 ## License:
 The project is licensed under the MIT License. Refer to the [**LICENSE**](documents/License) file for more information.
