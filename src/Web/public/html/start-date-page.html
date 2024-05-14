@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title> Start date </title>
-    <link rel="icon" href="./assets/images/Heart-Image.webp" type="image/x-icon">
-    <link rel="stylesheet" href="./css/start-date-page-style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+    <title>Start date</title>
+    <link
+      rel="icon"
+      href="./assets/images/Heart-Image.webp"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="./css/start-date-page-style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap"
+      rel="stylesheet"
+    />
   </head>
 
   <body>
@@ -28,35 +35,41 @@
       </div>
       <div class="instructions-container">
         <div class="instruction">
+          <h2>For User 1 and User 2:</h2>
+        </div>
+        <div class="instruction">
           <h2>STEP 1:</h2>
-          <p>Remove any accessories from your ear</p>
+          <p>
+            Put the sensor ear-clip on your earlobe. Make sure you are using the
+            same sensor as before and that both sensors are attched properly
+            before proceeding.
+          </p>
         </div>
         <div class="instruction">
           <h2>STEP 2:</h2>
-          <p>Put the sensor ear-clip on your earlobe</p>
-        </div>
-        <div class="instruction">
-          <h2>STEP 3:</h2>
-          <p>Click the left blue button on the terminal to begin the date</p>
+          <p>Click the left blue button on the terminal to begin the date.</p>
         </div>
       </div>
     </div>
     <div class="button-container">
       <button type="button" class="back-button" onclick="goBack()">
-        <img src="./assets/images/left-arrow.png" alt="Back" height="35" ><img/>
+        <img
+          src="./assets/images/left-arrow.png"
+          alt="Back"
+          height="35"
+        /><img />
       </button>
     </div>
   </body>
 
   <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
   <script>
-    
     //Retrieve user data from JSON via server
     async function getUserData() {
       const response = await fetch("/getUserData", {
         method: "GET",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
       });
 
@@ -66,8 +79,8 @@
       return await response.json();
     }
 
-     //Take the retrieved user data and display it on the screen
-     async function fillUserData(){
+    //Take the retrieved user data and display it on the screen
+    async function fillUserData() {
       let userData = await getUserData();
       console.log("User data:", userData);
 
@@ -84,7 +97,7 @@
       individualMeasurementsMax = userData.individual_measurements;
     }
 
-    fillUserData(); 
+    fillUserData();
 
     function goBack() {
       window.history.back();
@@ -92,7 +105,7 @@
 
     //When user starts the test, the UI redirects to the datequestions page
     const socket = io();
-    socket.on('start', function () {
+    socket.on("start", function () {
       window.location.href = "./questions.html";
     });
   </script>
