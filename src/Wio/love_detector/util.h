@@ -44,6 +44,11 @@ attached securely!"
 #define RESET_MESSAGE   "Test has been stopped.\n Press button again to reset the test."
 /* -------------------------------------------------------------------------- */
 
+/* ---------------------------- General Utilities --------------------------- */
+extern int parseInt(String string);
 
+/* -------------------------------------------------------------------------- */
+
+#define DEBUG false
 
 #endif

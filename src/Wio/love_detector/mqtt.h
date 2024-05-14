@@ -5,6 +5,8 @@
 #include "rpcWiFi.h"
 #include <ArduinoMqttClient.h>
 #include "led.h"
+#include "heartBeatSensor.h"
+#include "util.h"
 
 WiFiClient wifiClient;
 MqttClient mqttClient(wifiClient);
@@ -38,6 +40,13 @@ const char topic_nextQ[] = "change_question";
 const char topic_heartRateLeft[] = "heart_rate_left";
 const char topic_heartRateRight[] = "heart_rate_right";
 const char topic_matchResult[] = "match_result";
+const char topic_dateStarted[] = "date_started";
+const char topic_dateStopped[] = "date_stopped";
+const char topic_heartRateBoth[] = "heart_rate_both";
+const char topic_IMStarted[] = "im_started";
+const char topic_IMStopped[] = "im_stopped";
+const char topic_IMUserSwitched[] = "im_user_switched";
+
 
 const char test[] = "test";
 const char payload_start[]  = "Start button has been clicked";
@@ -50,7 +59,8 @@ unsigned long previousMillis = 0;
 
 
 extern void onMqttMessage(int messageSize);
-extern void MQTTsubscribe(String topic);
+extern void MQTTsubscribe();
+extern int processMessage();
 
 void setupWifi(){
   WiFi.mode(WIFI_STA);
@@ -88,25 +98,37 @@ void setupMQTT(){
   printNewMessage("You're connected to the MQTT broker!");
 
   mqttClient.onMessage(onMqttMessage);
-  mqttClient.subscribe(test);
-  MQTTsubscribe(topic_matchResult);
-
-  Serial.println("Serial is ready.");
+  MQTTsubscribe();
   delay(2000);
 }
 
+
+
 void maintainMQTTConnection(){
+  if(DEBUG) Serial.println("Maintaining connection...");
   //mqttClient.poll() "keeps alive" connection between the broker and client
   //by periodically pinging the broker
   mqttClient.poll();
+
+  if (!mqttClient.connected()) {
+    Serial.println("Disconnected");
+    if (mqttClient.connect(broker, port)) {
+      Serial.println("reconnected");
+    }
+  }
+
+  if(DEBUG) Serial.println("Connection maintained!");
 }
 
 bool MQTTpublishCheck(){
+
+
   // method to check if there has passed enough time since the last 
   // MQTT publish 
-  unsigned long currentMillis = 0;
+  unsigned long currentMillis = millis();
   if(currentMillis - previousMillis >= interval){
     previousMillis = currentMillis;
+    maintainMQTTConnection();
     return true;
   } else {
     return false;
@@ -119,27 +141,55 @@ void MQTTpublish(String topic, String payload){
     mqttClient.endMessage();
 }
 
-void MQTTsubscribe(String topic){
-  Serial.println("Subscribing to topick: ");
-  Serial.println(topic);
+void MQTTsubscribe(){
+  Serial.println("Subscribing to topicks: ");
+  Serial.println(topic_matchResult);
+  Serial.println(topic_dateStarted);
+  Serial.println(topic_dateStopped);
+  Serial.println(topic_IMStarted);
+  Serial.println(topic_IMStopped);
+  Serial.println(topic_IMUserSwitched);
   
-  mqttClient.subscribe(topic);
+  mqttClient.subscribe(topic_matchResult);
+  mqttClient.subscribe(topic_dateStarted);
+  mqttClient.subscribe(topic_dateStopped);
+  mqttClient.subscribe(topic_IMUserSwitched);
+  mqttClient.subscribe(topic_IMStopped);
+  mqttClient.subscribe(topic_IMStarted);
 }
 
 void onMqttMessage(int messageSize){
-  Serial.println("Received message");
+
   String newTopic = mqttClient.messageTopic();
   char* topic = &newTopic[0];
-  Serial.println(topic);
-  Serial.println(newTopic);
-  Serial.println(topic_matchResult);
-  Serial.println(strcmp(topic, topic_matchResult));
+  Serial.printf("Received message on topic: %s\n", topic);
 
+
+  int message = processMessage();
+  Serial.printf("With contents: %d\n", message);
+
+  //strcmp returns 0 if strings are equal
   if(!strcmp(topic, topic_matchResult)){
-    int result = mqttClient.read() - (int) '0';
-    Serial.println(result);
-    light(result);
+    light(message);
+  } else if(!strcmp(topic, topic_dateStarted)){
+    HBSensor::startDate(message);
+  } else if(!strcmp(topic, topic_dateStopped)){
+    HBSensor::stopDate();
+  } else if(!strcmp(topic, topic_IMStarted)){
+    HBSensor::startIM(message);
+  } else if(!strcmp(topic, topic_IMStopped)){
+    HBSensor::stopIM();
+  } else if(!strcmp(topic, topic_IMUserSwitched)){
+    HBSensor::switchIMUser();
   }
+}
+
+int processMessage(){
+  String message = "";
+  while(mqttClient.available()){
+    message = message + (char) mqttClient.read();
+  }
+  return parseInt(message);
 }
 
 
