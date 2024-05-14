@@ -38,6 +38,7 @@ body {
   display: flex;
   width: 100%;
   align-items: center;
+  margin-bottom: 20px;
 }
 .back-button {
   display: flex;
@@ -50,7 +51,7 @@ body {
   margin: 0 7.5%;
 }
 .back-button:hover {
-  background-color: rgb(255, 255, 255);
+  background-color: rgb(141, 141, 141);
   cursor: pointer;
 }
 .info {
