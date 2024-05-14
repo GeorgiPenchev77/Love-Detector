@@ -7,7 +7,7 @@
 - [Purpose](#purpose)
 - [Benefits](#benefits)
 - [Dependencies](#dependencies)
-- [System Sensors](#system-sensors)
+- [Used Technologies](#used-technologies)
 - [Installation](#installation)
   1. [Installation: Wio Seeed Terminal](#installation-wio-seeed-terminal)
   2. [Installation: Web Application](#installation-web-application)
@@ -65,10 +65,15 @@ installation process described in the next section:
    - *Note:* **Node.js** comes standardly with **npm** as a package, so you most likely don't need to download it separetely.
    - *Note:* We strongly recommend that you go with the **latest stable version** of **Node.js** 
 
-## System Sensors:
-The following list contains the sensors used in this project:
-+ Grove - [RGB LED Stick (10 – WS2813 Mini)](https://wiki.seeedstudio.com/Grove-RGB_LED_Stick-10-WS2813_Mini/) 
-+ Grove - [Ear-clip Heart Rate Sensor](https://wiki.seeedstudio.com/Grove-Ear-clip_Heart_Rate_Sensor/) Note: two(2) of these sensors are needed.
+## Used Technologies:
+The following list contains the technologies used in this project:
+  - C++
+  - Java Script
+  - HTML/CSS
+  - Figma
+  - Wio seeed terminal
+  - Grove LED Stick - [RGB LED Stick (10 – WS2813 Mini)](https://wiki.seeedstudio.com/Grove-RGB_LED_Stick-10-WS2813_Mini/) 
+  - Grove Heart Rate Sensor - [Ear-clip Heart Rate Sensor](https://wiki.seeedstudio.com/Grove-Ear-clip_Heart_Rate_Sensor/) Note: two(2) of these sensors are needed.
   
 ## Installation:
 The following section lists the needed steps in order to complete the installation process for the project:
