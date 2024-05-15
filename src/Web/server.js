@@ -26,8 +26,6 @@ let rightArray = [];
 
 let isDateStarted = false;
 let isIMStarted = false;
-let isLeftIMStarted = false;
-let isRightIMStarted = false;
 
 let dateTimer; //variable for interval
 const DATE_DURATION = 180000; // = 3 min. Duration of the date
@@ -46,13 +44,17 @@ MQTTclient.on("message", (topic, payload) => {
   } else if (topics[4] == topic) {
     processHeartbeat(1, parseInt(payload));
   } else if (topics[7] == topic) {
-    processBothHeartbeats(toString(payload));
+    processBothHeartbeats(payload.toString());
   }
 
   console.log("Received message:", topic, payload.toString());
 });
 
 function processHeartbeat(id, measure) {
+  if(!isIMStarted){
+    throw new Error("Individual hearbeat received, but individual measurement has not started");
+  }
+
   let hbArray;
   if (id == 0) {
     hbArray = leftArray;
@@ -64,31 +66,32 @@ function processHeartbeat(id, measure) {
     hbArray.push(measure);
     io.emit("progress");
   }
-  if (hbArray.length === 5) {
+  if (hbArray.length == imHbRequests) {
     let user0normal = calcNormalHeartrate(hbArray);
     saveIndividualMeasurement(id, user0normal);
     hbArray.length = 0;
   }
 }
 
-function processBothHeartbeats(payload){
+function processBothHeartbeats(measure){
   if(!isDateStarted){
     throw new Error("Both heartbeats received, but the date has not started");
   }
 
-
-  let [leftHB, rightHB] = payload.split(' ').map((x) => {parseInt(x)});
-  leftArray.push(leftHB);
-  rightArray.push(rightHB);
-
-  console.log("Both HBs received: left: " + leftHB + ", right: " + rightHB);
+  const stringArray = measure.split(' ');
+  const heartBeatArray = stringArray.map((x) => parseInt(x));
+  if(Number.isInteger(heartBeatArray[1]) && Number.isInteger(heartBeatArray[1])){
+  leftArray.push(heartBeatArray[0]);
+  rightArray.push(heartBeatArray[1]);
+  }
+  console.log(leftArray.length);
+  console.log("Both HBs received: left: " + heartBeatArray[0] + ", right: " + heartBeatArray[1]);
 
   if(leftArray.length == hbRequests){
+    saveDateMeasurements();
     goToResult();
   }
-
 }
-
 
 function goToResult(){
   io.emit("endDate");
@@ -122,13 +125,11 @@ io.on("connection", (socket) => {
   socket.on("disconnecting", () => {
     if (socket.rooms.has("dateRoom")) {
       isDateStarted = false;
-      resetHBdata();
       MQTTclient.publish(topics[8], "1");
     }
   });
   socket.on("resetIM", ()=>{
-    leftArray = [];
-    rightArray = [];
+    resetHBdata();
   });
 
   console.log("A user connected");
@@ -139,12 +140,10 @@ function resetHBdata(){
   rightArray = [];
 }
 
-
 function endDate() {
-  saveDateMeasurements();
   compCalc();
   activateLED();
-  console.log("date has ended");
+  console.log("Date has ended");
 }
 
 function saveIndividualMeasurement(id, heartbeat) {
@@ -155,10 +154,11 @@ function saveIndividualMeasurement(id, heartbeat) {
 
 function saveDateMeasurements() {
   util.updateJSON(UPDATE_FILE, (existingData) => {
+    console.log(leftArray);
+    console.log(rightArray);
     existingData.users[0].heartbeat_data = leftArray;
     existingData.users[1].heartbeat_data = rightArray;
   });
-  resetHBdata();
 }
 
 function activateLED() {
