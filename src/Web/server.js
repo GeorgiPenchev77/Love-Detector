@@ -88,8 +88,7 @@ function processBothHeartbeats(measure){
   console.log("Both HBs received: left: " + heartBeatArray[0] + ", right: " + heartBeatArray[1]);
 
   if(leftArray.length == hbRequests){
-    saveDateMeasurements();
-    goToResult();
+    endDate();
   }
 }
 
@@ -119,9 +118,6 @@ io.on("connection", (socket) => {
     MQTTclient.publish(topics[6], parseInt(DATE_DURATION / hbRequests) + "");
     console.log("Date started");
   });
-  socket.on("endDate", () => {
-    endDate();
-  });
   socket.on("disconnecting", () => {
     if (socket.rooms.has("dateRoom")) {
       isDateStarted = false;
@@ -141,7 +137,10 @@ function resetHBdata(){
 }
 
 function endDate() {
+  goToResult();
+  saveDateMeasurements();
   compCalc();
+  io.emit("data_loaded");
   activateLED();
   console.log("Date has ended");
 }

@@ -49,13 +49,24 @@
         </div>
     </body>
 
-    <!-- 
+    <!--
     Uses script from googlecharts, original code is in Gitlab: ChartsGoogle.html
     -->
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">        
-        fillUserData();
+    <script type="text/javascript">
+
+        // const socket = io();
+        // console.log("Flag 0...");
+        // socket.on("data_loaded", () => {
+        //     console.log("Flag 1...");
+        //     fillUserData();
+        // });
         //drawChart();
+
+        const timer = setTimeout(() => {
+            fillUserData();
+        }, 1000);
 
 
         async function drawChart(userData) {

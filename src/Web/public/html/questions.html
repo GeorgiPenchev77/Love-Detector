@@ -85,9 +85,6 @@
               />
             </g>
           </svg></button>
-        <button type="button" class="next-button" onclick="goToResult()">
-          <img src="./assets/images/right-arrow.png" alt="Continue" height="35" />
-        </button>
       </div>
     </div>
   </body>
@@ -208,7 +205,6 @@
     changeQuestion(); // Execute
 
     function goToResult(){
-      socket.emit('endDate')
       window.location.href="./result-page.html"
     }
 
