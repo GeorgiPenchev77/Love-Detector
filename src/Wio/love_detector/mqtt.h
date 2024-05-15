@@ -66,12 +66,11 @@ void setupWifi(){
   WiFi.mode(WIFI_STA);
   WiFi.disconnect();
 
-  printMessage("Attempting to connect to:");
-  printMessage(ssid);
+  printNewMessage("Connection is being established.");
 
   while (WiFi.begin(ssid, pass) != WL_CONNECTED) {
     // failed, retry
-    printMessage(".");
+    printNewMessage("Retrying...");
     delay(5000);
   }
 
@@ -83,13 +82,10 @@ void setupWifi(){
 void setupMQTT(){
   setupWifi();
 
-  printNewMessage("Connecting to MQTT Broker:");
-  printMessage(broker);
+  printNewMessage("Connection to MQTT Broker is being established.");
 
   while (!mqttClient.connect(broker, port)) {
-    printNewMessage("MQTT connection failed! Error code = ");
-    printMessage(String(mqttClient.connectError()));
-    printNewMessage("\nRetrying...");
+    printNewMessage("MQTT broker connection failed! Retrying...");
 
     delay(5000);
   }
