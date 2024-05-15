@@ -102,9 +102,9 @@ class HBSensor{
         if (sub > MAX_HEARTPULSE_DUTY) { //check whether the time between the now and the last tick was greater than 2 seconds, if so reset the test as it would be invalid
           reset();
           if(SENSOR == LEFT){
-            printNewMessage(ERROR_MESSAGE1);
+            updateWioText(ERROR_MESSAGE1);
           } else if (SENSOR == RIGHT){
-            printNewMessage(ERROR_MESSAGE2);
+            updateWioText(ERROR_MESSAGE2);
           }
           return;
         }
@@ -143,11 +143,13 @@ class HBSensor{
 
     static int getIMHeartrate(){
       IMCounter++;
+      updateWioText(LOADING_MESSAGE);
       Serial.printf("Get IM request. Requests done: %d\n", IMCounter);
       //In IM mode: check if the sufficient number of measures has been reached
       if(isIMStarted && IMCounter >= IMCounterMAX){
         IMCounter = 0;
         deactivateSensor(currentIMUser);
+        updateWioText(RESET_MESSAGE);
       }
 
       instances[currentIMUser] -> resetIsUpdated();
@@ -231,6 +233,9 @@ class HBSensor{
     }
 
     static void processStopClick(){
+      if(instances[currentIMUser] -> isActive == false){
+        return;
+      }
       if(isIMStarted){
         deactivateSensor(currentIMUser);
       }

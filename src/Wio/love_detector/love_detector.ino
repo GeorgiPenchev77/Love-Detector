@@ -4,14 +4,13 @@
 #include "led.h"
 
 volatile bool previousState = false;  // store the previous state of the START_DATE button
-volatile bool isStarted = false;      // store whether the test has been started or not (this is the via S)
 bool startButtonClicked = false;
 bool nextQuestionClicked = false;
 bool stopButtonClicked = false;
 
 //function to read every button press to start/stop the test
 void startMeasuring() {
-  isStarted = true;
+  updateWioText(LOADING_MESSAGE);
   // MQTT flag
   startButtonClicked = true;
 }
@@ -22,7 +21,7 @@ void changeQuestion() {
 }
 
 void stopMeasuring() {
-  isStarted = false;
+  updateWioText(RESET_MESSAGE);
   //MQTT flag
   stopButtonClicked = true;
 }
@@ -39,7 +38,7 @@ void setup() {
   setupMQTT();
   neoPixelSetup();
 
-  printNewMessage(START_MESSAGE);
+  updateWioText(START_MESSAGE);
 
   // interrupts attachment
   leftSensor.setup();
@@ -56,29 +55,11 @@ void loop() {
 
   if(DEBUG) Serial.println("Witch hunting...");
 
-//  int messageSize = mqttClient.parseMessage();
-//  if (messageSize) {
-//    Serial.print("A message received");
-//    onMqttMessage(messageSize);
-//  }
+
+  //Update terminal text displayed
+  renderWioText();
 
   if(DEBUG) Serial.println("Flag 1...");
-  // change message based on whether test is started or not
-  if (isStarted != previousState) {
-    if (isStarted) {
-      printNewMessage(LOADING_MESSAGE);
-
-    } else if (!isStarted) {
-      printNewMessage(RESET_MESSAGE);
-    }
-
-
-
-    //save the current value in order to check later whether there has been a change or not
-    previousState = isStarted;
-  }
-
-  if(DEBUG) Serial.println("Flag 2...");
 
   if (MQTTpublishCheck()) {
     if (startButtonClicked) {

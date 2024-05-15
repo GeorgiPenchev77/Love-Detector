@@ -19,6 +19,10 @@ extern void setupWioOutput();
 extern void printMessage(String string);
 
 extern void printNewMessage(String string);
+
+extern void renderWioText();
+
+extern void updateWioText(String newText);
 /* -------------------------------------------------------------------------- */
 
 /* ------------------------------ Wio messages ------------------------------ */

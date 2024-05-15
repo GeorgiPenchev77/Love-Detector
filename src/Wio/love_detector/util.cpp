@@ -2,7 +2,10 @@
 
 TFT_eSPI tft;
 
-/* ------------------------------ Wio printing ------------------------------ */                                                                                                                 
+/* ------------------------------ Wio printing ------------------------------ */
+String displayedText = "";
+bool hasTextChanged = false;
+
 void printMessage(String string){
   tft.setTextSize(2);
   tft.println(string);
@@ -22,6 +25,24 @@ void setupWioOutput(){
 
   Serial.begin(9600);
 }
+
+void renderWioText(){
+  if(hasTextChanged){
+    printNewMessage(displayedText);
+    hasTextChanged = false;
+  }
+}
+
+void updateWioText(String newText){
+  if(displayedText != newText){
+    displayedText = newText;
+    hasTextChanged = true;
+  }
+}
+
+
+
+
 /* -------------------------------------------------------------------------- */
 
 /* ---------------------------- General utilities --------------------------- */
