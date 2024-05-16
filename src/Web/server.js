@@ -146,11 +146,10 @@ function resetHBdata(){
 }
 
 function endDate() {
-  goToResult();
   saveDateMeasurements();
   compCalc();
-  io.emit("data_loaded");
   activateLED();
+  goToResult();
   console.log("Date has ended");
 }
 
