@@ -3,69 +3,71 @@
     {
       "username": "Kristina",
       "pronouns": "she/her",
-      "heartbeat_data": [
-        75,
+      "IM_heartbeat_data":[
         60,
-        65
+        60,
+        60,
+        60,
+        60
       ],
-      "normal_heartbeat": "0",
-      "date_heartbeat_avg": "108.83",
-      "date_heartbeat_peak": 130,
-      "date_spike_counter": 19,
-      "date_upper_bracket": 62.5,
-      "composite_score": "12.36",
-      "variability": 30,
-      "calculateUpperBracket": 62.5
+      "IM_average_heartbeat": 60,
+      "IM_heartbeat_peak": 60,
+      "IM_upper_bracket": 0,
+      "date_heartbeat_data": [
+        60,
+        60,
+        60,
+        60,
+        60,
+        60,
+        60,
+        60,
+        60,
+        60
+      ],
+      "date_average_heartbeat": 60,
+      "date_heartbeat_peak": 60,
+      "date_upper_bracket": 0,
+      "date_spike_counter": 0,
+      "composite_score": 0
     },
     {
       "username": "Dengan",
       "pronouns": "he/him",
-      "heartbeat_data": [
+      "IM_heartbeat_data":[
         60,
-        75,
-        90,
-        105,
-        120,
-        115,
-        110,
-        105,
-        100,
-        115,
-        130,
-        115,
-        100,
-        115,
-        130,
-        115,
-        100,
-        115,
-        130,
-        115,
-        110,
-        105,
-        100,
-        115,
-        130,
-        115,
-        110,
-        105,
-        100,
-        115
+        60,
+        60,
+        60,
+        60
       ],
-      "normal_heartbeat": "0",
-      "date_heartbeat_avg": "108.83",
-      "date_heartbeat_peak": 130,
-      "date_spike_counter": 19,
-      "date_upper_bracket": 62.5,
-      "composite_score": "12.36",
-      "variability": 30,
-      "calculateUpperBracket": 62.5
+      "IM_average_heartbeat": 60,
+      "IM_heartbeat_peak": 60,
+      "IM_upper_bracket": 0,
+      "date_heartbeat_data": [
+        60,
+        60,
+        60,
+        60,
+        60,
+        60,
+        60,
+        60,
+        60,
+        60
+      ],
+      "date_average_heartbeat": 60,
+      "date_heartbeat_peak": 60,
+      "date_upper_bracket": 0,
+      "date_spike_counter": 0,
+      "composite_score": 0
     }
   ],
   "test_data_for_graph": {
     "time_seconds": 10,
     "number_of_points": 10
   },
-  "match_result": null,
-  "individual_measurements": 5
+  "match_result": 0,
+  "individual_measurements": 5,
+  "date_measurements": 10
 }

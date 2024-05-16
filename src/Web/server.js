@@ -6,7 +6,7 @@ const http = require("http");
 const server = http.createServer(app);
 const io = new Server(server);
 
-const { compCalc, calcNormalHeartrate } = require("./modules/compatibility.js");
+const { compCalc, individualMeasuementCalc } = require("./modules/compatibility.js");
 const { MQTTclient, topics } = require("./modules/mqtt.js");
 const util = require("./modules/util.js");
 
@@ -72,8 +72,8 @@ function processHeartbeat(id, measure) {
     io.emit("progress");
   }
   if (hbArray.length == imHbRequests) {
-    let user0normal = calcNormalHeartrate(hbArray);
-    saveIndividualMeasurement(id, user0normal);
+    saveIndividualMeasurement(id, hbArray);
+    individualMeasuementCalc(id);
     hbArray.length = 0;
   }
 }
@@ -87,10 +87,12 @@ function processBothHeartbeats(measure){
 
   const heartBeatArray = stringArray.map((x) => parseInt(x));
   if(Number.isInteger(heartBeatArray[0]) && Number.isInteger(heartBeatArray[1])){
-    leftArray.push(heartBeatArray[0]);
-    rightArray.push(heartBeatArray[1]);
+  leftArray.push(heartBeatArray[0]);
+  rightArray.push(heartBeatArray[1]);
   }
-  console.log(leftArray.length);
+  else{
+  throw new Error("Invalid data.");
+  }
   console.log("Both HBs received: left: " + heartBeatArray[0] + ", right: " + heartBeatArray[1]);
 
   if(leftArray.length == hbRequests){
@@ -153,18 +155,16 @@ function endDate() {
   console.log("Date has ended");
 }
 
-function saveIndividualMeasurement(id, heartbeat) {
+function saveIndividualMeasurement(id, heartbeatData) {
   util.updateJSON(UPDATE_FILE, (existingData) => {
-    existingData.users[id].normal_heartbeat = heartbeat;
+    existingData.users[id].IM_heartbeat_data = heartbeatData;
   });
 }
 
 function saveDateMeasurements() {
   util.updateJSON(UPDATE_FILE, (existingData) => {
-    console.log(leftArray);
-    console.log(rightArray);
-    existingData.users[0].heartbeat_data = leftArray;
-    existingData.users[1].heartbeat_data = rightArray;
+    existingData.users[0].date_heartbeat_data = leftArray;
+    existingData.users[1].date_heartbeat_data = rightArray;
   });
 }
 

@@ -140,7 +140,7 @@
     }
 
     function goBack() {
-      socket.emit('stopIM');
+      socket.emit('endIM');
       window.history.back();
     }
 
@@ -204,9 +204,9 @@
     async function getUserIM(){
       let userData = await getUserData();
       if(userId === "user1"){
-        return userData.users[0].normal_heartbeat;
+        return userData.users[0].IM_average_heartbeat;
       } else {
-        return userData.users[1].normal_heartbeat;
+        return userData.users[1].IM_average_heartbeat;
       }
     }
 

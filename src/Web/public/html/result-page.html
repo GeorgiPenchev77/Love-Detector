@@ -76,15 +76,16 @@
                 let time = testTime / numberOfPoints * i;
                 data1.setCell(i, 0, time);
                 if(i == 0){
-                    data1.setCell(i, 1, userData.users[0].normal_heartbeat);
-                    data1.setCell(i, 2, userData.users[1].normal_heartbeat);
+                    data1.setCell(i, 1, userData.users[0].IM_average_heartbeat);
+                    data1.setCell(i, 2, userData.users[1].IM_average_heartbeat);
                 }
                 else{
-                    data1.setCell(i, 1, userData.users[0].heartbeat_data[i-1]);
-                    data1.setCell(i, 2, userData.users[1].heartbeat_data[i-1]);
+                    data1.setCell(i, 1, userData.users[0].date_heartbeat_data[i-1]);
+                    data1.setCell(i, 2, userData.users[1].date_heartbeat_data[i-1]);
                 }
                 
             }
+
 
             /*Designates technical aspects of graph; how the curve looks like, colors, size...*/
             var options1 = {
@@ -128,10 +129,10 @@
             let userName2 = userData.users[1].username;
             let userPronouns1 = userData.users[0].pronouns;
             let userPronouns2 = userData.users[1].pronouns;
-            let userNormalHeartbeat1 = userData.users[0].normal_heartbeat;
-            let userNormalHeartbeat2 = userData.users[1].normal_heartbeat;
-            let userDateHeartbeatAvg1 = userData.users[0].date_heartbeat_avg;
-            let userDateHeartbeatAvg2 = userData.users[1].date_heartbeat_avg;
+            let userNormalHeartbeat1 = userData.users[0].IM_average_heartbeat;
+            let userNormalHeartbeat2 = userData.users[1].IM_average_heartbeat;
+            let userDateHeartbeatAvg1 = userData.users[0].date_average_heartbeat;
+            let userDateHeartbeatAvg2 = userData.users[1].date_average_heartbeat;
             let userHeartBeatPeak1 = userData.users[0].date_heartbeat_peak;
             let userHeartBeatPeak2 = userData.users[1].date_heartbeat_peak;
 
