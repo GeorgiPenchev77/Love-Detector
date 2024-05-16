@@ -94,7 +94,7 @@
   <script>
     let lastQuestionIndex = -1; //index to keep track of last question
     let randomIndex; // index to ensure that the question is different than the previous one
-    let questions = [];
+    let questions = []; // array to store questions that are in json file
     let question;
 
     const socket = io();
@@ -192,9 +192,9 @@
     getUserData();
 
     let timerInterval; // Interval Object for timer
-    let dateTime = 0;
-    const timer = document.getElementById("timer"); //! element of timer
-    changeQuestion(); // Execute
+    let dateTime = 0; 
+    const timer = document.getElementById("timer"); // initializes timer, so it can be updated during execution of date
+    changeQuestion(); // executes the initial question display on the screen
 
     function goToResult(){
       window.location.href="./result-page.html"
