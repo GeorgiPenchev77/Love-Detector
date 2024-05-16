@@ -8,6 +8,8 @@
 TFT_eSPI tft;                                                          // initialize screen object
 
 /* ------------------------------ Wio printing ------------------------------ */     
+String displayedText = "";
+bool hasTextChanged = false;
 
 void setupWioOutput(){
   Serial.begin(9600);                                                  // start the serial
@@ -34,7 +36,6 @@ int getPixelWidth(int textSize){                                       // get pi
 void clearScreen(){ 
    tft.fillRect(0, HEADER_HEIGHT, TFT_WIDTH, TFT_HEIGHT - HEADER_HEIGHT, TFT_PINK); 
 }
-
 
 void printNewMessage(String text){
   clearScreen();
@@ -64,5 +65,31 @@ void drawHeader(){
   char* text = "Love Detector";
   tft.drawString(text, getCenter(text,3), 5);
 }
+
+void renderWioText(){
+  if(hasTextChanged){
+    printNewMessage(displayedText);
+    hasTextChanged = false;
+  }
+}
+
+void updateWioText(String newText){
+  if(displayedText != newText){
+    displayedText = newText;
+    hasTextChanged = true;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+
+/* ---------------------------- General utilities --------------------------- */
+int parseInt(String string){
+  int num = 0;
+  for(int i = 0; i < string.length(); ++i){
+    num = (num * 10) + (int) string[i] - (int) '0';
+  }
+  return num;
+}
+
 
 /* -------------------------------------------------------------------------- */

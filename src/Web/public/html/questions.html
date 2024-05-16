@@ -8,7 +8,10 @@
       href="./assets/images/Heart-Image.webp"
       type="image/x-icon"
     />
-    <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap"
+      rel="stylesheet"
+    />
   </head>
 
   <body>
@@ -46,8 +49,13 @@
     </div>
 
     <div class="button-container">
-      <button type="button" class="back-button" onclick="goBack()">Back</button>
-
+      <button type="button" class="back-button" onclick="goBack()">
+        <img
+          src="./assets/images/left-arrow.png"
+          alt="Back"
+          height="35"
+        /><img />
+      </button>
       <div class="timer_container">
         <div id="timer"></div>
       </div>
@@ -55,8 +63,8 @@
         <button class="question-button" onclick="changeQuestion()">
           <svg
             fill="#000000"
-            height="40px"
-            width="40px"
+            height="30px"
+            width="30px"
             version="1.1"
             id="Layer_1"
             xmlns="http://www.w3.org/2000/svg"
@@ -76,15 +84,7 @@
                     c18.584-11.975,34.707-27.145,47.731-44.706l39.139,38.952V235.742z"
               />
             </g>
-          </svg></button
-        ><a class="next-button" href="./result-page.html">
-          <img
-            class="next-button-picture"
-            src="./assets/images/Next-Button.png"
-            alt="Continue"
-            height="50"
-          />
-        </a>
+          </svg></button>
       </div>
     </div>
   </body>
@@ -94,8 +94,12 @@
   <script>
     let lastQuestionIndex = -1; //index to keep track of last question
     let randomIndex; // index to ensure that the question is different than the previous one
-    let questions = [];
+    let questions = []; // array to store questions that are in json file
     let question;
+
+    const socket = io();
+    socket.emit('dateStarted')
+
     function goBack() {
       window.history.back();
     }
@@ -114,11 +118,12 @@
     }
 
     fetchQuestions();
-
-    const socket = io();
-    socket.on("next_question", function () {
+    socket.on("next_question", () => {
       changeQuestion();
     });
+    socket.on("endDate", () => {
+      goToResult();
+    })
 
     function randomize() {
       do {
@@ -144,6 +149,7 @@
       let timeLeft = 90;
       timer.textContent = timeLeft;
       timerInterval = setInterval(() => {
+        dateTime++;
         if (timeLeft > 0) {
           timer.textContent = --timeLeft;
         } else {
@@ -152,13 +158,12 @@
       }, 1000);
     }
 
-
     async function getUserData() {
       try {
         const response = await fetch("/getUserData", {
           method: "GET",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
         });
 
@@ -174,18 +179,26 @@
         let userPronouns2 = userData.users[1].pronouns;
 
         document.getElementById("displayUserName1").textContent = userName1;
-        document.getElementById("displayUserPronouns1").textContent = userPronouns1;
+        document.getElementById("displayUserPronouns1").textContent =
+          userPronouns1;
         document.getElementById("displayUserName2").textContent = userName2;
-        document.getElementById("displayUserPronouns2").textContent = userPronouns2;
+        document.getElementById("displayUserPronouns2").textContent =
+          userPronouns2;
       } catch (error) {
         console.error("Error loading user data:", error);
       }
     }
-    
+
     getUserData();
 
     let timerInterval; // Interval Object for timer
-    const timer = document.getElementById("timer"); //! element of timer
-    changeQuestion(); // Execute
+    let dateTime = 0; 
+    const timer = document.getElementById("timer"); // initializes timer, so it can be updated during execution of date
+    changeQuestion(); // executes the initial question display on the screen
+
+    function goToResult(){
+      window.location.href="./result-page.html"
+    }
+
   </script>
 </html>

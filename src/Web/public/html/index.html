@@ -43,8 +43,8 @@
         </div>
     </div>
     <div class="button-container">
-        <button type="button" class="start-button" onclick="saveUserInfo()">
-            <img class="next-button-picture" src="./assets/images/Next-Button.png" alt="Continue"/>
+        <button type="button" class="next-button" onclick="saveUserInfo()">
+            <img class="next-button-picture" src="./assets/images/right-arrow.png" alt="Continue"/>
         </button>
     </div>
 </body>
@@ -52,6 +52,11 @@
 <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 
 <script>
+
+    const socket = io();
+    socket.on("message", (msg) => {
+    console.log(msg);
+    });
 
     function saveUserInfo() {
         
@@ -68,7 +73,7 @@
         };
 
         if (!userData.user1.username || !userData.user2.username) {
-            alert("please fill in all name fields");
+            alert("Please fill in all name fields.");
             return;
         }
 
@@ -89,7 +94,6 @@
                 }
                 return response.json();
             })
-
             .then(data =>{
                 console.log("userdata saved successfully:", data);
                 window.location.href = "./individual-heart-beat.html";
@@ -99,14 +103,6 @@
             });
 
         };
-
-
-    
-
-    var socket = io();
-    socket.on("message", (msg) => {
-        console.log(msg);
-    });
 
 </script>
 

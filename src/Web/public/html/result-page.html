@@ -10,10 +10,12 @@
 
     <body>
         <div class="heading-container">
-            <h1>Your compatibility result is..</h1>
+            <h1>Your compatibility result is...</h1>
         </div>
         <div class="result-container">
-            <h2>Level X!</h2>
+            <div id="level"></div>
+            <div id= "resultMessage"></div>
+        </div>
         </div>
         <div class="middle-container">
             <div class="users">
@@ -37,19 +39,26 @@
             <div class="headerGraph">
                 <h3>Heartbeat Graph</h3>
             </div>
-            <div class="chart-container" id="chart_div1">
-            </div>
+                <div class="chart-container" id="chart_div1"></div>
         </div>
-    
+
+        <div class="navigationButton-container">
+            <a class="home-button" href="./index.html">
+                <img src="./assets/images/Home-Button.png" alt="Continue" height="35" />
+            </a>
+        </div>
     </body>
 
-    <!-- 
-    Uses script from googlecharts, original code is in Gitlab: ChartsGoogle.html
-    -->
+    <!-- Uses script from googlecharts, original code is in Gitlab: ChartsGoogle.html -->
+
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">        
-        fillUserData();
-        //drawChart();
+    <script type="text/javascript">
+
+
+        const timer = setTimeout(() => {
+            fillUserData();
+        }, 1000);
 
 
         async function drawChart(userData) {
@@ -59,19 +68,7 @@
 
 
 
-            var data1 = google.visualization.arrayToDataTable([ //Designates values for chart
-                // ['Minute:', 'User1_BPM', 'User2_BPM'],
-                // ['1',           120,          60],
-                // ['2',           110,          60],
-                // ['3',           120,          50],
-                // ['4',           80,           60],
-                // ['5',           100,          70],
-                // ['6',           130,          60],
-                // ['7',           90,           55],
-                // ['8',           110,          66],
-                // ['9',           140,          62],
-                // ['10',          120,          63]
-            ]);
+            var data1 = google.visualization.arrayToDataTable([]); // initialize empty graph to later be filled with data from JSON
             data1.addColumn('number', 'Seconds');
             data1.addColumn('number', 'User1_BPM');
             data1.addColumn('number', 'User2_BPM');
@@ -90,8 +87,6 @@
                 }
                 
             }
-
-            console.log(data1)
 
             /*Designates technical aspects of graph; how the curve looks like, colors, size...*/
             var options1 = {
@@ -154,6 +149,39 @@
             document.getElementById("displayDateHeartbeatAvg2").textContent = userDateHeartbeatAvg2;
             document.getElementById("displayHeartbeatPeak2").textContent = userHeartBeatPeak2;
         
+            displayMatchResult(userData);
+        }
+
+       
+        async function displayMatchResult(userData) {
+
+            const matchResult = userData.match_result; 
+            const resultContainer = document.querySelector('.result-container');
+            const resultMessage = document.getElementById('resultMessage');
+            const levelMessage = document.getElementById('level');
+            let message = '';
+            let level = '';
+
+            switch(matchResult){
+                case 1:
+                    message = 'Maybe not the best match...';
+                    level = 'Level 1';
+                    break;
+                case 2:
+                    message = 'There is potential for a nice connection here!';
+                    level = 'Level 2!';
+                    break;
+                case 3:
+                    message = 'A high chance of compatibility detected!';
+                    level = 'Level 3!!';
+                    break;
+                default:
+                    message = 'Unable to calculate compatibility level';
+                    level = 'Level 0:';
+            }  
+
+            resultMessage.textContent = message; 
+            levelMessage.textContent = level;
         }
 
     </script>

@@ -5,10 +5,10 @@ const { Server } = require("socket.io");
 const http = require("http");
 const server = http.createServer(app);
 const io = new Server(server);
-const mqtt = require('mqtt');
-const fs = require('fs');
 
-const compCalc = require('./compatibility.js')
+const { compCalc, calcNormalHeartrate } = require("./modules/compatibility.js");
+const { MQTTclient, topics } = require("./modules/mqtt.js");
+const util = require("./modules/util.js");
 
 app.use(express.static("public/html")); // Serve static files from the 'public' directory
 app.use(express.static("public/assets")); // serve questions from assets folder
@@ -18,164 +18,193 @@ app.use(express.static("public"));
 // Start the server
 const PORT = process.env.PORT || 3000;
 
-const protocol = "mqtt";
-const host = "localhost";
-const port = "1883";
-const clientId = `mqtt_${Math.random().toString(16).slice(3)}`;
-
-const connectURL = `${protocol}://${host}:${port}`;
-
-const client = mqtt.connect(connectURL, {
-  clientId,
-  clean: true,
-  connectTimeout: 4000,
-  reconnectPeriod: 1000,
-});
-
-const topics = ['start_button_click', 'stop_button_click', 'change_question', 'heart_rate_left', 'heart_rate_right'];
-
-client.on("connect", () => {
-  console.log("Connected");
-  client.subscribe(topics, () => {
-    console.log(`Subscribe to topics: '${topics.join(", ")}'`);
-  });
-});
+const TEMPLATE_FILE = "heartbeatData.json";
+const UPDATE_FILE = "newHeartbeatData.json";
 
 let leftArray = [];
 let rightArray = [];
-let user0normal;
-let user1normal;
 
-function calcNormalHeartrate(array){
-  let avg = 0;
-  for(let i=0; i<array.length; i++ ){
-    avg += array[i];
-  }
-  return avg/array.length;
-}
+let isDateStarted = false;
+let isIMStarted = false;
 
-function writeToJSON(id, value){
-  fs.readFile("newHeartbeatData.json", (err, data) => {
-    if (err) {
-        console.error("Failed to read JSON file:", err);
-        return res.status(500).json({ error: "Failed to read JSON file." });
-    }
+let dateTimer; //variable for interval
+const DATE_DURATION = 180000; // = 3 min. Duration of the date
+const hbRequests = 10; // number of heartbeat scans during the date
+const imHbRequests = 5; //number of heartbeat scans for individual measurement
 
-    let existingData = JSON.parse(data);
-
-    //Update the username and pronouns for the newly entered users. 
-    existingData.users[id].normal_heartbeat = value || "";
-    
-  const jsonData = JSON.stringify(existingData, null, 2);
-
-  //Save the updated info to the json file.
-  fs.writeFile("newHeartbeatData.json", jsonData, (err) => {
-      if (err) {
-          console.error("Failed to save user data:", err);
-          return res.status(500).json({ error: "Failed to save user data." });
-      }
-      console.log("User data saved successfully.");
-  });
-});
-}
-
-
-
-client.on("message", (topic, payload) => {
+MQTTclient.on("message", (topic, payload) => {
   if (topics[0] == topic) {
-    io.emit('start');
-  }
-  else if(topics[1] == topic){
-    io.emit('stop');
-  }
-  else if (topics[2] == topic){
-    io.emit('next_question');
-  }
-  else if (topics[3] == topic){
-    const leftMeasure = parseInt(payload);
-
-    if(leftArray.length<=4){
-      leftArray.push(leftMeasure);
-      io.emit('progress');
-    }
-    if(leftArray.length===5){
-      user0normal=calcNormalHeartrate(leftArray);
-      writeToJSON(0,user0normal);
-    }
-  }
-  else if (topics[4] == topic){
-    const rightMeasure = parseInt(payload);
-
-    if(rightArray.length<=4){
-      rightArray.push(rightMeasure);
-      io.emit('progress');
-    }
-    if(rightArray.length===5){
-      user1normal=calcNormalHeartrate(rightArray);
-      writeToJSON(1,user1normal);
-    }
+    io.emit("start");
+  } else if (topics[1] == topic) {
+    io.emit("stop");
+  } else if (topics[2] == topic) {
+    io.emit("next_question");
+  } else if (topics[3] == topic) {
+    processHeartbeat(0, parseInt(payload));
+  } else if (topics[4] == topic) {
+    processHeartbeat(1, parseInt(payload));
+  } else if (topics[7] == topic) {
+    processBothHeartbeats(payload.toString());
   }
 
-  console.log('Received message:', topic, payload.toString());
+  console.log("Received message:", topic, payload.toString());
 });
 
 
-io.on('connection', (socket) => {
+/*
+Process individual heartbeat.
+A callback function to process heartbeats received during Individual Measurements
+ */
+function processHeartbeat(id, measure) {
+  if(!isIMStarted){
+    throw new Error("Individual hearbeat received, but individual measurement has not started");
+  }
+
+  let hbArray;
+  if (id == 0) {
+    hbArray = leftArray;
+  } else if (id == 1) {
+    hbArray = rightArray;
+  }
+
+  if (hbArray.length < imHbRequests) {
+    hbArray.push(measure);
+    io.emit("progress");
+  }
+  if (hbArray.length == imHbRequests) {
+    let user0normal = calcNormalHeartrate(hbArray);
+    saveIndividualMeasurement(id, user0normal);
+    hbArray.length = 0;
+  }
+}
+
+function processBothHeartbeats(measure){
+  if(!isDateStarted){
+    throw new Error("Both heartbeats received, but the date has not started");
+  }
+
+  const stringArray = measure.split(' ');
+
+  const heartBeatArray = stringArray.map((x) => parseInt(x));
+  if(Number.isInteger(heartBeatArray[0]) && Number.isInteger(heartBeatArray[1])){
+    leftArray.push(heartBeatArray[0]);
+    rightArray.push(heartBeatArray[1]);
+  }
+  console.log(leftArray.length);
+  console.log("Both HBs received: left: " + heartBeatArray[0] + ", right: " + heartBeatArray[1]);
+
+  if(leftArray.length == hbRequests){
+    endDate();
+  }
+}
+
+/*
+Signal the webpage to proceed to result screen
+ */
+function goToResult(){
+  io.emit("endDate");
+}
+
+io.on("connection", (socket) => {
+  
+  socket.on("startIM", () => {
+    isIMStarted = true;
+    MQTTclient.publish(topics[9], parseInt(imHbRequests) + "");
+    console.log("IM started");
+  });
+  socket.on('changeCurrentUser', () => {
+    MQTTclient.publish(topics[11], "1");
+    console.log("User Changed");
+  });
+  socket.on('endIM', () => {
+    isIMStarted = false;
+    MQTTclient.publish(topics[10], "1");
+    console.log("IM ended");
+  });
+  socket.on("dateStarted", () => {
+    socket.join("dateRoom");
+    isDateStarted = true;
+    MQTTclient.publish(topics[6], parseInt(DATE_DURATION / hbRequests) + "");
+    console.log("Date started");
+  });
+  socket.on("disconnecting", () => {
+    if (socket.rooms.has("dateRoom")) {
+      isDateStarted = false;
+      MQTTclient.publish(topics[8], "1");
+    }
+  });
+  socket.on("resetIM", ()=>{
+    resetHBdata();
+  });
+
   console.log("A user connected");
 });
 
+function resetHBdata(){
+  leftArray = [];
+  rightArray = [];
+}
+
+function endDate() {
+  goToResult();
+  saveDateMeasurements();
+  compCalc();
+  io.emit("data_loaded");
+  activateLED();
+  console.log("Date has ended");
+}
+
+function saveIndividualMeasurement(id, heartbeat) {
+  util.updateJSON(UPDATE_FILE, (existingData) => {
+    existingData.users[id].normal_heartbeat = heartbeat;
+  });
+}
+
+function saveDateMeasurements() {
+  util.updateJSON(UPDATE_FILE, (existingData) => {
+    console.log(leftArray);
+    console.log(rightArray);
+    existingData.users[0].heartbeat_data = leftArray;
+    existingData.users[1].heartbeat_data = rightArray;
+  });
+}
+
+function activateLED() {
+  util.readJSON(UPDATE_FILE, (data) => {
+    let result = data.match_result + "";
+    MQTTclient.publish(topics[5], result);
+  });
+}
+
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
-  compCalc();
 });
-
 
 app.use(express.json());
 
 app.post("/saveUserData", (req, res) => {
-    const userData = req.body;
+  const userData = req.body;
 
+  // Read the existing JSON file
 
-    // Read the existing JSON file
-    fs.readFile("heartbeatData.json", (err, data) => {
-      if (err) {
-          console.error("Failed to read JSON file:", err);
-          return res.status(500).json({ error: "Failed to read JSON file." });
-      }
-
-      let existingData = JSON.parse(data);
-
-      //Update the username and pronouns for the newly entered users. 
-      existingData.users[0].username = userData.user1.username || "";
-      existingData.users[0].pronouns = userData.user1.pronouns || "";
-      existingData.users[1].username = userData.user2.username || "";
-      existingData.users[1].pronouns = userData.user2.pronouns || "";
-      
-      
+  util.readJSON(TEMPLATE_FILE, (existingData) => {
+    //Update the username and pronouns for the newly entered users.
+    existingData.users[0].username = userData.user1.username || "";
+    existingData.users[0].pronouns = userData.user1.pronouns || "";
+    existingData.users[1].username = userData.user2.username || "";
+    existingData.users[1].pronouns = userData.user2.pronouns || "";
 
     const jsonData = JSON.stringify(existingData, null, 2);
-
     //Save the updated info to the json file.
-    fs.writeFile("newHeartbeatData.json", jsonData, (err) => {
-        if (err) {
-            console.error("Failed to save user data:", err);
-            return res.status(500).json({ error: "Failed to save user data." });
-        }
-        console.log("User data saved successfully.");
-        res.json({ message: "User data saved successfully." });
-    });
+    util.saveJSON(UPDATE_FILE, jsonData);
+
+    console.log("User data saved successfully.");
+    res.json({ message: "User data saved successfully." });
   });
 });
 
 app.get("/getUserData", (req, res) => {
-  // Read the existing JSON file
-  fs.readFile("newHeartbeatData.json", (err, data) => {
-    if (err) {
-        console.error("Failed to read JSON file:", err);
-        return res.status(500).json({ error: "Failed to read JSON file." });
-    }
-
-    let existingData = JSON.parse(data);
+  util.readJSON(UPDATE_FILE, (existingData) => {
     res.json(existingData);
   });
 });
