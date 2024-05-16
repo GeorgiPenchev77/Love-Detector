@@ -6,7 +6,7 @@ const http = require("http");
 const server = http.createServer(app);
 const io = new Server(server);
 
-const { compCalc, calcNormalHeartrate, individualMeasuementCalc } = require("./modules/compatibility.js");
+const { compCalc, individualMeasuementCalc } = require("./modules/compatibility.js");
 const { MQTTclient, topics } = require("./modules/mqtt.js");
 const util = require("./modules/util.js");
 
@@ -90,7 +90,9 @@ function processBothHeartbeats(measure){
   leftArray.push(heartBeatArray[0]);
   rightArray.push(heartBeatArray[1]);
   }
-  console.log(leftArray.length);
+  else{
+  throw new Error("Invalid data.");
+  }
   console.log("Both HBs received: left: " + heartBeatArray[0] + ", right: " + heartBeatArray[1]);
 
   if(leftArray.length == hbRequests){
