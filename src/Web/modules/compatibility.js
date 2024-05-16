@@ -2,7 +2,9 @@ const fs = require("fs")
 
 const numberOfUsers = 2;
 
-const comparePointsNum = 10;
+const independentFactor = 25;
+const numberOfMeasurements = 10;
+const dateTime = 180; // *in seconds 
 
 //File with initial data for the calculations
 const RESULT_JSON = "./newHeartbeatData.json"
@@ -32,6 +34,7 @@ const individualMeasuementCalc = (userID) => {
 };
 
 const compCalc = () => {
+  
   //generate .json using function below
   try{
     const dataJson = fs.readFileSync(RESULT_JSON);
@@ -47,8 +50,8 @@ const compCalc = () => {
       
     });
 
-    data.test_data_for_graph.number_of_points = comparePointsNum;
-    //data.test_data_for_graph.time_seconds = null;
+    data.test_data_for_graph.number_of_points = numberOfMeasurements;
+    data.test_data_for_graph.time_seconds = dateTime;
 
     data.match_result = match(data.users);
 
@@ -134,7 +137,7 @@ const calculateSpike = (user) => { // calculates how many times there is a diffe
 const counterUpperBracket = (user) =>{ // counts how many elements in the array are above the upperBracket
   const upperBracket = calculateDateUpperBracket(user);
   let aboveUpperBracket = 0;
-  const arrayHb = user.heartbeat_data;
+  const arrayHb = user.date_heartbeat_data;
   for (let i = 0; i < arrayHb.length; i++) {
     if (arrayHb[i] > upperBracket) {
       aboveUpperBracket++;
@@ -147,18 +150,18 @@ const indCompositeScore = (user) => { //takes all functions and calculates a sco
   const maxDiff = 60; // normal heartbeat is between 60-100 bpm, im accounting for a bit more
   const TRHIndex = counterUpperBracket(user);
 
-  let normalizedAvgDiff = Math.abs(dateAvr(user) - regAvr(user)) / maxDiff;
-  let normalizedPeakDiff = Math.abs(datePeak(user) - regPeak(user)) / maxDiff;
+  let normalizedAvgDiff = Math.abs(dateAvr(user) - testAvr(user)) / maxDiff;
+  let normalizedPeakDiff = Math.abs(datePeak(user) - testPeak(user)) / maxDiff;
 
-  let compositeScore = Math.abs( ((calculateSpike(user)/30) * (normalizedPeakDiff - normalizedAvgDiff))+ (TRHIndex/30))*10; //30 because amount of measurments
+  let compositeScore = Math.abs( ((calculateSpike(user)/numberOfMeasurements) * (normalizedPeakDiff - normalizedAvgDiff))+ (TRHIndex/numberOfMeasurements)) *independentFactor;
 
-  return parseInt(compositeScore);
+  return compositeScore;
 };
 
 const match = (users) => {  // calculates whether or not both values are above a threshhold and if they are far apart,
   let level =0;             // this sees is they are match
-  const user1 = users[0];   // current value 4,58
-  const user2 = users[1];   // current value 12,36
+  const user1 = users[0];   
+  const user2 = users[1];   
   const diffCompScore = user1 - user2;
   
   const limitLevel3= 15*0.75;

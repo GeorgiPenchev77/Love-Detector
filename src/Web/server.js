@@ -147,17 +147,14 @@ function endDate() {
 
 function saveIndividualMeasurement(id, heartbeatData) {
   util.updateJSON(UPDATE_FILE, (existingData) => {
-    console.log(heartbeatData);
     existingData.users[id].IM_heartbeat_data = heartbeatData;
   });
 }
 
 function saveDateMeasurements() {
   util.updateJSON(UPDATE_FILE, (existingData) => {
-    console.log(leftArray);
-    console.log(rightArray);
-    existingData.users[0].heartbeat_data = leftArray;
-    existingData.users[1].heartbeat_data = rightArray;
+    existingData.users[0].date_heartbeat_data = leftArray;
+    existingData.users[1].date_heartbeat_data = rightArray;
   });
 }
 

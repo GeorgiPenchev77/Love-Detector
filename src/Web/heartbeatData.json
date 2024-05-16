@@ -10,6 +10,9 @@
         60,
         60
       ],
+      "IM_average_heartbeat": 60,
+      "IM_heartbeat_peak": 60,
+      "IM_upper_bracket": 0,
       "date_heartbeat_data": [
         60,
         60,
@@ -22,9 +25,6 @@
         60,
         60
       ],
-      "IM_average_heartbeat": 60,
-      "IM_heartbeat_peak": 60,
-      "IM_upper_bracket": 0,
       "date_average_heartbeat": 60,
       "date_heartbeat_peak": 60,
       "date_upper_bracket": 0,
@@ -41,6 +41,9 @@
         60,
         60
       ],
+      "IM_average_heartbeat": 60,
+      "IM_heartbeat_peak": 60,
+      "IM_upper_bracket": 0,
       "date_heartbeat_data": [
         60,
         60,
@@ -53,9 +56,6 @@
         60,
         60
       ],
-      "IM_average_heartbeat": 60,
-      "IM_heartbeat_peak": 60,
-      "IM_upper_bracket": 0,
       "date_average_heartbeat": 60,
       "date_heartbeat_peak": 60,
       "date_upper_bracket": 0,
