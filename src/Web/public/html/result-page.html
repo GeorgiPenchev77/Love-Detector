@@ -49,20 +49,12 @@
         </div>
     </body>
 
-    <!--
-    Uses script from googlecharts, original code is in Gitlab: ChartsGoogle.html
-    -->
+    <!-- Uses script from googlecharts, original code is in Gitlab: ChartsGoogle.html -->
+
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
 
-        // const socket = io();
-        // console.log("Flag 0...");
-        // socket.on("data_loaded", () => {
-        //     console.log("Flag 1...");
-        //     fillUserData();
-        // });
-        //drawChart();
 
         const timer = setTimeout(() => {
             fillUserData();
@@ -76,19 +68,7 @@
 
 
 
-            var data1 = google.visualization.arrayToDataTable([ //Designates values for chart
-                // ['Minute:', 'User1_BPM', 'User2_BPM'],
-                // ['1',           120,          60],
-                // ['2',           110,          60],
-                // ['3',           120,          50],
-                // ['4',           80,           60],
-                // ['5',           100,          70],
-                // ['6',           130,          60],
-                // ['7',           90,           55],
-                // ['8',           110,          66],
-                // ['9',           140,          62],
-                // ['10',          120,          63]
-            ]);
+            var data1 = google.visualization.arrayToDataTable([]); // initialize empty graph to later be filled with data from JSON
             data1.addColumn('number', 'Seconds');
             data1.addColumn('number', 'User1_BPM');
             data1.addColumn('number', 'User2_BPM');

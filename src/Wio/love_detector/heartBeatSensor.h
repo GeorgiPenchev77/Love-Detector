@@ -141,6 +141,11 @@ class HBSensor{
       dataEffect = true;
     }
 
+    /*
+     * getIMHeartrate()
+     * Returns individaul heartrate messured by the current user, addinally tracking
+     * the number of calls made and deactivating sensor when needed
+     */
     static int getIMHeartrate(){
       IMCounter++;
       updateWioText(LOADING_MESSAGE);

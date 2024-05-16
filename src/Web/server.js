@@ -50,6 +50,11 @@ MQTTclient.on("message", (topic, payload) => {
   console.log("Received message:", topic, payload.toString());
 });
 
+
+/*
+Process individual heartbeat.
+A callback function to process heartbeats received during Individual Measurements
+ */
 function processHeartbeat(id, measure) {
   if(!isIMStarted){
     throw new Error("Individual hearbeat received, but individual measurement has not started");
@@ -62,7 +67,7 @@ function processHeartbeat(id, measure) {
     hbArray = rightArray;
   }
 
-  if (hbArray.length <= 4) {
+  if (hbArray.length < imHbRequests) {
     hbArray.push(measure);
     io.emit("progress");
   }
@@ -79,6 +84,7 @@ function processBothHeartbeats(measure){
   }
 
   const stringArray = measure.split(' ');
+
   const heartBeatArray = stringArray.map((x) => parseInt(x));
   if(Number.isInteger(heartBeatArray[0]) && Number.isInteger(heartBeatArray[1])){
   leftArray.push(heartBeatArray[0]);
@@ -92,6 +98,9 @@ function processBothHeartbeats(measure){
   }
 }
 
+/*
+Signal the webpage to proceed to result screen
+ */
 function goToResult(){
   io.emit("endDate");
 }

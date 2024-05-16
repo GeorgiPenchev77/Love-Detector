@@ -144,7 +144,7 @@
       window.history.back();
     }
 
-    function startMeasuring(){
+    function startMeasuring(){ //function to control visual actions in web page when measuring has been started.
       
       if(document.getElementById(userId).classList.contains('active') && !started){
         started = true;
@@ -166,7 +166,7 @@
       }
     }
 
-    function pauseMeasuring(){
+    function pauseMeasuring(){ //function to control visual actions in web page when measuring has been paused.
       if(document.getElementById(userId).classList.contains('active') && started){
         started = false;
         var currentContainer=document.getElementById(userId);
@@ -180,7 +180,7 @@
       }
     }
 
-    async function completeMeasuring(){
+    async function completeMeasuring(){ //function to control visual actions in web page when measuring has been completed.
       if(document.getElementById(userId).classList.contains('active') && started){
         var currentContainer=document.getElementById(userId);
         var instructionContainer = currentContainer.querySelector('.instruction-container');
@@ -196,7 +196,7 @@
       }
     }
 
-    function resetMeasuring(){
+    function resetMeasuring(){ //function that resets measuring progress bar, when it has been complete or invalid
       progressCounter = 0;
       started = false;
     }
