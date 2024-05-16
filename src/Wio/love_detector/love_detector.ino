@@ -110,5 +110,6 @@ void loop() {
     }
   }
 
+  //Artifact after 4 hours of debugging
   if(DEBUG) Serial.println("Witches have been hunted!");
 }
