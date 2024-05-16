@@ -10,6 +10,27 @@ const RESULT_JSON = "./newHeartbeatData.json"
 //File to write the calculations in
 const NEW_RESULT_JSON = "./newHeartbeatData.json"
 
+const individualMeasuementCalc = (userID) => {
+  
+  //generate .json using function below
+  try{
+    const dataJson = fs.readFileSync(RESULT_JSON);
+    data = JSON.parse(dataJson) ;
+      
+      data.users[userID].IM_average_heartbeat = testAvr(data.users[userID]);
+      data.users[userID].IM_heartbeat_peak = testPeak(data.users[userID]);
+      data.users[userID].IM_upper_bracket = calculateIMUpperBracket(data.users[userID]);
+      
+    fs.writeFileSync(NEW_RESULT_JSON, JSON.stringify(data, null, 2));
+    console.log("File updated");
+  } catch (error) {
+
+    console.log(error);
+    throw error;
+
+  }
+};
+
 const compCalc = () => {
   //generate .json using function below
   try{
@@ -17,12 +38,12 @@ const compCalc = () => {
     data = JSON.parse(dataJson) ;
 
     data.users.forEach(user => {
-      user.date_heartbeat_avg = dateAvr(user);
+      
+      user.date_average_heartbeat = dateAvr(user);
       user.date_heartbeat_peak = datePeak(user);
+      user.date_upper_bracket = calculateDateUpperBracket(user);
       user.date_spike_counter = calculateSpike(user);
-      user.date_upper_bracket = calculateUpperBracket(user);
       user.composite_score = indCompositeScore(user);
-      user.calculateUpperBracket = calculateUpperBracket(user);
       
     });
 
@@ -41,33 +62,27 @@ const compCalc = () => {
   }
 };
 
-const regAvr = (user) => {//placeholder function to calculate average of test before date
-  let testPeak = 65;
-  let testAverage = 60;
-  return testAverage;
-};
-
-const regPeak = (user) => { //placeholder function to record peak of test before date
-  let testPeak = 65;
-  return testPeak;
-};
-
-const dateAvr = (user) => { // calculates average value between all elements in array 
-  const arrayHb = user.heartbeat_data;
-  return calcAvarage(arrayHb);
-};
-
 const calcAvarage = (array) => {
   let avg = 0;
   for(let i=0; i<array.length; i++ ){
     avg += array[i];
   }
-  return (avg/array.length).toFixed(2);
+  return parseInt(avg/array.length);
 }
 
-const datePeak = (user) => { // saves the highest elements in array
+const testAvr = (user) => {//placeholder function to calculate average of test before date
+  const arrayHb = user.IM_heartbeat_data;
+  return calcAvarage(arrayHb);
+};
+
+const dateAvr = (user) => { // calculates average value between all elements in array 
+  const arrayHb = user.date_heartbeat_data;
+  return calcAvarage(arrayHb);
+};
+
+const testPeak = (user) => { //placeholder function to record peak of test before date
   let peak = 0;
-  const arrayHb = user.heartbeat_data;
+  const arrayHb = user.IM_heartbeat_data;
   for (let i=0; i< arrayHb.length; i++){
     if ( peak < arrayHb[i]){
       peak = arrayHb[i];
@@ -76,9 +91,36 @@ const datePeak = (user) => { // saves the highest elements in array
   return peak ;
 };
 
+const datePeak = (user) => { // saves the highest elements in array
+  let peak = 0;
+  const arrayHb = user.date_heartbeat_data;
+  for (let i=0; i< arrayHb.length; i++){
+    if ( peak < arrayHb[i]){
+      peak = arrayHb[i];
+    }
+  }
+  return peak ;
+};
+
+const calculateIMUpperBracket = (user) =>{  //calculates where the upperBracket should be to facilitate later calculations
+  const indAverageHb= testAvr(user);
+  const indPeak = testPeak(user);
+  
+  let upperBracket= indAverageHb + ((indPeak- indAverageHb)/2);
+  return parseInt(upperBracket);
+};
+
+const calculateDateUpperBracket = (user) =>{  //calculates where the upperBracket should be to facilitate later calculations
+  const indAverageHb= dateAvr(user);
+  const indPeak = datePeak(user);
+  
+  let upperBracket= indAverageHb + ((indPeak- indAverageHb)/2);
+  return parseInt(upperBracket);
+};
+
 const calculateSpike = (user) => { // calculates how many times there is a difference of 15 or greater between elements in array
   let spikeCounter=0;
-  const arrayHb = user.heartbeat_data;
+  const arrayHb = user.date_heartbeat_data;
 
   for (let i=1; i< arrayHb.length; i++){
     const difference = Math.abs(arrayHb[i] - arrayHb[i - 1]);
@@ -89,16 +131,8 @@ const calculateSpike = (user) => { // calculates how many times there is a diffe
   return spikeCounter;
 };
 
-const calculateUpperBracket = (user) =>{//calculates where the upperBracket should be to facilitate later calculations
-  const indAverageHb= regAvr(user);
-  const indPeak = regPeak(user);
-  
-  let upperBracket= indAverageHb + ((indPeak- indAverageHb)/2);
-  return upperBracket;
-};
-
 const counterUpperBracket = (user) =>{ // counts how many elements in the array are above the upperBracket
-  const upperBracket = calculateUpperBracket(user);
+  const upperBracket = calculateDateUpperBracket(user);
   let aboveUpperBracket = 0;
   const arrayHb = user.heartbeat_data;
   for (let i = 0; i < arrayHb.length; i++) {
@@ -118,7 +152,7 @@ const indCompositeScore = (user) => { //takes all functions and calculates a sco
 
   let compositeScore = Math.abs( ((calculateSpike(user)/30) * (normalizedPeakDiff - normalizedAvgDiff))+ (TRHIndex/30))*10; //30 because amount of measurments
 
-  return compositeScore.toFixed(2);
+  return parseInt(compositeScore);
 };
 
 const match = (users) => {  // calculates whether or not both values are above a threshhold and if they are far apart,
@@ -147,4 +181,4 @@ const match = (users) => {  // calculates whether or not both values are above a
   return level;
 };
 
-module.exports = {compCalc, calcNormalHeartrate: calcAvarage};
+module.exports = {compCalc, individualMeasuementCalc};

@@ -6,7 +6,7 @@ const http = require("http");
 const server = http.createServer(app);
 const io = new Server(server);
 
-const { compCalc, calcNormalHeartrate } = require("./modules/compatibility.js");
+const { compCalc, calcNormalHeartrate, individualMeasuementCalc } = require("./modules/compatibility.js");
 const { MQTTclient, topics } = require("./modules/mqtt.js");
 const util = require("./modules/util.js");
 
@@ -67,8 +67,8 @@ function processHeartbeat(id, measure) {
     io.emit("progress");
   }
   if (hbArray.length == imHbRequests) {
-    let user0normal = calcNormalHeartrate(hbArray);
-    saveIndividualMeasurement(id, user0normal);
+    saveIndividualMeasurement(id, hbArray);
+    individualMeasuementCalc(id);
     hbArray.length = 0;
   }
 }
@@ -80,7 +80,7 @@ function processBothHeartbeats(measure){
 
   const stringArray = measure.split(' ');
   const heartBeatArray = stringArray.map((x) => parseInt(x));
-  if(Number.isInteger(heartBeatArray[1]) && Number.isInteger(heartBeatArray[1])){
+  if(Number.isInteger(heartBeatArray[0]) && Number.isInteger(heartBeatArray[1])){
   leftArray.push(heartBeatArray[0]);
   rightArray.push(heartBeatArray[1]);
   }
@@ -145,9 +145,10 @@ function endDate() {
   console.log("Date has ended");
 }
 
-function saveIndividualMeasurement(id, heartbeat) {
+function saveIndividualMeasurement(id, heartbeatData) {
   util.updateJSON(UPDATE_FILE, (existingData) => {
-    existingData.users[id].normal_heartbeat = heartbeat;
+    console.log(heartbeatData);
+    existingData.users[id].IM_heartbeat_data = heartbeatData;
   });
 }
 
