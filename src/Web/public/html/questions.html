@@ -30,7 +30,11 @@
     </div>
     <div class="button-container">
       <button type="button" class="back-button" onclick="goBack()">
-        <img src="./assets/images/left-arrow.png" alt="Back" height="35" ><img/>
+        <img
+          src="./assets/images/left-arrow.png"
+          alt="Back"
+          height="35"
+        /><img />
       </button>
       <div class="timer-container">
         <div id="timer"></div>
@@ -100,10 +104,12 @@
 
     let lastQuestionIndex = -1; //index to keep track of last question
     let randomIndex; // index to ensure that the question is different than the previous one
-    let questions = [];
+    let questions = []; // array to store questions that are in json file
     let question;
 
-    //Retrieve question data from server endpoint
+    const socket = io();
+    socket.emit('dateStarted')
+
     async function fetchQuestions() {
       try {
         const response = await fetch("assets/question_list.json"); 
@@ -121,10 +127,12 @@
     fetchQuestions();
 
     //Switch date question upon recieving message from server that a user clicked the change question button on the terminal. 
-    const socket = io();
     socket.on("next_question", function () {
       changeQuestion();
     });
+    socket.on("endDate", () => {
+      goToResult();
+    })
 
     function randomize() {
       do {
@@ -137,7 +145,7 @@
       return questions[randomIndex];
     }
 
-
+    let dateTime = 0;
     let timerInterval; //Interval Object for timer
     const timer = document.getElementById("timer"); 
     changeQuestion(); 
@@ -155,6 +163,7 @@
       let timeLeft = 90;
       timer.textContent = timeLeft;
       timerInterval = setInterval(() => {
+        dateTime++;
         if (timeLeft > 0) {
           timer.textContent = --timeLeft;
         } else {

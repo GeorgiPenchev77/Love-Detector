@@ -5,8 +5,8 @@
 
 #include "util.h"
 
-extern volatile bool isStarted;
 extern volatile bool previousState;
+
 
 //Sensors macross
 #define LEFT 0
@@ -24,20 +24,32 @@ class HBSensor{
     static const int MAX_HEARTPULSE_DUTY = 2000;  
     static const int TOTAL = 1200000;    // const used to calculate heart-rate
     static const int MEASURE_LIMIT = 20; //the limit of sensor measurements
-    unsigned int  heartRate;
+
+    static volatile bool isDateStarted;
+    static volatile bool isIMStarted;
+    static volatile int currentIMUser;
+    static volatile int IMCounter;
+    static volatile int IMCounterMAX;
+    static volatile int interval;
+    static int timer;
+
+
     unsigned long sub;
     unsigned long temp[MEASURE_LIMIT+1];
     unsigned char counter;     
-    volatile bool dataEffect = true;    // Store whether data is valid or not
+    volatile bool dataEffect = false;    // Store whether data is valid or not
     volatile bool isUpdated = false;
     byte SENSOR;
+    volatile bool isActive = false;
+
+
 
     HBSensor(byte whichSENSOR){
       SENSOR = whichSENSOR;
       reset();
     }
 
-    void setIsUpdated(){
+    void resetIsUpdated(){
       isUpdated=false;
     }
 
@@ -78,7 +90,8 @@ class HBSensor{
       when stopped the test will be marked as invalid and reset to run again,
       it will start running on next button press */
 
-      if (isStarted) {
+      if (isActive) {
+
         temp[counter] = millis(); //start counting time between sensor ticks
 
         if(counter != 0){
@@ -88,38 +101,154 @@ class HBSensor{
 
         if (sub > MAX_HEARTPULSE_DUTY) { //check whether the time between the now and the last tick was greater than 2 seconds, if so reset the test as it would be invalid
           reset();
-          printNewMessage(ERROR_MESSAGE1);
+          if(SENSOR == LEFT){
+            updateWioText(ERROR_MESSAGE1);
+          } else if (SENSOR == RIGHT){
+            updateWioText(ERROR_MESSAGE2);
+          }
+          return;
         }
 
-        if (counter == MEASURE_LIMIT && dataEffect) {
+        if (counter == MEASURE_LIMIT) {
           counter = 0;
+          isUpdated = true;
           sum();
-        } else if (counter != MEASURE_LIMIT && dataEffect) {
+        } else if (counter != MEASURE_LIMIT) {
           counter++;
-        } else {
-          counter = 0;
-          dataEffect = true;
         }
 
       }
 
-      else if (!isStarted) { // reset the test if the test has been paused as data would not be valid then
+      else if (!isActive) { // reset the test if the test has been paused as data would not be valid then
         reset();
       }
     }
 
     //calculates the heart rate over 20 readings from the sensor and prints it to the screen
     void sum() {
-      if (dataEffect) { // only calculate if the variable showing whether the data is valid is true.
-        heartRate = TOTAL / (temp[20] - temp[0]);
-        // Print results in serial monitor screen to reduce terminal screen overloading. Results will be shown in UI anyways.
-        Serial.println(RESULT_MESSAGE1+String(heartRate)); 
-        isUpdated = true;
+      heartRate = TOTAL / (temp[(MEASURE_LIMIT+counter) % (MEASURE_LIMIT+1)] - temp[counter]);
+      // Print results in serial monitor screen to reduce terminal screen overloading. Results will be shown in UI anyways.
+
+      switch(SENSOR){
+        case LEFT:
+          Serial.println(RESULT_MESSAGE1+String(heartRate));
+          break;
+        case RIGHT:
+          Serial.println(RESULT_MESSAGE2+String(heartRate));
+          break;
       }
+
       dataEffect = true;
     }
 
+    /*
+     * getIMHeartrate()
+     * Returns individaul heartrate messured by the current user, addinally tracking
+     * the number of calls made and deactivating sensor when needed
+     */
+    static int getIMHeartrate(){
+      IMCounter++;
+      updateWioText(LOADING_MESSAGE);
+      Serial.printf("Get IM request. Requests done: %d\n", IMCounter);
+      //In IM mode: check if the sufficient number of measures has been reached
+      if(isIMStarted && IMCounter >= IMCounterMAX){
+        IMCounter = 0;
+        deactivateSensor(currentIMUser);
+        updateWioText(RESET_MESSAGE);
+      }
+
+      instances[currentIMUser] -> resetIsUpdated();
+      return  instances[currentIMUser] -> heartRate;
+    }
+
+    static bool isIMReady(){
+      return instances[currentIMUser] -> isUpdated;
+    }
+
+    int getCurrentHeartrate(){
+      if(dataEffect){
+        sum();
+      }
+      return heartRate;
+    }
+
+    static void startDate(int newInterval){
+      interval = newInterval;
+      isDateStarted = true;
+      timer = millis();
+      activateSensor(LEFT);
+      activateSensor(RIGHT);
+    }
+
+    static void stopDate(){
+      isDateStarted = false;
+      deactivateSensor(LEFT);
+      deactivateSensor(RIGHT);
+    }
+
+    static void activateSensor(const byte SENSOR){
+      if(instances[SENSOR] -> isActive == true){
+        //deactivateSensor(SENSOR);
+        return;
+      }
+      instances[SENSOR] -> reset();
+      instances[SENSOR] -> isActive = true;
+      Serial.printf("Sensor %x activated.\n", SENSOR);
+    }
+
+    static void deactivateSensor(const byte SENSOR){
+      instances[SENSOR] -> isActive = false;
+      instances[SENSOR] -> reset();
+      Serial.printf("Sensor %x deactivated.\n", SENSOR);
+    }
+
+    //turn on IM mode
+    //to be called only on MQTT message
+    static void startIM(int measurementsRequired){
+      IMCounterMAX = measurementsRequired;
+      isIMStarted = true;
+      Serial.printf("IM started. CounterMax = %d\n", IMCounterMAX);
+    }
+
+    //turn off IM mode
+    //to be called only on MQTT message
+    static void stopIM(){
+      isIMStarted = false;
+      Serial.println("IM stopped.");
+    }
+
+    static void switchIMUser(){
+      switch(currentIMUser){
+        case LEFT:
+          currentIMUser = RIGHT;
+          break;
+        case RIGHT:
+          currentIMUser = LEFT;
+          break;
+      }
+      IMCounter = 0;
+      Serial.printf("IM user switched to %d.\n", currentIMUser);
+    }
+
+    static void processStartClick(){
+      if(isIMStarted){
+        activateSensor(currentIMUser);
+        //activating an active sensor will lead to deactivating that sensor
+      }
+    }
+
+    static void processStopClick(){
+      if(instances[currentIMUser] -> isActive == false){
+        return;
+      }
+      if(isIMStarted){
+        deactivateSensor(currentIMUser);
+      }
+    }
+
  private:
+    unsigned int  heartRate;
+
     void reset(){
       sub = 0;
       counter = 0;
@@ -127,8 +256,8 @@ class HBSensor{
       for (unsigned char i = 0; i < MEASURE_LIMIT; i++) {
         temp[i] = 0;
       }
-      temp[MEASURE_LIMIT-1] = millis();
     } 
+    
 
     static HBSensor* instances [2];
 
@@ -147,6 +276,16 @@ class HBSensor{
 };
 
 HBSensor * HBSensor::instances [2] = { NULL, NULL };
+
+volatile bool HBSensor::isDateStarted = false;
+volatile int HBSensor::interval = -1;
+int HBSensor::timer = 0;
+
+volatile bool HBSensor::isIMStarted = false;
+volatile int HBSensor::currentIMUser = LEFT;
+
+volatile int HBSensor::IMCounterMAX = NULL;
+volatile int HBSensor::IMCounter = NULL;
 
 HBSensor leftSensor(LEFT);
 HBSensor rightSensor(RIGHT);

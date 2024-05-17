@@ -62,16 +62,24 @@
     </div>
   </body>
 
-  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
-  <script>
-    //Retrieve user data from JSON via server
-    async function getUserData() {
-      const response = await fetch("/getUserData", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+
+<script>
+
+  const socket = io();
+
+  socket.on('start', function () {
+    goToQuestions();
+  });
+
+  //Retrieve user info from server
+  async function getUserData() {
+    const response = await fetch("/getUserData", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      },
+    });
 
       if (!response.ok) {
         throw new Error("Failed to retrieve user data.");
@@ -99,14 +107,13 @@
 
     fillUserData();
 
-    function goBack() {
-      window.history.back();
-    }
+  function goBack() {
+    window.history.back();
+  }
+  
+  function goToQuestions(){
+    window.location.href = "./questions.html";
+  }
+</script>
 
-    //When user starts the test, the UI redirects to the datequestions page
-    const socket = io();
-    socket.on("start", function () {
-      window.location.href = "./questions.html";
-    });
-  </script>
 </html>

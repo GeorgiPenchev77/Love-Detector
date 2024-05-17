@@ -70,8 +70,8 @@
           height="35"
         /><img />
       </button>
-      <button id="nextUserButton" onclick="changeUser()">Measure user 2</button>
-      <button type="button" class="forward-button" onclick="goForward()">
+      <button id="nextUserButton" onclick="changeUser()">Switch User</button>
+      <a class="next-button" onclick="goToStartDatePage()">
         <img src="./assets/images/right-arrow.png" alt="Continue" height="35" />
       </button>
     </div>
@@ -80,10 +80,13 @@
   <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
   <script>
     const socket = io();
+    socket.emit('startIM');
     var userId = "user1";
     var started = false;
     var individualMeasurementsMax;
     var progressCounter = 0;
+    var previousProgressCounterLeft = 0;
+    var previousProgressCounterRight = 0;
 
     socket.on("start", () => {
       startMeasuring();
@@ -136,21 +139,32 @@
     fillUserData();
     document.getElementById(userId).classList.add("active");
 
-    //Switch to the second user after user 1 individual measuring is done
-    async function changeUser() {
-      document.getElementById(userId).classList.remove("active");
-      userId = "user2";
-      started = false;
-      document.getElementById(userId).classList.add("active");
-      document.getElementById("nextUserButton").style.display = "none";
+  async function changeUser(){
+      if(started){
+        alert("Please pause the test first, before trying to switch users.");
+        return;
+      }
+      socket.emit('changeCurrentUser');
+      document.getElementById(userId).classList.remove('active');
+      swapUsers();
+      document.getElementById(userId).classList.add('active');
+    }
+
+    function swapUsers(){
+      if(userId == "user1"){
+        progressCounter = 0;
+        userId = "user2";
+      }
+      else{
+        progressCounter = 0;
+        userId = "user1";
+      }
+      socket.emit('resetIM');
     }
 
     function goBack() {
+      socket.emit('endIM');
       window.history.back();
-    }
-
-    function goForward() {
-      window.location.href = "./start-date-page.html";
     }
 
     /*Switch the content of each user container when they start the individual measuring on terminal
@@ -182,16 +196,11 @@
       }
     }
 
-    //If the user pauses measuring, the displayed measurment progress is reset and a message to restart is displayed.
-    function pauseMeasuring() {
-      if (
-        document.getElementById(userId).classList.contains("active") &&
-        started
-      ) {
-        var currentContainer = document.getElementById(userId);
-        var instructionContainer = currentContainer.querySelector(
-          ".instruction-container"
-        );
+    function pauseMeasuring(){ //function to control visual actions in web page when measuring has been paused.
+      if(document.getElementById(userId).classList.contains('active') && started){
+        started = false;
+        var currentContainer=document.getElementById(userId);
+        var instructionContainer = currentContainer.querySelector('.instruction-container');
         instructionContainer.innerHTML = "";
 
         var messageParagraph = document.createElement("p");
@@ -199,7 +208,6 @@
           "Heartbeat measuring is paused. Restart it to complete the test.";
         messageParagraph.classList.add("message-text");
         instructionContainer.appendChild(messageParagraph);
-        resetMeasuring();
       }
     }
 
@@ -225,17 +233,17 @@
       }
     }
 
-    function resetMeasuring() {
+    function resetMeasuring(){ //function that resets measuring progress bar, when it has been complete or invalid
       progressCounter = 0;
       started = false;
     }
 
     async function getIndividualMeasurement() {
       let userData = await getUserData();
-      if (userId === "user1") {
-        return userData.users[0].normal_heartbeat;
+      if(userId === "user1"){
+        return userData.users[0].IM_average_heartbeat;
       } else {
-        return userData.users[1].normal_heartbeat;
+        return userData.users[1].IM_average_heartbeat;
       }
     }
 
@@ -253,5 +261,12 @@
       console.log(percent);
       percent.innerHTML = progressCounter * 20 + "%";
     }
+
+    function goToStartDatePage(){
+      socket.emit('endIM')
+      window.location.href="./start-date-page.html"
+    }
+
+
   </script>
 </html>

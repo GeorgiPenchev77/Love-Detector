@@ -47,13 +47,15 @@
     </div>
   </body>
 
-  <!-- 
-  Uses script from googlecharts, original code is in Gitlab: ChartsGoogle.html
-  -->
-  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-  <script type="text/javascript">  
+    <!-- Uses script from googlecharts, original code is in Gitlab: ChartsGoogle.html -->
 
-      fillUserData();
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+
+        fillUserData();
+
 
       async function drawChart(userData) {
 
@@ -62,39 +64,26 @@
 
 
 
-          var data1 = google.visualization.arrayToDataTable([ //Designates values for chart
-              // ['Minute:', 'User1_BPM', 'User2_BPM'],
-              // ['1',           120,          60],
-              // ['2',           110,          60],
-              // ['3',           120,          50],
-              // ['4',           80,           60],
-              // ['5',           100,          70],
-              // ['6',           130,          60],
-              // ['7',           90,           55],
-              // ['8',           110,          66],
-              // ['9',           140,          62],
-              // ['10',          120,          63]
-          ]);
-          data1.addColumn('number', 'Seconds');
-          data1.addColumn('number', 'User1_BPM');
-          data1.addColumn('number', 'User2_BPM');
+            var data1 = google.visualization.arrayToDataTable([]); // initialize empty graph to later be filled with data from JSON
+            data1.addColumn('number', 'Seconds');
+            data1.addColumn('number', 'User1_BPM');
+            data1.addColumn('number', 'User2_BPM');
 
-          for (let i = 0; i <= numberOfPoints; i++){
-              data1.addRow();
-              let time = testTime / numberOfPoints * i;
-              data1.setCell(i, 0, time);
-              if(i == 0){
-                  data1.setCell(i, 1, userData.users[0].normal_heartbeat);
-                  data1.setCell(i, 2, userData.users[1].normal_heartbeat);
-              }
-              else{
-                  data1.setCell(i, 1, userData.users[0].heartbeat_data[i-1]);
-                  data1.setCell(i, 2, userData.users[1].heartbeat_data[i-1]);
-              }
-              
-          }
+            for (let i = 0; i <= numberOfPoints; i++){
+                data1.addRow();
+                let time = testTime / numberOfPoints * i;
+                data1.setCell(i, 0, time);
+                if(i == 0){
+                    data1.setCell(i, 1, userData.users[0].IM_average_heartbeat);
+                    data1.setCell(i, 2, userData.users[1].IM_average_heartbeat);
+                }
+                else{
+                    data1.setCell(i, 1, userData.users[0].date_heartbeat_data[i-1]);
+                    data1.setCell(i, 2, userData.users[1].date_heartbeat_data[i-1]);
+                }
+                
+            }
 
-          console.log(data1)
 
           /*Designates technical aspects of graph; how the curve looks like, colors, size...*/
           var options1 = {
@@ -135,16 +124,16 @@
           google.charts.load('current', { 'packages': ['corechart'] })
               .then(_ => drawChart(userData));
 
-          let userName1 = userData.users[0].username;
-          let userName2 = userData.users[1].username;
-          let userPronouns1 = userData.users[0].pronouns;
-          let userPronouns2 = userData.users[1].pronouns;
-          let userNormalHeartbeat1 = userData.users[0].normal_heartbeat;
-          let userNormalHeartbeat2 = userData.users[1].normal_heartbeat;
-          let userDateHeartbeatAvg1 = userData.users[0].date_heartbeat_avg;
-          let userDateHeartbeatAvg2 = userData.users[1].date_heartbeat_avg;
-          let userHeartBeatPeak1 = userData.users[0].date_heartbeat_peak;
-          let userHeartBeatPeak2 = userData.users[1].date_heartbeat_peak;
+            let userName1 = userData.users[0].username;
+            let userName2 = userData.users[1].username;
+            let userPronouns1 = userData.users[0].pronouns;
+            let userPronouns2 = userData.users[1].pronouns;
+            let userNormalHeartbeat1 = userData.users[0].IM_average_heartbeat;
+            let userNormalHeartbeat2 = userData.users[1].IM_average_heartbeat;
+            let userDateHeartbeatAvg1 = userData.users[0].date_average_heartbeat;
+            let userDateHeartbeatAvg2 = userData.users[1].date_average_heartbeat;
+            let userHeartBeatPeak1 = userData.users[0].date_heartbeat_peak;
+            let userHeartBeatPeak2 = userData.users[1].date_heartbeat_peak;
 
           document.getElementById("userName1").textContent = userName1;
           document.getElementById("userPronouns1").textContent = userPronouns1;
