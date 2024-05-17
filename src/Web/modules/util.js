@@ -18,4 +18,14 @@ const updateJSON = (file, update) => {
   })
 }
 
-module.exports = {readJSON, updateJSON, saveJSON}
+
+// get the average from an array of values
+function calcAverage (array) {
+  let avg = 0;
+  for (let i = 0; i < array.length; i++) {
+    avg += array[i];
+  }
+  return parseInt(avg / array.length);
+}
+
+module.exports = {calcAverage, readJSON, updateJSON, saveJSON}

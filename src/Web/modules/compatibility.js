@@ -5,6 +5,7 @@ const NUMBER_OF_MEASUREMENTS = 10;                // number of measurements duri
 const DATE_DURATION = 180000;                    // in seconds
 
 const RESULT_JSON = "./newHeartbeatData.json"     // file with current data that is to-be updated
+const {calcAverage} = require("./modules/util.js");
 
 // update values of individual measurement for according user
 const individualMeasurementCalc = (userID)=> {
@@ -51,25 +52,16 @@ const compCalc = () => {
   }
 };
 
-// get the average from an array of values
-function calcAvarage (array) {
-  let avg = 0;
-  for (let i = 0; i < array.length; i++) {
-    avg += array[i];
-  }
-  return parseInt(avg / array.length);
-}
-
 // calculate average heart rate during Individual Measurements
 function getAverageIM (user)  {
   let arrayHb = user.IM_heartbeat_data;
-  return calcAvarage(arrayHb);
+  return calcAverage(arrayHb);
 }
 
 // calculate average heart rate during date
 function getAverageDate (user)  {
   let arrayHb = user.date_heartbeat_data;
-  return calcAvarage(arrayHb);
+  return calcAverage(arrayHb);
 }
 
 // function to find the highest heart rate during Individual Measurement
