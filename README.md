@@ -17,14 +17,13 @@
   3. [Demo and Examples](#demo-and-examples)
 - [Hardware and Software Diagrams](#hardware-and-software-diagrams)  
 - [Full Documentation](#full-documentation)
-- [CI Pipeline](#ci-pipeline)
 - [License](#license)
 - [Team Members and Contributions](#team-members-and-contributions)
 
 ## Project Description:
 ***The Love Detector*** is an all-in-one system that adds a fun twist to speed dating. It measures your heartbeat as you engage in conversations guided by questions displayed on the web app screen, suggesting whether there might be a spark with your potential match. Before the **"date"** starts, sensors are attached to the users' earlobes, and they are provided with a terminal and a computer with the web app open. Following instructions on both the terminal and webpage, users' heartbeats are initially measured individually to establish a baseline.
 
-Firstly, the user will follow the instructions on both the ***Wio Seeed Terminal*** and ***Web-Based User Interface***. Then, we measure the heartbeats of both users individually to establish a baseline for comparison, with the sensors attached to the users' earlobes. During the date, users’ heartbeats are continuously monitored while they read and discuss our thought-provoking questions. All of this new data is collected and saved in arrays inside Json files, our server then takes the data from this file and publishes it. This act makes it possible to send the data through our MQTT broker, where our terminal is subscribed to the relevant topics. This connection between: Server, broker, terminal, allows us to send information seamlessly and effectively. 
+Firstly, the user will follow the instructions on both the ***Wio Seeed Terminal*** and ***Web-Based User Interface***. Then, we measure the heartbeats of both users individually to establish a baseline for comparison, with the sensors attached to the users' earlobes. During the date, users’ heartbeats are continuously monitored while they read and discuss our thought-provoking questions. All of this new data is collected and saved in arrays inside JSON files, our server then takes the data from this file and publishes it. This act makes it possible to send the data through our MQTT broker, where our terminal is subscribed to the relevant topics. This connection between: Server, broker, terminal, allows us to send information seamlessly and effectively. 
 
 After careful analysis using a pre-established [***Love Detection Algorithm***](https://git.chalmers.se/courses/dit113/2024/group-4/love-detector/-/wikis/Love-Detector-Algorithm), the results are calculated based on variations and spikes of heartbeat between each user, which provides us with a composite score. Both users composite scores are then compared based on how close they are to each other, resulting in a match rating from 1 to 3, indicating the potential strength of the connection: no match, decent match, or absolute match.
 
@@ -66,13 +65,13 @@ installation process described in the next section:
  6. [Git](https://git-scm.com/downloads) should be installed and working on your machine so the repository of the project can be cloned.
 
  7. [Node.js](https://nodejs.org/en) and [npm](https://www.npmjs.com/) should be installed.
-   - *Note:* **Node.js** comes standardly with **npm** as a package, so you most likely don't need to download it separetely.
+   - *Note:* **Node.js** comes standardly with **npm** as a package, so you most likely don't need to download it separately.
    - *Note:* We strongly recommend that you go with the **latest stable version** of **Node.js** 
 
 ## Used Technologies:
 The following list contains the technologies used in this project:
   - C++
-  - Java Script
+  - JavaScript
   - HTML/CSS
   - Figma
   - Wio seeed terminal
@@ -92,7 +91,7 @@ The following section lists the needed steps in order to complete the installati
 
   ### *Installation: Web Application*
   1. Ensure you have *Node.js* and *npm* installed. If not, download and install them from [here](https://nodejs.org/en/).
-  2. Navigate to the directory of the project in in your *terminal*.
+  2. Navigate to the directory of the project in your *terminal*.
   3. Run *npm install* in your *terminal* to install all the required dependencies listed in the [package.json](src/Web/package.json) file.
 
 ## Usage:
@@ -123,29 +122,11 @@ The following section presents a short guide on how to use our project:
 ## Hardware and Software Diagrams:
 The following section contains the design diagram, that the team followed during the lifecycle of the project:
 
-![Design Diagram Final Version](documents/images/Design-Diagram.png)
+![Design Diagram Final Version](documents/images/Design-diagram.png)
 
 ## Full Documentation:
 For the full documentation of the project, see our [Wiki](https://git.chalmers.se/courses/dit113/2024/group-4/love-detector/-/wikis/home).
 You can navigate between the different pages, using the panel on the right side.
-
-## CI pipeline: 
-In our project, we included Continious Integration (CI) which involves automatically building the system upon commiting new changes to ensure that the system always is in a functioning state. Our pipeline is written in .gitlab-ci.yml file located in the root of the project directory and includes both a arduino and a Web application build stage. Our current pipeline does not include testing nor continuous deployment which involves testing the build and automatically forwarding the code to a production after building and passing tests. However, this could be extended in the future by adding testing and deployment jobs to the already existing YAML file. Furthermore, our pipeline YAML file is executed by GitLab runners which are computers that pull the project, locate the CI pipeline file and execute the commands that are given. In our case, these commands include both running the actual build stages as well as a sepperate setup-build file we have for the arduino that includes installing Arduino CLI, needed libraries etc. The pipeline uses Ubuntu Docker Image which is a exacutable software package that can run your project in an isolated environment across various machines and platforms. The docker image is incuded at the top of the .gitlab-ci.yml file.  
-
-*Setup Environment:*
-  - Executes sepperate setup-build-env.sh script to install necessary tools and libraries for Arduino.
-
-<br>
-
-*Arduino Build Stage:*
-  - Compiles the Arduino code for the Wio Terminal.
-  - Sets up the Arduino CLI, imports secret configuration files, checks for installed libraries, compiles the code, and checks for connected boards.
-
-<br>
-
-*NPM Build Stage:* 
-  - Installs Node.js and NPM, updates package lists and installs dependencies.
-
 
 ## License:
 The project is licensed under the MIT License. Refer to the [**LICENSE**](documents/License) file for more information.
