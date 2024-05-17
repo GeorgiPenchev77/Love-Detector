@@ -1,7 +1,7 @@
 const fs = require("fs");
 
 const readJSON = (file, process) => {
-  const dataJson = fs.readFileSync(file);
+  let dataJson = fs.readFileSync(file);
   let newData = JSON.parse(dataJson);
   process(newData);
 }

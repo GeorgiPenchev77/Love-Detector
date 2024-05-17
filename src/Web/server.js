@@ -6,7 +6,7 @@ const http = require("http");
 const server = http.createServer(app);
 const io = new Server(server);
 
-const { compCalc, individualMeasuementCalc, DATE_DURATION } = require("./modules/compatibility.js");
+const { compCalc, individualMeasurementCalc, DATE_DURATION } = require("./modules/compatibility.js");
 const { MQTTclient, topics } = require("./modules/mqtt.js");
 const util = require("./modules/util.js");
 
@@ -182,7 +182,7 @@ server.listen(PORT, () => {
 app.use(express.json());
 
 app.post("/saveUserData", (req, res) => {
-  const userData = req.body;
+  let userData = req.body;
 
   // Read the existing JSON file
 
@@ -193,7 +193,7 @@ app.post("/saveUserData", (req, res) => {
     existingData.users[1].username = userData.user2.username || "";
     existingData.users[1].pronouns = userData.user2.pronouns || "";
 
-    const jsonData = JSON.stringify(existingData, null, 2);
+    let jsonData = JSON.stringify(existingData, null, 2);
     //Save the updated info to the json file.
     util.saveJSON(UPDATE_FILE, jsonData);
 

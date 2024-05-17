@@ -1,11 +1,11 @@
 const mqtt = require("mqtt");
 
-const protocol = "mqtt";
-const host = "localhost";
-const port = "1883";
-const clientId = `mqtt_${Math.random().toString(16).slice(3)}`;
+const PROTOCOL = "mqtt";
+const HOST = "localhost";
+const PORT = "1883";
+let clientId = `mqtt_${Math.random().toString(16).slice(3)}`;
 
-const connectURL = `${protocol}://${host}:${port}`;
+let connectURL = `${PROTOCOL}://${HOST}:${PORT}`;
 
 const client = mqtt.connect(connectURL, {
   clientId,
@@ -15,7 +15,7 @@ const client = mqtt.connect(connectURL, {
 });
 
 //todo: change this
-const topics = [
+const TOPICS = [
   "start_button_click",  //0
   "stop_button_click",   //1
   "change_question",     //2
@@ -32,9 +32,9 @@ const topics = [
 
 client.on("connect", () => {
   console.log("Connected");
-  client.subscribe(topics, () => {
-    console.log(`Subscribe to topics: '${topics.join(", ")}'`);
+  client.subscribe(TOPICS, () => {
+    console.log(`Subscribe to topics: '${TOPICS.join(", ")}'`);
   });
 });
 
-module.exports = {MQTTclient: client, topics};
+module.exports = {MQTTclient: client, topics: TOPICS};

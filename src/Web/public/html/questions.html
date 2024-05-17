@@ -71,7 +71,7 @@
     //Retrieve user data from JSON via server 
     async function getUserData() {
       try {
-        const response = await fetch("/getUserData", {
+        let response = await fetch("/getUserData", {
           method: "GET",
           headers: {
             "Content-Type": "application/json"
@@ -82,7 +82,7 @@
           throw new Error("Failed to retrieve user data.");
         }
 
-        const userData = await response.json();
+        let userData = await response.json();
 
         let userName1 = userData.users[0].username;
         let userName2 = userData.users[1].username;
@@ -113,11 +113,11 @@
     //Get questions from the question_list.json file. 
     async function fetchQuestions() {
       try {
-        const response = await fetch("assets/question_list.json"); 
+        let response = await fetch("assets/question_list.json");
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-        const data = await response.json();
+        let data = await response.json();
         questions = data.questions;
         changeQuestion();
       } catch (error) {
