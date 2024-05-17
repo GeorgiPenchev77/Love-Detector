@@ -3,7 +3,7 @@ const util = require("./util.js");
 
 const independentFactor = 25;                     // used to get the composite score of each user in the desired range
 const numberOfMeasurements = 10;                  // number of measurements during the date for each user
-const dateTime = 180;                             // in seconds 
+const DATE_DURATION = 180000;                     // = 3 min. Duration of the date 
 
 const RESULT_JSON = "./newHeartbeatData.json"     // file with current data that is to-be updated
 
@@ -43,7 +43,7 @@ const compCalc = () => {
 
       data.match_result = getDateResult(data.users);
       data.test_data_for_graph.number_of_points = numberOfMeasurements;
-      data.test_data_for_graph.time_seconds = dateTime;
+      data.test_data_for_graph.time_seconds = DATE_DURATION/100;  //we divide to turn milliseconds into seconds
     });
   }
   catch (error) {
@@ -183,4 +183,4 @@ const getDateResult = (users) => {
   return level;
 };
 
-module.exports = { compCalc, individualMeasuementCalc };
+module.exports = { compCalc, individualMeasuementCalc, DATE_DURATION };

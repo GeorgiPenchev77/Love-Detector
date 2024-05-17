@@ -6,7 +6,7 @@ const http = require("http");
 const server = http.createServer(app);
 const io = new Server(server);
 
-const { compCalc, individualMeasuementCalc } = require("./modules/compatibility.js");
+const { compCalc, individualMeasuementCalc, DATE_DURATION } = require("./modules/compatibility.js");
 const { MQTTclient, topics } = require("./modules/mqtt.js");
 const util = require("./modules/util.js");
 
@@ -28,7 +28,6 @@ let isDateStarted = false;
 let isIMStarted = false;
 
 let dateTimer; //variable for interval
-const DATE_DURATION = 180000; // = 3 min. Duration of the date
 const hbRequests = 10; // number of heartbeat scans during the date
 const imHbRequests = 5; //number of heartbeat scans for individual measurement
 
