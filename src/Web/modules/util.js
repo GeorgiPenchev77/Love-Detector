@@ -11,11 +11,16 @@ const saveJSON = (file, data) => {
 }
 
 const updateJSON = (file, update) => {
-  readJSON(file, (data) =>{
-    update(data);
-    let jsonData = JSON.stringify(data, null, 2);
-    saveJSON(file, jsonData);
-  })
+  try{
+    readJSON(file, (data) =>{
+      update(data);
+      let jsonData = JSON.stringify(data, null, 2);
+      saveJSON(file, jsonData);
+    })
+  }catch (error) {
+    console.error("Error updating JSON:", error);
+    throw error;
+  }
 }
 
 
