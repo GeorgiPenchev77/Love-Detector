@@ -1,18 +1,20 @@
 #ifndef UTIL_H
-#define UTIL_H                                    //header guard
+#define UTIL_H                                     // header guard
 
-#include "TFT_eSPI.h"                             // import screen library  
-#include "Free_Fonts.h"                           // import custom fonts file.
-extern TFT_eSPI tft;                              // screen reference
+#include "TFT_eSPI.h"                              // import screen library  
+#include "Free_Fonts.h"                            // import custom fonts file.
+extern TFT_eSPI tft;                               // screen reference
 
 /* ------------------------------ Wio Macros --------------------------------- */
+
+#define DEBUG false                                // Debug macro that will trigger when a issue occurs
 
 #define STANDARD_HORIZONTAL_VIEW 3                 // Terminal text allignment mode
 
 //Terminal button macros
-#define START BUTTON_3                             // Left button
-#define NEXT_QUESTION BUTTON_2                     // Middle button
-#define STOP BUTTON_1                              // Right button
+#define START BUTTON_3                             // Left button - Start heart rate measuring
+#define NEXT_QUESTION BUTTON_2                     // Middle button - Change questions during date
+#define STOP BUTTON_1                              // Right button - Stop heart rate measuring
 
 #define TFT_HEIGHT 240                             // define LCD screen pixel height
 #define TFT_WIDTH 320                              // define LCD screen pixel width
@@ -63,9 +65,5 @@ extern int parseInt(String string);
 #define RESULT_MESSAGE2      "Heart rate of right is: "
 
 /* -------------------------------------------------------------------------- */
-
-#define DEBUG false
-
-/* ---------------------------------------------------------------------------- */
 
 #endif                                                  // end header guard
