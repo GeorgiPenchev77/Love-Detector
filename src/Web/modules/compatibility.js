@@ -183,4 +183,4 @@ function getDateResult (users) {
   return level;
 }
 
-module.exports = { compCalc, individualMeasurementCalc, DATE_DURATION};
+module.exports = { compCalc, individualMeasurementCalc, DATE_DURATION, NUMBER_OF_MEASUREMENTS};
