@@ -43,7 +43,7 @@ const compCalc = () => {
 
       data.match_result = getDateResult(data.users);
       data.test_data_for_graph.number_of_points = numberOfMeasurements;
-      data.test_data_for_graph.time_seconds = DATE_DURATION/100;  //we divide to turn milliseconds into seconds
+      data.test_data_for_graph.time_seconds = DATE_DURATION/1000;  //we divide by a 1000 to turn milliseconds into seconds
     });
   }
   catch (error) {
