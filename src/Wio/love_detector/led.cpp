@@ -2,6 +2,7 @@
 
 Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, LED_PIN, NEO_GRB + NEO_KHZ800);
 
+/* --------------------- LED functions for animations ----------------------- */
 
 void neoPixelSetup() {
   randomSeed(analogRead(LED_PIN));
@@ -105,3 +106,5 @@ void startLightAnimation(int level) {
     }
   }
 }
+
+/* -------------------------------------------------------------------------- */
