@@ -52,7 +52,8 @@ const compCalc = () => {
   }
 };
 
-const calcAvarage = (array) => {                           // function to get the average from an array of values
+// get the average from an array of values
+const calcAvarage = (array) => {                           
   let avg = 0;
   for (let i = 0; i < array.length; i++) {
     avg += array[i];
@@ -60,17 +61,20 @@ const calcAvarage = (array) => {                           // function to get th
   return parseInt(avg / array.length);
 }
 
-const getAverageIM = (user) => {                           // function to calculate average heart rate during IM
+// calculate average heart rate during Individual Measurements
+const getAverageIM = (user) => {                           
   const arrayHb = user.IM_heartbeat_data;
   return calcAvarage(arrayHb);
 };
 
-const getAverageDate = (user) => {                         // function to calculate average heart rate during date
+// calculate average heart rate during date
+const getAverageDate = (user) => {                         
   const arrayHb = user.date_heartbeat_data;
   return calcAvarage(arrayHb);
 };
 
-const getPeakIM = (user) => {                              // function to find the highest heart rate during IM
+// function to find the highest heart rate during Individual Measurement
+const getPeakIM = (user) => {                              
   let peak = 0;
   const arrayHb = user.IM_heartbeat_data;
   for (let i = 0; i < arrayHb.length; i++) {
@@ -81,7 +85,8 @@ const getPeakIM = (user) => {                              // function to find t
   return peak;
 };
 
-const getPeakDate = (user) => {                           // function to find the highest heart rate during date
+// find the highest heart rate during date
+const getPeakDate = (user) => {                           
   let peak = 0;
   const arrayHb = user.date_heartbeat_data;
   for (let i = 0; i < arrayHb.length; i++) {
@@ -92,7 +97,8 @@ const getPeakDate = (user) => {                           // function to find th
   return peak;
 };
 
-const getUpperBracketIM = (user) => {                    // function to find the range between average and highest heart rate during IM 
+// find the range between average and highest heart rate during Individual Measurements 
+const getUpperBracketIM = (user) => {                    
   const indAverageHb = getAverageIM(user);
   const indPeak = getPeakIM(user);
 
@@ -100,7 +106,8 @@ const getUpperBracketIM = (user) => {                    // function to find the
   return parseInt(upperBracket);
 };
 
-const getUpperBracketDate = (user) => {                  // function to find the range between average and highest heart rate during IM 
+// find the range between average and highest heart rate during Individual Measurements
+const getUpperBracketDate = (user) => {                   
   const indAverageHb = getAverageDate(user);
   const indPeak = getPeakDate(user);
 
@@ -108,7 +115,8 @@ const getUpperBracketDate = (user) => {                  // function to find the
   return parseInt(upperBracket);
 };
 
-const getSpikes = (user) => {                            // function to calculate the amount of times difference between measure k and k-1 is drastic
+// function to calculate the amount of times difference between measure k and k-1 is drastic
+const getSpikes = (user) => {                            
   let spikeCounter = 0;
   const arrayHb = user.date_heartbeat_data;
 
@@ -121,7 +129,8 @@ const getSpikes = (user) => {                            // function to calculat
   return spikeCounter;
 };
 
-const countUpperBracketIndex = (user) => {                // counts how many heart rate measurements during the date are part of the upper bracket
+// counts how many heart rate measurements during the date are part of the upper bracket
+const countUpperBracketIndex = (user) => {                
   const upperBracket = getUpperBracketDate(user);
   let aboveUpperBracket = 0;
   const arrayHb = user.date_heartbeat_data;
@@ -133,7 +142,8 @@ const countUpperBracketIndex = (user) => {                // counts how many hea
   return aboveUpperBracket;
 };
 
-const getCompositeScore = (user) => {                    // takes all functions and calculates a score roughly between 0-15
+// takes all functions and calculates a score roughly between 0-15
+const getCompositeScore = (user) => {                    
   const maxDiff = 60;                                    // normal heartbeat is between 60-100 bpm, im accounting for a bit more
   const TRHIndex = countUpperBracketIndex(user);
 
@@ -145,7 +155,8 @@ const getCompositeScore = (user) => {                    // takes all functions 
   return compositeScore;
 };
 
-const getDateResult = (users) => {                      // calculates whether or not both values are above a threshhold and if they are far apart,
+// calculates whether or not both values are above a threshhold and if they are far apart
+const getDateResult = (users) => {                      
   let level = 0;                                        // this level indicates the result of the date
   const user1 = users[0];
   const user2 = users[1];

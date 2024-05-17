@@ -110,6 +110,7 @@
     const socket = io();
     socket.emit('dateStarted')
 
+    //Get questions from the question_list.json file. 
     async function fetchQuestions() {
       try {
         const response = await fetch("assets/question_list.json"); 
@@ -134,6 +135,7 @@
       goToResult();
     })
 
+    //Randomize which question is displayed from the question list
     function randomize() {
       do {
         randomIndex = Math.floor(Math.random() * questions.length);

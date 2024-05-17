@@ -32,6 +32,7 @@ const DATE_DURATION = 180000; // = 3 min. Duration of the date
 const hbRequests = 10; // number of heartbeat scans during the date
 const imHbRequests = 5; //number of heartbeat scans for individual measurement
 
+//MQTT message handler
 MQTTclient.on("message", (topic, payload) => {
   if (topics[0] == topic) {
     io.emit("start");
