@@ -43,7 +43,7 @@ const compCalc = () => {
 
       data.match_result = getDateResult(data.users);
       data.test_data_for_graph.number_of_points = NUMBER_OF_MEASUREMENTS;
-        data.test_data_for_graph.time_seconds = DATE_DURATION/1000; //we divide by a 1000 to turn milliseconds into seconds
+      data.test_data_for_graph.time_seconds = DATE_DURATION/1000; //we divide by a 1000 to turn milliseconds into seconds
     });
   }
   catch (error) {
@@ -136,7 +136,7 @@ function countUpperBracketIndex (user){
 // takes all functions and calculates a score roughly between 0-15
 function getCompositeScore (user)  {
   let maxDiff = 60; // normal heartbeat is between 60-100 bpm, im accounting for a bit more
-  let IMUpperBracketCount = countUpperBracketIndex(user); //replaces TRH-index as IMUpperBracketCount is a more clear name
+  let IMUpperBracketCount = countUpperBracketIndex(user); // replaces TRH-index as IMUpperBracketCount is a more clear name
 
   let normalizedAvgDiff = Math.abs(getAverageDate(user) - getAverageIM(user)) / maxDiff;
   let normalizedPeakDiff = Math.abs(getPeakDate(user) - getPeakIM(user)) / maxDiff;
