@@ -148,7 +148,7 @@ void onMqttMessage(int messageSize) {                                 // functio
   Serial.printf("With contents: %d\n", message);
 
   if (!strcmp(topic, topic_matchResult)) {                            //  strcmp returns 0 if strings are equal 
-    light(message);
+    startLightAnimation(message);
   } else if (!strcmp(topic, topic_dateStarted)) {
     HBSensor::startDate(message);
   } else if (!strcmp(topic, topic_dateStopped)) {

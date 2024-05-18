@@ -62,7 +62,7 @@ extern int parseInt(String string);
 #define ERROR_MESSAGE1       "A problem has occured with the left sensor and the test needs to restarted. This will happen automatically."
 #define ERROR_MESSAGE2       "A problem has occured with the right sensor and the test needs to restarted. This will happen automatically."
 #define RESULT_MESSAGE1      "Heart rate of left user is: "
-#define RESULT_MESSAGE2      "Heart rate of right is: "
+#define RESULT_MESSAGE2      "Heart rate of right user is: "
 
 /* -------------------------------------------------------------------------- */
 

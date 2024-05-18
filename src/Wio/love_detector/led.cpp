@@ -72,7 +72,7 @@ void levelOneMode(uint32_t color) {
   color = pixels.Color(RED);
   slowLightUpSequence(color);
   blinkSequence(color);
-  delay(150);                                            // The amount of time between each individually lit up pixel
+  delay(150);                                            // the amount of time between each individually lit up pixel
 }
 
 void levelTwoMode(uint32_t color) {
@@ -90,8 +90,8 @@ void levelThreeMode(uint32_t color) {                    // for the "ultimate lo
   biDirectionalSequence();
 }
 
-void startLightAnimation(int level) {                            
-  uint32_t color;
+void startLightAnimation(int level) {                    // based on the level of the match, a specific light animation             
+  uint32_t color;                                        // would be triggered as many times as the value of the level
   if (level == 1) {
     for (int i = 0; i < level; i++) {
       levelOneMode(color);
