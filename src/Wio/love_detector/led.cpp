@@ -2,78 +2,80 @@
 
 Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, LED_PIN, NEO_GRB + NEO_KHZ800);
 
+/* --------------------- LED functions for animations ----------------------- */
 
-void neoPixelSetup(){
-  //Neopixels Setup
+void neoPixelSetup() {
   randomSeed(analogRead(LED_PIN));
   pixels.setBrightness(255);
-  pixels.begin(); // This initializes the NeoPixel library.
-
-  // Set all pixels to "off" (black)
-  for (int i = 0; i < NUMPIXELS; i++) {
-      pixels.setPixelColor(i, pixels.Color(BLACK));
+  pixels.begin();                                        // initialization for the NeoPixel library.
+  for (int i = 0; i < NUMPIXELS; i++) {                  // set all pixels to "off" (black)
+    pixels.setPixelColor(i, pixels.Color(BLACK));
   }
   pixels.show();
-
 }
 
-void blinkSequence(uint32_t color){// makes it on off then on 2 times, with small delay
-for (int j = 0; j < 2; j++) { 
+void blinkSequence(uint32_t color) {                     // the function turns the lights on and off with a 0.2 second delay in a certain color
+  for (int j = 0; j < 2; j++) {
     for (int i = 0; i < NUMPIXELS; i++) {
       pixels.setPixelColor(i, color);
     }
-    pixels.show(); 
-    delay(200); 
-    pixels.clear(); 
-    pixels.show(); 
+    pixels.show();
+    delay(200);
+    pixels.clear();
+    pixels.show();
     delay(200);
   }
 }
-void lightUpSequence(uint32_t color) {//lights up LEDS one by one
+
+void lightUpSequence(uint32_t color) {                   // lights up LEDS one by one
   for (int i = 0; i < NUMPIXELS; i++) {
     pixels.setPixelColor(i, color);
     pixels.show();
-    delay(250); // Delay for the build up
+    delay(250);                                          // delay for the build up
   }
   delay(500);
-  pixels.clear(); 
-}
-void fadeInSequence() {//Fading effect only blue
-    for (int b = 0; b < 256; b++) {
-      for (int i = 0; i < NUMPIXELS; i++) {
-        pixels.setPixelColor(i, pixels.Color(0, b, b)); // Fade in blue
-      }
-      pixels.show();
-      delay(5); 
-    }
-}
-void upAndDown() { // function for the lights fillup and down 
-  for (int i = 0; i < NUMPIXELS; i++) { 
-      pixels.setPixelColor(i, pixels.Color(PINK)); //pink color
-      pixels.show();
-      delay(25);
-    }
-    for (int i = 10; i >= 0; i--) {
-      pixels.setPixelColor(i, pixels.Color(YELLOW)); //brighter color
-      pixels.show();
-      delay(25);
-    }
-}
-void slowFillUp(uint32_t color) {
-  for (int i = 0; i < 3; i++) { 
-      pixels.setPixelColor(i, pixels.Color(RED)); //pink(ish) color
-      pixels.show();
-      delay(500);
-    }
-}
-void noMatchMode(uint32_t color) {
-  color = pixels.Color(RED);
-  slowFillUp(color); 
-  blinkSequence(color);
-  delay(150); // The amount of time between each individually lit up pixel  
+  pixels.clear();
 }
 
-void normalMode(uint32_t color){
+void slowLightUpSequence(uint32_t color) {               // works in a similiar way as the previous function but slower
+  for (int i = 0; i < 3; i++) {
+    pixels.setPixelColor(i, pixels.Color(RED));  
+    pixels.show();
+    delay(500);
+  }
+}
+
+void fadeInSequence() {                                  // fading effect is only in blue
+  for (int b = 0; b < 256; b++) {
+    for (int i = 0; i < NUMPIXELS; i++) {
+      pixels.setPixelColor(i, pixels.Color(BLUE));
+    }
+    pixels.show();
+    delay(5);
+  }
+}
+
+void biDirectionalSequence() {                           // function for the lights to fill "up and down"
+  for (int i = 0; i < NUMPIXELS; i++) {
+    pixels.setPixelColor(i, pixels.Color(PINK));
+    pixels.show();
+    delay(25);
+  }
+  for (int i = 10; i >= 0; i--) {
+    pixels.setPixelColor(i, pixels.Color(YELLOW));       // done with different(contrasting) colors for the two directions
+    pixels.show();
+    delay(25);
+  }
+}
+
+void levelOneMode(uint32_t color) {
+  color = pixels.Color(RED);
+  slowLightUpSequence(color);
+  blinkSequence(color);
+  delay(150);                                            // the amount of time between each individually lit up pixel
+}
+
+void levelTwoMode(uint32_t color) {
   color = pixels.Color(BLUE);
   lightUpSequence(color);
   delay(100);
@@ -81,26 +83,28 @@ void normalMode(uint32_t color){
   delay(100);
   fadeInSequence();
 }
-void crazyMode() { // for ultimate love match
-  uint32_t color = pixels.Color(PINK); // pink color for the blinking
+
+void levelThreeMode(uint32_t color) {                    // for the "ultimate love match"
+  color = pixels.Color(PINK);  
   blinkSequence(color);
-  upAndDown();
+  biDirectionalSequence();
 }
 
-
-void light(int level) {
-  uint32_t color;
+void startLightAnimation(int level) {                    // based on the level of the match, a specific light animation             
+  uint32_t color;                                        // would be triggered as many times as the value of the level
   if (level == 1) {
     for (int i = 0; i < level; i++) {
-      noMatchMode(color);
+      levelOneMode(color);
     }
-  } else if (level==2) {
+  } else if (level == 2) {
     for (int i = 0; i < level; i++) {
-      normalMode(color);
-   }
-  } else if (level==3){
+      levelTwoMode(color);
+    }
+  } else if (level == 3) {
     for (int i = 0; i < level; i++) {
-      crazyMode();
-   }
+      levelThreeMode(color);
+    }
   }
 }
+
+/* -------------------------------------------------------------------------- */
