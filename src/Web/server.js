@@ -6,7 +6,7 @@ const http = require("http");
 const server = http.createServer(app);
 const io = new Server(server);
 
-const { compCalc, individualMeasuementCalc: individualMeasurementCalc, DATE_DURATION, NUMBER_OF_MEASUREMENTS } = require("./modules/compatibility.js");
+const { compCalc, individualMeasurementCalc, DATE_DURATION, NUMBER_OF_MEASUREMENTS } = require("./modules/compatibility.js");
 const { MQTTclient, topics } = require("./modules/mqtt.js");
 const util = require("./modules/util.js");
 
