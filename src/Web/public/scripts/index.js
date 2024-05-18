@@ -5,7 +5,7 @@ const socket = io();
 
   //Save the username and pronouns to json file. 
   function saveUserInfo() {
-    var userData = {
+    let userData = {
       user1: {
           username: document.getElementById("userName1").value,
           pronouns: document.getElementById("userPronouns1").value
@@ -21,7 +21,7 @@ const socket = io();
         return;
     }
 
-    var jsonData = JSON.stringify(userData, null, 2);
+    let jsonData = JSON.stringify(userData, null, 2);
 
     // Send JSON data to server
     fetch("/saveUserData", {

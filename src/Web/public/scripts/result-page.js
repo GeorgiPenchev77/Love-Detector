@@ -9,7 +9,7 @@ async function drawChart(userData) {
 
 
 
-  var data1 = google.visualization.arrayToDataTable([]); // initialize empty graph to later be filled with data from JSON
+  let data1 = google.visualization.arrayToDataTable([]); // initialize empty graph to later be filled with data from JSON
   data1.addColumn('number', 'Seconds');
   data1.addColumn('number', 'User1_BPM');
   data1.addColumn('number', 'User2_BPM');
@@ -28,7 +28,7 @@ async function drawChart(userData) {
   }
 
   /*Designates technical aspects of graph; how the curve looks like, colors, size...*/
-  var options1 = {
+  let options1 = {
     curveType: 'function',
     legend: { position: 'bottom' },
     colors: ['#a92a85', '#fa71c8'],
@@ -37,7 +37,7 @@ async function drawChart(userData) {
     vAxis: { format: '#', ticks: [40, 60, 80, 100, 120, 140] }
   };
 
-  var chart1 = new google.visualization.LineChart(document.getElementById('chartDiv1'));
+  let chart1 = new google.visualization.LineChart(document.getElementById('chartDiv1'));
   chart1.draw(data1, options1); /*Creates the line for the chart, with the properties specified before*/
 }
 
