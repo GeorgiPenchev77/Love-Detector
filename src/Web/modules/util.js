@@ -1,15 +1,18 @@
 const fs = require("fs");
 
+// Read and parse JSON file
 const readJSON = (file, process) => {
   let dataJson = fs.readFileSync(file);
   let newData = JSON.parse(dataJson);
   process(newData);
 }
 
+// Write data to the JSON file
 const saveJSON = (file, data) => {
   fs.writeFileSync(file, data);
 }
 
+// Update the JSON file with new data
 const updateJSON = (file, update) => {
   try{
     readJSON(file, (data) =>{
@@ -24,7 +27,7 @@ const updateJSON = (file, update) => {
 }
 
 
-// get the average from an array of values
+// get the average heartbeat from array of gathered heartbeat values
 function calcAverage (array) {
   let avg = 0;
   for (let i = 0; i < array.length; i++) {

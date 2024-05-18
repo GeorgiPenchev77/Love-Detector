@@ -183,21 +183,24 @@
         );
 
         instructionContainer.innerHTML = "";
+
+        // Create and set the progress percentage 
         var progressPercent = document.createElement("p");
         progressPercent.textContent = progressCounter * 20 + "%";
-        progressPercent.classList.add("progress");
+        progressPercent.classList.add("progress"); // Add a CSS class for styling
 
+        // Create and set the message paragraph 
         var messageParagraph = document.createElement("p");
         messageParagraph.textContent =
           "Heartbeat measuring has been started. \nProgress: ";
-        messageParagraph.classList.add("message-text");
+        messageParagraph.classList.add("message-text"); // Add a CSS class for styling
 
         instructionContainer.appendChild(messageParagraph);
         instructionContainer.appendChild(progressPercent);
       }
     }
 
-    //Control visual actions in webpage when measuring has been paused.
+    //Control the visual representation in webpage when measuring has been paused.
     function pauseMeasuring(){ 
       if(document.getElementById(userId).classList.contains('active') && started){
         started = false;

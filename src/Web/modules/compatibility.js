@@ -1,11 +1,11 @@
 const UTIL = require("./util.js");
 
-const INDEPENDENT_FACTOR = 25;                     // used to get the composite score of each user in the desired range
-const NUMBER_OF_MEASUREMENTS = 10;                // number of measurements during the date for each user
-const DATE_DURATION = 180000;                    // in seconds
+const INDEPENDENT_FACTOR = 25;    // used to get the composite score of each user in the desired range
+const NUMBER_OF_MEASUREMENTS = 10;  // number of measurements during the date for each user
+const DATE_DURATION = 180000;  // in seconds
 
-const RESULT_JSON = "./newHeartbeatData.json"     // file with current data that is to-be updated
-const {calcAverage} = require("./modules/util.js");
+const RESULT_JSON = "./newHeartbeatData.json" // file with current data that is to-be updated
+const {calcAverage} = require("./util.js");
 
 // update values of individual measurement for according user
 const individualMeasurementCalc = (userID)=> {
@@ -43,7 +43,7 @@ const compCalc = () => {
 
       data.match_result = getDateResult(data.users);
       data.test_data_for_graph.number_of_points = NUMBER_OF_MEASUREMENTS;
-        data.test_data_for_graph.time_seconds = DATE_DURATION/1000;  //we divide by a 1000 to turn milliseconds into seconds
+        data.test_data_for_graph.time_seconds = DATE_DURATION/1000; //we divide by a 1000 to turn milliseconds into seconds
     });
   }
   catch (error) {
@@ -89,8 +89,7 @@ function getPeakDate (user)  {
 }
 
 // find the range between average and highest heart rate during Individual Measurements
-
-function getUpperBracketIM (user)  {                    // function to find the range between average and highest heart rate during IM
+function getUpperBracketIM (user)  { // function to find the range between average and highest heart rate during IM
   let indAverageHb = getAverageIM(user);
   let indPeak = getPeakIM(user);
 
@@ -136,7 +135,7 @@ function countUpperBracketIndex (user){
 
 // takes all functions and calculates a score roughly between 0-15
 function getCompositeScore (user)  {
-  let maxDiff = 60;                                    // normal heartbeat is between 60-100 bpm, im accounting for a bit more
+  let maxDiff = 60; // normal heartbeat is between 60-100 bpm, im accounting for a bit more
   let TRHIndex = countUpperBracketIndex(user);
 
   let normalizedAvgDiff = Math.abs(getAverageDate(user) - getAverageIM(user)) / maxDiff;
@@ -149,7 +148,7 @@ function getCompositeScore (user)  {
 
 // calculates whether or not both values are above a threshhold and if they are far apart
 function getDateResult (users) {
-  let level = 0;                                        // this level indicates the result of the date
+  let level = 0; // this level indicates the result of the date
   let user1 = users[0];
   let user2 = users[1];
   let diffCompScore = user1 - user2;

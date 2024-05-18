@@ -14,7 +14,7 @@ const client = mqtt.connect(connectURL, {
   reconnectPeriod: 1000,
 });
 
-//todo: change this
+//Topics being subscribed to from MQTT broker
 const TOPICS = [
   "start_button_click",  //0
   "stop_button_click",   //1
