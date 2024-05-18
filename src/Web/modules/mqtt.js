@@ -15,7 +15,7 @@ const client = mqtt.connect(connectURL, {
 });
 
 //Topics being subscribed to from MQTT broker
-const TOPICS = [
+const TOPIC_TITLES = [
   "start_button_click",  //0
   "stop_button_click",   //1
   "change_question",     //2
@@ -30,11 +30,17 @@ const TOPICS = [
   "im_user_switched"     //11
 ];
 
+let topics = Object.fromEntries(
+    TOPIC_TITLES.map((topic) => [topic, topic])
+);
+
+
+
 client.on("connect", () => {
   console.log("Connected");
-  client.subscribe(TOPICS, () => {
-    console.log(`Subscribe to topics: '${TOPICS.join(", ")}'`);
+  client.subscribe(TOPIC_TITLES, () => {
+    console.log(`Subscribe to topics: '${TOPIC_TITLES.join(", ")}'`);
   });
 });
 
-module.exports = {MQTTclient: client, topics: TOPICS};
+module.exports = {MQTTclient: client, topics: Object.freeze(topics)};

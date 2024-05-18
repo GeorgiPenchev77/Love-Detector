@@ -32,17 +32,17 @@ const ImHbRequests = 5; //number of heartbeat scans for individual measurement
 
 //MQTT message handler
 MQTTclient.on("message", (topic, payload) => {
-  if (topics[0] == topic) {
+  if (topic === topics.start_button_click) {
     io.emit("start");
-  } else if (topics[1] == topic) {
+  } else if (topic === topics.stop_button_click) {
     io.emit("stop");
-  } else if (topics[2] == topic) {
+  } else if (topic === topics.change_question) {
     io.emit("next_question");
-  } else if (topics[3] == topic) {
+  } else if (topic === topics.heart_rate_left) {
     processHeartbeat(0, parseInt(payload));
-  } else if (topics[4] == topic) {
+  } else if (topic === topics.heart_rate_right) {
     processHeartbeat(1, parseInt(payload));
-  } else if (topics[7] == topic) {
+  } else if (topic === topics.heart_rate_both) {
     processBothHeartbeats(payload.toString());
   }
 
@@ -108,28 +108,28 @@ function goToResult(){
 io.on("connection", (socket) => {
   socket.on("startIM", () => {
     isIMStarted = true;
-    MQTTclient.publish(topics[9], parseInt(ImHbRequests) + ""); // Notify the start of individual measurement
+    MQTTclient.publish(topics.im_started, parseInt(ImHbRequests) + ""); // Notify the start of individual measurement
     console.log("IM started");
   });
   socket.on('changeCurrentUser', () => {
-    MQTTclient.publish(topics[11], "1"); //Notify user change
+    MQTTclient.publish(topics.im_user_switched, "1"); //Notify user change
     console.log("User Changed");
   });
   socket.on('endIM', () => {
     isIMStarted = false;
-    MQTTclient.publish(topics[10], "1"); //Notify end of individual measurement
+    MQTTclient.publish(topics.im_stopped, "1"); //Notify end of individual measurement
     console.log("IM ended");
   });
   socket.on("dateStarted", () => {
     socket.join("dateRoom");
     isDateStarted = true;
-    MQTTclient.publish(topics[6], parseInt(DATE_DURATION / NUMBER_OF_MEASUREMENTS) + ""); //Notify start of the actual date
+    MQTTclient.publish(topics.date_started, parseInt(DATE_DURATION / NUMBER_OF_MEASUREMENTS) + ""); //Notify start of the actual date
     console.log("Date started");
   });
   socket.on("disconnecting", () => {
     if (socket.rooms.has("dateRoom")) {
       isDateStarted = false;
-      MQTTclient.publish(topics[8], "1"); // Notify the end of the date on disconnect
+      MQTTclient.publish(topics.date_stopped, "1"); // Notify the end of the date on disconnect
     }
   });
   socket.on("resetIM", ()=>{
@@ -173,7 +173,7 @@ function saveDateMeasurements() {
 function activateLED() {
   util.readJSON(UPDATE_FILE, (data) => {
     let result = data.match_result + "";
-    MQTTclient.publish(topics[5], result);
+    MQTTclient.publish(topics.match_result, result);
   });
 }
 
