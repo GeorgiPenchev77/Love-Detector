@@ -73,7 +73,7 @@ void setupWifi() {
 }
 
 void setupMQTT() {
-  setupWifi();                                                         // setip wifi before setting up broker. Applying the same logic when connecting to broker
+  setupWifi();                                                         // setup wifi before setting up broker. Applying the same logic when connecting to broker
 
   printNewMessage("Connection to MQTT Broker is being established.");
 
