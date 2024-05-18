@@ -1,11 +1,11 @@
 const socket = io();
     socket.emit('startIM');
-    var userId = "user1";
-    var started = false;
-    var individualMeasurementsMax;
-    var progressCounter = 0;
-    var previousProgressCounterLeft = 0;
-    var previousProgressCounterRight = 0;
+    let userId = "user1";
+    let started = false;
+    let individualMeasurementsMax;
+    let progressCounter = 0;
+    let previousProgressCounterLeft = 0;
+    let previousProgressCounterRight = 0;
 
     socket.on("start", () => {
       startMeasuring();
@@ -96,20 +96,20 @@ const socket = io();
       ) {
         started = true;
 
-        var currentContainer = document.getElementById(userId);
-        var instructionContainer = currentContainer.querySelector(
+        let currentContainer = document.getElementById(userId);
+        let instructionContainer = currentContainer.querySelector(
           ".instruction-container"
         );
 
         instructionContainer.innerHTML = "";
 
         // Create and set the progress percentage 
-        var progressPercent = document.createElement("p");
+        let progressPercent = document.createElement("p");
         progressPercent.textContent = progressCounter * 20 + "%";
         progressPercent.classList.add("progress"); // Add a CSS class for styling
 
         // Create and set the message paragraph 
-        var messageParagraph = document.createElement("p");
+        let messageParagraph = document.createElement("p");
         messageParagraph.textContent =
           "Heartbeat measuring has been started. \nProgress: ";
         messageParagraph.classList.add("message-text"); // Add a CSS class for styling
@@ -123,11 +123,11 @@ const socket = io();
     function pauseMeasuring(){ 
       if(document.getElementById(userId).classList.contains('active') && started){
         started = false;
-        var currentContainer=document.getElementById(userId);
-        var instructionContainer = currentContainer.querySelector('.instruction-container');
+        let currentContainer=document.getElementById(userId);
+        let instructionContainer = currentContainer.querySelector('.instruction-container');
         instructionContainer.innerHTML = "";
 
-        var messageParagraph = document.createElement("p");
+        let messageParagraph = document.createElement("p");
         messageParagraph.textContent =
           "Heartbeat measuring is paused. Restart it to complete the test.";
         messageParagraph.classList.add("message-text");
@@ -141,15 +141,15 @@ const socket = io();
         document.getElementById(userId).classList.contains("active") &&
         started
       ) {
-        var currentContainer = document.getElementById(userId);
-        var instructionContainer = currentContainer.querySelector(
+        let currentContainer = document.getElementById(userId);
+        let instructionContainer = currentContainer.querySelector(
           ".instruction-container"
         );
         instructionContainer.innerHTML = "";
 
-        var result = await getIndividualMeasurement();
+        let result = await getIndividualMeasurement();
 
-        var messageParagraph = document.createElement("p");
+        let messageParagraph = document.createElement("p");
         messageParagraph.textContent = "Normal heartbeat: " + result;
         messageParagraph.classList.add("message-text");
         instructionContainer.appendChild(messageParagraph);
@@ -185,7 +185,7 @@ const socket = io();
 
     //Show the progress in percent
     function updatePercent() {
-      var percent = document.getElementsByClassName("progress")[0];
+      let percent = document.getElementsByClassName("progress")[0];
       console.log(percent);
       percent.innerHTML = progressCounter * 20 + "%";
     }
