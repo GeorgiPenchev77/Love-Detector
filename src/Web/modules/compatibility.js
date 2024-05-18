@@ -136,12 +136,12 @@ function countUpperBracketIndex (user){
 // takes all functions and calculates a score roughly between 0-15
 function getCompositeScore (user)  {
   let maxDiff = 60; // normal heartbeat is between 60-100 bpm, im accounting for a bit more
-  let TRHIndex = countUpperBracketIndex(user);
+  let IMUpperBracketCount = countUpperBracketIndex(user); //replaces TRH-index as IMUpperBracketCount is a more clear name
 
   let normalizedAvgDiff = Math.abs(getAverageDate(user) - getAverageIM(user)) / maxDiff;
   let normalizedPeakDiff = Math.abs(getPeakDate(user) - getPeakIM(user)) / maxDiff;
 
-  let compositeScore = Math.abs(((getSpikes(user) / NUMBER_OF_MEASUREMENTS) * (normalizedPeakDiff - normalizedAvgDiff)) + (TRHIndex / NUMBER_OF_MEASUREMENTS)) * INDEPENDENT_FACTOR;
+  let compositeScore = Math.abs(((getSpikes(user) / NUMBER_OF_MEASUREMENTS) * (normalizedPeakDiff - normalizedAvgDiff)) + (IMUpperBracketCount / NUMBER_OF_MEASUREMENTS)) * INDEPENDENT_FACTOR;
 
   return compositeScore;
 }
