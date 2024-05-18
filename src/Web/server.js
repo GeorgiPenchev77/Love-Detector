@@ -6,7 +6,7 @@ const http = require("http");
 const server = http.createServer(app);
 const io = new Server(server);
 
-const { compCalc, individualMeasuementCalc } = require("./modules/compatibility.js");
+const { compCalc, individualMeasuementCalc: individualMeasurementCalc, DATE_DURATION, NUMBER_OF_MEASUREMENTS } = require("./modules/compatibility.js");
 const { MQTTclient, topics } = require("./modules/mqtt.js");
 const util = require("./modules/util.js");
 
@@ -28,9 +28,7 @@ let isDateStarted = false;
 let isIMStarted = false;
 
 let dateTimer; //variable for interval
-const DATE_DURATION = 180000; // = 3 min. Duration of the date
-const hbRequests = 10; // number of heartbeat scans during the date
-const imHbRequests = 5; //number of heartbeat scans for individual measurement
+const ImHbRequests = 5; //number of heartbeat scans for individual measurement
 
 //MQTT message handler
 MQTTclient.on("message", (topic, payload) => {
@@ -66,13 +64,13 @@ function processHeartbeat(id, measure) {
     hbArray = rightArray;
   }
 
-  if (hbArray.length < imHbRequests) {
+  if (hbArray.length < ImHbRequests) {
     hbArray.push(measure);
     io.emit("progress");
   }
-  if (hbArray.length == imHbRequests) {
+  if (hbArray.length == ImHbRequests) {
     saveIndividualMeasurement(id, hbArray);
-    individualMeasuementCalc(id);
+    individualMeasurementCalc(id);
     hbArray.length = 0;
   }
 }
@@ -95,7 +93,7 @@ function processBothHeartbeats(measure){
   }
   console.log("Both HBs received: left: " + heartBeatArray[0] + ", right: " + heartBeatArray[1]);
 
-  if(leftArray.length == hbRequests){
+  if(leftArray.length == NUMBER_OF_MEASUREMENTS){
     endDate(); // End the date if enough heartbeat data has been received
   }
 }
@@ -110,7 +108,7 @@ function goToResult(){
 io.on("connection", (socket) => {
   socket.on("startIM", () => {
     isIMStarted = true;
-    MQTTclient.publish(topics[9], parseInt(imHbRequests) + ""); // Notify the start of individual measurement
+    MQTTclient.publish(topics[9], parseInt(ImHbRequests) + ""); // Notify the start of individual measurement
     console.log("IM started");
   });
   socket.on('changeCurrentUser', () => {
@@ -125,7 +123,7 @@ io.on("connection", (socket) => {
   socket.on("dateStarted", () => {
     socket.join("dateRoom");
     isDateStarted = true;
-    MQTTclient.publish(topics[6], parseInt(DATE_DURATION / hbRequests) + ""); //Notify start of the actual date
+    MQTTclient.publish(topics[6], parseInt(DATE_DURATION / NUMBER_OF_MEASUREMENTS) + ""); //Notify start of the actual date
     console.log("Date started");
   });
   socket.on("disconnecting", () => {
