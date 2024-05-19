@@ -10,19 +10,13 @@ const {calcAverage} = require("./util.js");
 // update values of individual measurement for according user
 const individualMeasurementCalc = (userID)=> {
 
-  try {
-    UTIL.updateJSON(RESULT_JSON, (data) => {
+  UTIL.updateJSON(RESULT_JSON, (data) => {
 
-      data.users[userID].IM_average_heartbeat = getAverageIM(data.users[userID]);
-      data.users[userID].IM_heartbeat_peak = getPeakIM(data.users[userID]);
-      data.users[userID].IM_upper_bracket = getUpperBracketIM(data.users[userID]);
+    data.users[userID].IM_average_heartbeat = getAverageIM(data.users[userID]);
+    data.users[userID].IM_heartbeat_peak = getPeakIM(data.users[userID]);
+    data.users[userID].IM_upper_bracket = getUpperBracketIM(data.users[userID]);
 
-    });
-  }
-  catch (error) {
-    console.log(error);
-    throw error;
-  }
+  });
 };
 
 // update values of date measurement for both users
