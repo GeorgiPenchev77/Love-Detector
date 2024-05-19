@@ -29,7 +29,6 @@ After careful analysis using a pre-established [***Love Detection Algorithm***](
 
 The results are displayed on the UI, which has its own dedicated page where the user will be able to see a heartbeat graph and some general information about the date. On the terminal side of things LEDs will indicate the match level reached by the users. By the end of the date, user will gain a better understanding of how their connection is perceived by their hearts, helping them decide their next steps.
 
-
 ## Purpose:
 The purpose of our project, ***The Love Detector*** is to create a scientifically driven, analytical tool that assesses the likelyhood of a deeper connection or a so-called **"spark"** between two individuals during a speed-date. By combining continious *heartbeat detection*, a rotating *list of questions*, and a special *algorithm*, the project relies on the *physical reactions* our body exerts in moments of excitement, 
 to achieve the best possible *deduction*. 
@@ -82,10 +81,10 @@ The following list contains the technologies used in this project:
 The following section lists the needed steps in order to complete the installation process for the project:
 
   ### *Installation: Wio Seeed Terminal*
-  1. Ensure that all libraries are installed by following these steps:
-    - Open *Arduino IDE*, go to *Tools -> Manage Libraries* .
-    - From the list of [*Dependecies*](#dependencies), under *Section 4*, search the name of the library and click *Install*.
-    - Repeat this for all libraries listed.(It is best to install the latest versions of the libraries).
+  Ensure that all libraries are installed by following these steps:
+  1. Open *Arduino IDE*, go to *Tools -> Manage Libraries* .
+  2. From the list of [*Dependecies*](#dependencies), under *Section 4*, search the name of the library and click *Install*.
+  3. Repeat this for all libraries listed.(It is best to install the latest versions of the libraries).
 
 ---
 
@@ -122,7 +121,7 @@ The following section presents a short guide on how to use our project:
 ## Hardware and Software Diagrams:
 The following section contains the design diagram, that the team followed during the lifecycle of the project:
 
-![Design Diagram Final Version](documents/images/Design-diagram.png)
+![Design Diagram Final Version](documents/images/Design-Diagram.png)
 
 ## Full Documentation:
 For the full documentation of the project, see our [Wiki](https://git.chalmers.se/courses/dit113/2024/group-4/love-detector/-/wikis/home).
