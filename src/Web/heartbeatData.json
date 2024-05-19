@@ -1,73 +1,47 @@
 {
   "users": [
     {
-      "username": "Kristina",
-      "pronouns": "she/her",
+      "username": null,
+      "pronouns": null,
       "IM_heartbeat_data":[
-        60,
-        60,
-        60,
-        60,
-        60
+        null
       ],
-      "IM_average_heartbeat": 60,
-      "IM_heartbeat_peak": 60,
-      "IM_upper_bracket": 0,
+      "IM_average_heartbeat": null,
+      "IM_heartbeat_peak": null,
+      "IM_upper_bracket": null,
       "date_heartbeat_data": [
-        60,
-        60,
-        60,
-        60,
-        60,
-        60,
-        60,
-        60,
-        60,
-        60
+        null
       ],
-      "date_average_heartbeat": 60,
-      "date_heartbeat_peak": 60,
-      "date_upper_bracket": 0,
-      "date_spike_counter": 0,
-      "composite_score": 0
+      "date_average_heartbeat": null,
+      "date_heartbeat_peak": null,
+      "date_upper_bracket": null,
+      "date_spike_counter": null,
+      "composite_score": null
     },
     {
-      "username": "Dengan",
-      "pronouns": "he/him",
+      "username": null,
+      "pronouns": null,
       "IM_heartbeat_data":[
-        60,
-        60,
-        60,
-        60,
-        60
+        null
       ],
-      "IM_average_heartbeat": 60,
-      "IM_heartbeat_peak": 60,
-      "IM_upper_bracket": 0,
+      "IM_average_heartbeat": null,
+      "IM_heartbeat_peak": null,
+      "IM_upper_bracket": null,
       "date_heartbeat_data": [
-        60,
-        60,
-        60,
-        60,
-        60,
-        60,
-        60,
-        60,
-        60,
-        60
+        null
       ],
-      "date_average_heartbeat": 60,
-      "date_heartbeat_peak": 60,
-      "date_upper_bracket": 0,
-      "date_spike_counter": 0,
-      "composite_score": 0
+      "date_average_heartbeat": null,
+      "date_heartbeat_peak": null,
+      "date_upper_bracket": null,
+      "date_spike_counter": null,
+      "composite_score": null
     }
   ],
   "test_data_for_graph": {
-    "time_seconds": 10,
-    "number_of_points": 10
+    "time_seconds": null,
+    "number_of_points": null
   },
-  "match_result": 0,
-  "individual_measurements": 5,
-  "date_measurements": 10
+  "match_result": null,
+  "individual_measurements": null,
+  "date_measurements": null
 }

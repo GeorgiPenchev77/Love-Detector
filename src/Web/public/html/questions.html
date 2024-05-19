@@ -3,17 +3,9 @@
   <head>
     <title>Questions</title>
     <link rel="stylesheet" href="./css/questions-style.css" />
-    <link
-      rel="icon"
-      href="./assets/images/Heart-Image.webp"
-      type="image/x-icon"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="icon" href="./assets/images/Heart-Image.webp" type="image/x-icon"/>
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
   </head>
-
   <body>
     <div class="heading-container">
       <h1>Questions</h1>
@@ -22,32 +14,19 @@
       <div class="user-container">
         <div class="user">
           <h2>User 1</h2>
-          <p>
-            Name:
-            <span id="displayUserName1"></span>
-          </p>
-          <p>
-            Pronouns:
-            <span id="displayUserPronouns1"></span>
-          </p>
+          <p>Name: <span id="userName1"></span></p>
+          <p>Pronouns: <span id="userPronouns1"></span></p>
         </div>
         <div class="user">
           <h2>User 2</h2>
-          <p>
-            Name:
-            <span id="displayUserName2"></span>
-          </p>
-          <p>
-            Pronouns:
-            <span id="displayUserPronouns2"></span>
-          </p>
+          <p>Name: <span id="userName2"></span></p>
+          <p>Pronouns: <span id="userPronouns2"></span></p>
         </div>
       </div>
-      <div id="question-container">
+      <div class="question-container">
         <h2 id="question"></h2>
       </div>
     </div>
-
     <div class="button-container">
       <button type="button" class="back-button" onclick="goBack()">
         <img
@@ -56,149 +35,34 @@
           height="35"
         /><img />
       </button>
-      <div class="timer_container">
+      <div class="timer-container">
         <div id="timer"></div>
       </div>
-      <div class="button-container2">
-        <button class="question-button" onclick="changeQuestion()">
-          <svg
-            fill="#000000"
-            height="30px"
-            width="30px"
-            version="1.1"
-            id="Layer_1"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            viewBox="0 0 383.748 383.748"
-            xml:space="preserve"
-          >
-            <g>
-              <path
-                d="M62.772,95.042C90.904,54.899,137.496,30,187.343,30c83.743,0,151.874,68.13,151.874,151.874h30
-                    C369.217,81.588,287.629,0,187.343,0c-35.038,0-69.061,9.989-98.391,28.888C70.368,40.862,54.245,56.032,41.221,73.593
-                    L2.081,34.641v113.365h113.91L62.772,95.042z"
-              />
-              <path
-                d="M381.667,235.742h-113.91l53.219,52.965c-28.132,40.142-74.724,65.042-124.571,65.042
-                    c-83.744,0-151.874-68.13-151.874-151.874h-30c0,100.286,81.588,181.874,181.874,181.874c35.038,0,69.062-9.989,98.391-28.888
-                    c18.584-11.975,34.707-27.145,47.731-44.706l39.139,38.952V235.742z"
-              />
-            </g>
-          </svg></button>
-      </div>
+      <button type="button" class="new-question-button" onclick="changeQuestion()">
+        <svg
+          fill="#000000"
+          height="30px"
+          width="30px"
+          version="1.1"
+          id="Layer_1"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          viewBox="0 0 383.748 383.748"
+          xml:space="preserve">
+          <g>
+            <path
+              d="M62.772,95.042C90.904,54.899,137.496,30,187.343,30c83.743,0,151.874,68.13,151.874,151.874h30
+                  C369.217,81.588,287.629,0,187.343,0c-35.038,0-69.061,9.989-98.391,28.888C70.368,40.862,54.245,56.032,41.221,73.593
+                  L2.081,34.641v113.365h113.91L62.772,95.042z"/>
+            <path
+              d="M381.667,235.742h-113.91l53.219,52.965c-28.132,40.142-74.724,65.042-124.571,65.042
+                  c-83.744,0-151.874-68.13-151.874-151.874h-30c0,100.286,81.588,181.874,181.874,181.874c35.038,0,69.062-9.989,98.391-28.888
+                  c18.584-11.975,34.707-27.145,47.731-44.706l39.139,38.952V235.742z"/>
+          </g>
+        </svg>
+      </button>
     </div>
   </body>
-
   <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
-
-  <script>
-    let lastQuestionIndex = -1; //index to keep track of last question
-    let randomIndex; // index to ensure that the question is different than the previous one
-    let questions = []; // array to store questions that are in json file
-    let question;
-
-    const socket = io();
-    socket.emit('dateStarted')
-
-    function goBack() {
-      window.history.back();
-    }
-    async function fetchQuestions() {
-      try {
-        const response = await fetch("assets/question_list.json"); // Fetch data from server endpoint
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const data = await response.json();
-        questions = data.questions;
-        changeQuestion();
-      } catch (error) {
-        console.error("Error loading questions:", error);
-      }
-    }
-
-    fetchQuestions();
-    socket.on("next_question", () => {
-      changeQuestion();
-    });
-    socket.on("endDate", () => {
-      goToResult();
-    })
-
-    function randomize() {
-      do {
-        randomIndex = Math.floor(Math.random() * questions.length);
-      } while (randomIndex === lastQuestionIndex); //create a random number from the question size until its different than the previous one
-
-      // Update the lastQuestionIndex to the new question
-      lastQuestionIndex = randomIndex;
-
-      return questions[randomIndex];
-    }
-
-    // Clears any existing timer, starts countdown function and displays question generated by randomize func.
-    function changeQuestion() {
-      if (timerInterval) clearInterval(timerInterval);
-      countdown();
-      question = randomize();
-      document.getElementById("question").textContent = question;
-    }
-
-    // Function that counts down the timer, with 1 second interval.
-    function countdown() {
-      let timeLeft = 90;
-      timer.textContent = timeLeft;
-      timerInterval = setInterval(() => {
-        dateTime++;
-        if (timeLeft > 0) {
-          timer.textContent = --timeLeft;
-        } else {
-          changeQuestion();
-        }
-      }, 1000);
-    }
-
-    async function getUserData() {
-      try {
-        const response = await fetch("/getUserData", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to retrieve user data.");
-        }
-
-        const userData = await response.json();
-
-        let userName1 = userData.users[0].username;
-        let userName2 = userData.users[1].username;
-        let userPronouns1 = userData.users[0].pronouns;
-        let userPronouns2 = userData.users[1].pronouns;
-
-        document.getElementById("displayUserName1").textContent = userName1;
-        document.getElementById("displayUserPronouns1").textContent =
-          userPronouns1;
-        document.getElementById("displayUserName2").textContent = userName2;
-        document.getElementById("displayUserPronouns2").textContent =
-          userPronouns2;
-      } catch (error) {
-        console.error("Error loading user data:", error);
-      }
-    }
-
-    getUserData();
-
-    let timerInterval; // Interval Object for timer
-    let dateTime = 0; 
-    const timer = document.getElementById("timer"); // initializes timer, so it can be updated during execution of date
-    changeQuestion(); // executes the initial question display on the screen
-
-    function goToResult(){
-      window.location.href="./result-page.html"
-    }
-
-  </script>
+  <script src="./scripts/questions.js"></script>
 </html>

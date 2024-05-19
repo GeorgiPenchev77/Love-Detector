@@ -1,11 +1,11 @@
 const mqtt = require("mqtt");
 
-const protocol = "mqtt";
-const host = "localhost";
-const port = "1883";
-const clientId = `mqtt_${Math.random().toString(16).slice(3)}`;
+const PROTOCOL = "mqtt";
+const HOST = "localhost";
+const PORT = "1883";
+let clientId = `mqtt_${Math.random().toString(16).slice(3)}`;
 
-const connectURL = `${protocol}://${host}:${port}`;
+let connectURL = `${PROTOCOL}://${HOST}:${PORT}`;
 
 const client = mqtt.connect(connectURL, {
   clientId,
@@ -14,8 +14,8 @@ const client = mqtt.connect(connectURL, {
   reconnectPeriod: 1000,
 });
 
-//todo: change this
-const topics = [
+//Topics being subscribed to from MQTT broker
+const TOPIC_TITLES = [
   "start_button_click",  //0
   "stop_button_click",   //1
   "change_question",     //2
@@ -30,11 +30,17 @@ const topics = [
   "im_user_switched"     //11
 ];
 
+let topics = Object.fromEntries(
+    TOPIC_TITLES.map((topic) => [topic, topic])
+);
+
+
+
 client.on("connect", () => {
   console.log("Connected");
-  client.subscribe(topics, () => {
-    console.log(`Subscribe to topics: '${topics.join(", ")}'`);
+  client.subscribe(TOPIC_TITLES, () => {
+    console.log(`Subscribe to topics: '${TOPIC_TITLES.join(", ")}'`);
   });
 });
 
-module.exports = {MQTTclient: client, topics};
+module.exports = {MQTTclient: client, topics: Object.freeze(topics)};

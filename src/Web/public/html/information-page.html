@@ -2,34 +2,57 @@
 <html>
   <head>
     <title>Info</title>
-    <link rel="stylesheet" href="./css/informationpagestyle.css" />
+    <link rel="stylesheet" href="./css/informationpage-style.css" />
     <link
       rel="icon"
       href="./assets/images/Heart-Image.webp"
       type="image/x-icon"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <div class="header">
+    <div class="heading_container">
       <h1>Information</h1>
+
+      <div class="introduction">
+        <p><strong>About Love Detector:</strong></p>
+        <p class="info">
+          The Love Detector is a speed dating tool where users can discover the
+          potential of a deeper connection based on how their heartbeats react while engaging in fun conversation with each other.
+          We start with individually measuring the heartbeats of both users to
+          establish a reference point in order to generate more accurate results after the speed date. The
+          measurements are made with sensors that are attached to the users
+          earlobes. <br /><br /> The system then proceeds to measure the users heartbeats during
+          the speed date while they converse based on displayed speed dating questions.
+          Throughout the date, heartbeat data is collected. After the speed date is over, the data is analysed based on the variations and ‘spikes’.<br /><br />
+          The final match is determined by processing the data in a compatibility algorithm,
+          resulting in one of three levels: "Maybe not the best match...", "There is potential for a nice connection here!", or "A high chance of compatibility detected!". <br/><br />
+          Note that a high compatibility score does not guarantee a match in terms of a deeper connection, but merely suggests there is potential for future enjoyable engagement between the two users.   
+        </p>
+      </div>
     </div>
-    <div class="info_container">
-      <h1>
-        Love Detector is a super reliable source for testing out ur ultimate
-        love match
-      </h1>
+    <div class="button-container">
+      <button type="button" class="back-button" onclick="goBack()">
+        <img
+          src="./assets/images/left-arrow.png"
+          alt="Back"
+          height="35"
+        /><img />
+      </button>
     </div>
-    <div>
-      <button class="back-button" onclick="goBack()">Back</button>
-    </div>
-    <!--<div
-      class="background"
-      style="background-image: url('assets/images/Love-Detector-Logo.png')"
-    ></div>-->
   </body>
   <script>
     function goBack() {
-      window.history.back();
+      window.location.href = "./index.html";
     }
   </script>
 </html>

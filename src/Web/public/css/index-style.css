@@ -1,21 +1,19 @@
-html  {
+html, body {
   height: 100%;
-}
-body {
   width: 100%;
-  
   overflow-y: auto; 
   background: linear-gradient(to bottom, rgb(169, 0, 121), rgb(245, 2, 156));
-  /* Fallback background color */
   font-family: "Audiowide", sans-serif;
   color: rgb(0, 0, 0);
   margin: 0;
 }
+
 .info {
   width: 100%;
   text-align: center;
   color: #000000;
 }
+
 a {
   color: #000000;
   text-decoration: none;
@@ -78,7 +76,7 @@ h3 {
   display: flex;
   width: 90%;
   justify-content: end;
-  
+  margin-bottom: 2rem;
 }
 
 .users {
@@ -90,6 +88,7 @@ h3 {
 .next-button {
   background-color: rgb(255, 255, 255);
   border-radius: 30px;
+  padding: 3px 3px;
   border: none;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }

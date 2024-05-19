@@ -1,9 +1,9 @@
+html,
 body {
   width: 100%;
   height: 100%;
-  overflow-y: auto; 
+  overflow-y: auto;
   background: linear-gradient(to bottom, rgb(169, 0, 121), rgb(245, 2, 156));
-  /* Fallback background color */
   font-family: "Audiowide", sans-serif;
   display: flex;
   flex-direction: column;
@@ -16,7 +16,6 @@ body {
 .heading-container {
   display: flex;
   justify-content: center;
- 
 }
 
 h1 {
@@ -27,7 +26,7 @@ h1 {
 .middle-container {
   display: flex;
   flex-direction: row;
-  margin-right: 10rem;
+  margin: 0 15rem;
 }
 
 h2 {
@@ -35,17 +34,11 @@ h2 {
   font-family: "Audiowide", sans-serif;
 }
 
-.next-button-picture {
-  width: 50px;
-  height: 100%;
-}
-
 .button-container {
   display: flex;
   width: 90%;
   margin-bottom: 50px;
   margin-top: 30px;
-
   justify-content: space-between;
 }
 
@@ -56,6 +49,7 @@ h2 {
   border: none;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
+
 .back-button:hover {
   background-color: rgb(141, 141, 141);
   cursor: pointer;
@@ -64,19 +58,19 @@ h2 {
 .user-container {
   display: flex;
   flex-direction: column;
-  width: 50%;
-  height: 60%;
+  width: 30%;
+  height: 75%;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   padding: 1rem;
   border-radius: 30px;
-  margin: 2rem 3rem;
+  margin: 2rem;
   background-color: rgba(0, 0, 0, 0.5);
   font-family: sans-serif;
   color: rgb(255, 255, 255);
 }
 
 .user {
-  text-align: center; 
+  text-align: center;
 }
 
 .instructions-container {
@@ -84,7 +78,8 @@ h2 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-left: 4rem;
+  /* margin-left: 4rem; */
+  margin-top: 1rem;
 }
 
 .instruction {

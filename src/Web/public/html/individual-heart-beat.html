@@ -2,13 +2,18 @@
 <html>
   <head>
     <title>Individual Measurement</title>
-    <link rel="icon" href="./assets/images/Heart-Image.webp" type="image/x-icon" >
-    <link rel="stylesheet" href="css/individual-heart-beat-style.css" >
-    <link rel="preconnect" href="https://fonts.googleapis.com" >
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin >
-    <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+    <link
+      rel="icon"
+      href="./assets/images/Heart-Image.webp"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="css/individual-heart-beat-style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap"
+      rel="stylesheet"/>
   </head>
-
   <body>
     <div class="heading-container">
       <h1>Measure your individual heartbeat!</h1>
@@ -20,217 +25,55 @@
     <div class="middle-container">
       <div class="users">
         <div class="user-container" id="user1">
-            <h2><span id="displayUserName1"></span> </h2>
-            <p><span id="displayUserPronouns1"></span></p>
-              <div class="instruction-container" id="user1">
-                <p>Step 1: Remove any accessories from your ear.</p>
-                <br>
-                <p>Step 2: Attach ONLY the LEFT sensor to your ear securely and relax.</p>
-                <br>
-                <p>Step 3: Press the Left Button on the terminal to start the individual measurement. You can pause it using the Right Button.</p>
-              </div>
-            
+          <h2>User 1: <span id="userName1"></span></h2>
+          <p><span id="userPronouns1"></span></p>
+          <div class="instruction-container" id="user1">
+            <p>Step 1: Remove any accessories from your ear.</p>
+            <br />
+            <p>
+              Step 2: Attach ONLY the LEFT sensor to your ear securely and
+              relax.
+            </p>
+            <br />
+            <p>
+              Step 3: Press the Left Button on the terminal to start the
+              individual measurement. You can pause it using the Right button.
+            </p>
+          </div>
         </div>
         <div class="user-container" id="user2">
-            <h2><span id="displayUserName2"></span></h2>
-            <p><span id="displayUserPronouns2"></span></p>
-            <div class="instruction-container" id="user2">
-              <p>Step 1: Remove any accessories from your ear.</p>
-              <br>
-              <p>Step 2: Attach ONLY the RIGHT sensor to your ear securely and relax.</p>
-              <br>
-              <p>Step 3: Press the Left button on the terminal to start the individual measurement. You can pause it using the Right Button.</p>
-            </div>
+          <h2>User 2: <span id="userName2"></span></h2>
+          <p><span id="userPronouns2"></span></p>
+          <div class="instruction-container" id="user2">
+            <p>Step 1: Remove any accessories from your ear.</p>
+            <br />
+            <p>
+              Step 2: Attach ONLY the RIGHT sensor to your ear securely and
+              relax.
+            </p>
+            <br />
+            <p>
+              Step 3: Press the Left button on the terminal to start the
+              individual measurement. You can pause it using the Right button.
+            </p>
+          </div>
         </div>
       </div>
     </div>
-    <div class="navigationButton-container">
+    <div class="navigation-button-container">
       <button type="button" class="back-button" onclick="goBack()">
-        <img src="./assets/images/left-arrow.png" alt="Back" height="35" ><img/>
+        <img
+          src="./assets/images/left-arrow.png"
+          alt="Back"
+          height="35"
+        /><img />
       </button>
       <button id="nextUserButton" onclick="changeUser()">Switch User</button>
-      <a class="next-button" onclick="goToStartDatePage()">
+      <button class="next-button" onclick="goToStartDatePage()">
         <img src="./assets/images/right-arrow.png" alt="Continue" height="35" />
-      </a>
+      </button>
     </div>
   </body>
   <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
-  
-  <script>
-    const socket = io();
-    socket.emit('startIM');
-    var userId = "user1";
-    var started = false;
-    var individualMeasurementsMax;
-    var progressCounter = 0;
-    var previousProgressCounterLeft = 0;
-    var previousProgressCounterRight = 0;
-
-    socket.on('start', () => {
-      startMeasuring();
-      console.log("start");
-    });
-
-    socket.on('stop', () => {
-      pauseMeasuring();
-      console.log("pause");
-    })
-
-    socket.on('progress', () => {
-      progressMeasuring();
-      console.log("progress");
-    })
-
-  //retrieve user info from server.   
-  async function getUserData(){
-    
-    let response = await fetch("/getUserData", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      },
-    }) 
-
-    if (!response.ok) {
-        throw new Error("Failed to retrieve user data.");
-    }
-    return await response.json();
-  }
-
-  async function fillUserData(){
-    let userData = await getUserData();
-    console.log("User data:", userData);
-    let userName1 = userData.users[0].username;
-    let userName2 = userData.users[1].username;
-    let userPronouns1 = userData.users[0].pronouns;
-    let userPronouns2 = userData.users[1].pronouns;
-
-    document.getElementById("displayUserName1").textContent = userName1;
-    document.getElementById("displayUserPronouns1").textContent = userPronouns1;
-    document.getElementById("displayUserName2").textContent = userName2;
-    document.getElementById("displayUserPronouns2").textContent = userPronouns2;
-
-    individualMeasurementsMax = userData.individual_measurements;
-  }
- 
-  fillUserData(); 
-  document.getElementById(userId).classList.add('active');
-
-  async function changeUser(){
-      if(started){
-        alert("Please pause the test first, before trying to switch users.");
-        return;
-      }
-      socket.emit('changeCurrentUser');
-      document.getElementById(userId).classList.remove('active');
-      swapUsers();
-      document.getElementById(userId).classList.add('active');
-    }
-
-    function swapUsers(){
-      if(userId == "user1"){
-        progressCounter = 0;
-        userId = "user2";
-      }
-      else{
-        progressCounter = 0;
-        userId = "user1";
-      }
-      socket.emit('resetIM');
-    }
-
-    function goBack() {
-      socket.emit('endIM');
-      window.history.back();
-    }
-
-    function startMeasuring(){ //function to control visual actions in web page when measuring has been started.
-      
-      if(document.getElementById(userId).classList.contains('active') && !started){
-        started = true;
-
-        var currentContainer=document.getElementById(userId);
-        var instructionContainer = currentContainer.querySelector('.instruction-container');
-
-        instructionContainer.innerHTML = "";
-        var progressPercent = document.createElement('p');
-        progressPercent.textContent = progressCounter * 20 + "%";
-        progressPercent.classList.add('progress');
-
-        var messageParagraph = document.createElement('p');
-        messageParagraph.textContent = "Heartbeat measuring has been started. \nProgress: ";
-        messageParagraph.classList.add('message-text'); // Add a class for CSS to style the text
-
-        instructionContainer.appendChild(messageParagraph);
-        instructionContainer.appendChild(progressPercent);
-      }
-    }
-
-    function pauseMeasuring(){ //function to control visual actions in web page when measuring has been paused.
-      if(document.getElementById(userId).classList.contains('active') && started){
-        started = false;
-        var currentContainer=document.getElementById(userId);
-        var instructionContainer = currentContainer.querySelector('.instruction-container');
-        instructionContainer.innerHTML = "";
-
-        var messageParagraph = document.createElement('p');
-        messageParagraph.textContent = "Heartbeat measuring is paused. Restart it to complete the test.";
-        messageParagraph.classList.add('message-text'); // Add a class for CSS to style the text
-        instructionContainer.appendChild(messageParagraph);
-      }
-    }
-
-    async function completeMeasuring(){ //function to control visual actions in web page when measuring has been completed.
-      if(document.getElementById(userId).classList.contains('active') && started){
-        var currentContainer=document.getElementById(userId);
-        var instructionContainer = currentContainer.querySelector('.instruction-container');
-        instructionContainer.innerHTML = "";
-
-        var result = await getUserIM();
-
-        var messageParagraph = document.createElement('p');
-        messageParagraph.textContent = "Normal heartbeat: " + result;
-        messageParagraph.classList.add('message-text'); // Add a class for CSS to style the text
-        instructionContainer.appendChild(messageParagraph);
-        resetMeasuring();
-      }
-    }
-
-    function resetMeasuring(){ //function that resets measuring progress bar, when it has been complete or invalid
-      progressCounter = 0;
-      started = false;
-    }
-
-    async function getUserIM(){
-      let userData = await getUserData();
-      if(userId === "user1"){
-        return userData.users[0].IM_average_heartbeat;
-      } else {
-        return userData.users[1].IM_average_heartbeat;
-      }
-    }
-
-    function progressMeasuring(){
-      progressCounter++;
-      if(progressCounter < individualMeasurementsMax){
-        updatePercent();
-      } else {
-        completeMeasuring();
-      }
-    }
-
-    function updatePercent(){
-      var percent = document.getElementsByClassName('progress')[0];
-      console.log(percent);
-      percent.innerHTML = progressCounter * 20 + "%";
-    }
-
-    function goToStartDatePage(){
-      socket.emit('endIM')
-      window.location.href="./start-date-page.html"
-    }
-
-
-  </script>
+  <script src="./scripts/individual-heart-beat.js"></script>
 </html>
-

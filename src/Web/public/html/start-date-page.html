@@ -1,100 +1,65 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-  <title> Start date </title>
-  <link rel="icon" href="./assets/images/Heart-Image.webp" type="image/x-icon">
-  <link rel="stylesheet" href="./css/start-date-page-style.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
-</head>
-
-<body>
-  <div class="heading-container">
-    <h1>Ready to start the speed date?</h1>
-  </div>
-  <div class="middle-container">
-    <div class="user-container">
-      <div class="user">
-        <h2>User 1</h2>
-        <p>Name: <span id="displayUserName1"></span></p>
-        <p>Pronouns: <span id="displayUserPronouns1"></span></p>
+  <head>
+    <title>Start date</title>
+    <link
+      rel="icon"
+      href="./assets/images/Heart-Image.webp"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="./css/start-date-page-style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="heading-container">
+      <h1>Ready to start the speed date?</h1>
+    </div>
+    <div class="middle-container">
+      <div class="user-container">
+        <div class="user">
+          <h2>User 1</h2>
+          <p>Name: <span id="userName1"></span></p>
+          <p>Pronouns: <span id="userPronouns1"></span></p>
+        </div>
+        <div class="user">
+          <h2>User 2</h2>
+          <p>Name: <span id="userName2"></span></p>
+          <p>Pronouns: <span id="userPronouns2"></span></p>
+        </div>
       </div>
-      <div class="user">
-        <h2>User 2</h2>
-        <p>Name: <span id="displayUserName2"></span></p>
-        <p>Pronouns: <span id="displayUserPronouns2"></span></p>
+      <div class="instructions-container">
+        <div class="instruction">
+          <h2>For User 1 and User 2:</h2>
+        </div>
+        <div class="instruction">
+          <h2>STEP 1:</h2>
+          <p>
+            Put the sensor ear-clip on your earlobe. Make sure you are using the
+            same sensor as before and that both sensors are attched properly
+            before proceeding.
+          </p>
+        </div>
+        <div class="instruction">
+          <h2>STEP 2:</h2>
+          <p>Click the left blue button on the terminal to begin the date.</p>
+        </div>
       </div>
     </div>
-    <div class="instructions-container">
-      <div class="instruction">
-        <h2>STEP 1:</h2>
-        <p>Remove any accessories from your ear</p>
-      </div>
-      <div class="instruction">
-        <h2>STEP 2:</h2>
-        <p>Put the sensor ear-clip on your earlobe</p>
-      </div>
-      <div class="instruction">
-        <h2>STEP 3:</h2>
-        <p>Click the left blue button on the terminal to begin the date</p>
-      </div>
+    <div class="button-container">
+      <button type="button" class="back-button" onclick="goBack()">
+        <img
+          src="./assets/images/left-arrow.png"
+          alt="Back"
+          height="35"
+        /><img />
+      </button>
     </div>
-  </div>
-  <div class="button-container">
-    <button type="button" class="back-button" onclick="goBack()">
-      <img src="./assets/images/left-arrow.png" alt="Back" height="35" ><img/>
-    </button>
-  </div>
-</body>
-
-<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
-
-<script>
-
-  const socket = io();
-
-  socket.on('start', function () {
-    goToQuestions();
-  });
-
-  //Retrieve user info from server
-  async function getUserData() {
-    const response = await fetch("/getUserData", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to retrieve user data.");
-    }
-
-    const userData = await response.json();
-
-    // Display user info on the page
-    let userName1 = userData.users[0].username;
-    let userName2 = userData.users[1].username;
-    let userPronouns1 = userData.users[0].pronouns;
-    let userPronouns2 = userData.users[1].pronouns;
-
-    document.getElementById("displayUserName1").textContent = userName1;
-    document.getElementById("displayUserPronouns1").textContent = userPronouns1;
-    document.getElementById("displayUserName2").textContent = userName2;
-    document.getElementById("displayUserPronouns2").textContent = userPronouns2;
-  }
-
-  getUserData();
-
-  function goBack() {
-    window.history.back();
-  }
-  
-  function goToQuestions(){
-    window.location.href = "./questions.html";
-  }
-</script>
-
+  </body>
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <script src="./scripts/start-date-page.js"></script>
 </html>
